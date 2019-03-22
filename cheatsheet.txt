@@ -11,3 +11,5 @@ git checkout --file
 git diff <HEAD master ...>
 git commit --ammend
 para salir de vi (o vim) escape -> :wq (write, quit) -> enter
+
+hola
