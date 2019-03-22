@@ -1,0 +1,13 @@
+git init.
+git clone
+git status
+git add
+git commit -m
+git branch
+git branch <nuevaRama>
+git rm --cached<file>
+git checkout
+git checkout --file
+git diff <HEAD master ...>
+git commit --ammend
+para salir de vi (o vim) escape -> :wq (write, quit) -> enter
