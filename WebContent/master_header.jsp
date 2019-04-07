@@ -45,7 +45,7 @@
 					<a class="nav-link" href="#">Reserva <i class="fas fa-concierge-bell"></i></a>
 				</button>
 			</li>
-		ul>
+		</ul>
 	</div>
 </nav>
 

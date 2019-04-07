@@ -11,7 +11,7 @@
 		</ol>
 		<div class="carousel-inner">
 			<!-- First image -->
-		<div class="carousel-item active">
+			<div class="carousel-item active">
 				<img class="d-block w-100" src="img/Carousel\torre.jpg" alt="First slide">
 				<div class="carousel-caption d-none d-md-block">
 				<h5>Visitá nuestras instalaciones</h5>
@@ -21,7 +21,7 @@
 			<!-- /First image -->
 			
 			<!-- Second image -->
-		<div class="carousel-item">
+			<div class="carousel-item">
 				<img class="d-block w-100" src="img/Carousel\cama.jpg" alt="Second slide">
 				<div class="carousel-caption d-none d-md-block">
 				<h5>Conocé nuestras habitaciones</h5>
@@ -31,7 +31,7 @@
 			<!-- /Second image -->
 			
 			<!-- Third image -->
-		<div class="carousel-item">
+			<div class="carousel-item">
 				<img class="d-block w-100" src="img/Carousel\jacuzzi.jpg" alt="Third slide">
 				<div class="carousel-caption d-none d-md-block">
 				<h5>Asombrate con nuestros servicios</h5>
@@ -52,7 +52,7 @@
 		<span class="sr-only">Next</span>
 	</a>
 	
-		<!--  Carousel controls  -->
+	<!--  Carousel controls  -->
 
 </div>
 
@@ -61,14 +61,14 @@
 
 <!-- CONTACT FORM -->
 <!-- https://mdbootstrap.com/docs/jquery/forms/contact/ -->
-<!--Section: Contact v.2-->
+<!-- Section: Contact v.2-->
 <div class="col-md-6 offset-md-3">
 	<section class="mb-4">
 			<form id="contact-form" name="contact-form" action="<!-- mail.php -->" method="POST">
 
-				<!--Título del formulario de consulta-->
+				<!-- Título del formulario de consulta-->
 				<h2 class="h1-responsive font-weight-bold text-center my-4">Contactanos</h2>
-				<!--Subtítulo del formulario de contacto-->
+				<!-- Subtítulo del formulario de contacto-->
 				<p class="text-center w-responsive mx-auto mb-5">¿Aún tenés alguna consulta sobre nuestros servicios? Contactate con nuestra mesa de ayuda
 				y nos pondremos en contacto lo antes posible para poder ayudarte</p>
 				
@@ -78,55 +78,55 @@
 
 					<div class="col-md-12 mb-md-0 mb-5">
 			
-						<!--Primer fila-->
+						<!-- Primer fila-->
 						<div class="row my-3">
 						
-							<!--NOMBRE-->
+							<!-- NOMBRE-->
 							<div class="col-md-6">
 								<div class="md-form mb-0">
-									<input type="text" id="contacto-nombre" name="nombre" class="form-control" placeholder="Nombre">
+									<input type="text" id="contacto-nombre" name="nombre" class="form-control" placeholder="Nombre" required>
 								</div>
 							</div>
-							<!--/NOMBRE-->
+							<!-- /NOMBRE-->
 						
-							<!--EMAIL-->
+							<!-- EMAIL-->
 							<div class="col-md-6">
 								<div class="md-form mb-0">
 									<!-- Tiene que haber un js para checkear el mail -->
-									<input type="email" id="contacto-email" name="email" class="form-control" placeholder="E-mail">
+									<input type="email" id="contacto-email" name="email" class="form-control" placeholder="E-mail" required>
 								</div>
 							</div>
-							<!--EAIL-->
+							<!-- /EMAIL-->
 						
 						</div>
-						<!--/Primer fila ->
+						<!-- /Primer fila -->
 						
-						<!--/Segunda fila-->
+						<!-- /Segunda fila-->
 						<div class="row my-3">
 						
 							<!-- ASUNTO -->
 							<div class="col-md-12">
 								<div class="md-form mb-0">
-									<input type="text" id="contacto-asunto" name="asunto" class="form-control" placeholder="Asunto">
+									<input type="text" id="contacto-asunto" name="asunto" class="form-control" placeholder="Asunto" required>
 								</div>
 							</div>
 							<!-- /ASUNTO -->
 
 						</div>
-						<!--/Segunda fila-->
+						<!-- /Segunda fila-->
 						
-						<!--Tercer fila -->
+						<!-- Tercer fila -->
 						<div class="row my-3">
 
-							<!--CONSULTA-->
+							<!-- CONSULTA-->
 							<div class="col-md-12">
 						
 								<div class="md-form">
-									<textarea type="text" id="contacto-consulta" name="consulta" rows="2" class="form-control md-textarea" placeholder="Tu consulta"></textarea>
+									<textarea type="text" id="contacto-consulta" name="consulta" rows="2" class="form-control md-textarea" placeholder="Tu consulta" required></textarea>
 								</div>
 						
 							</div>
-							<!-- CONSULTA -->
+							<!-- /CONSULTA -->
 
 						</div>
 						<!-- /Tercer fila -->
@@ -139,7 +139,6 @@
 					<h6>O consultanos personalemente</h6>
 					<div class="col-lg-12" align="center">
 						<div class="row justify-content-around my-3">
-							<!-- Los botones pueden llevarte a maps, mandar un mail o hablar por whatsapp -->
 
 							<!-- MAPITA -->
 							<div class="col-sm-4" id="addr-container" align="center">
@@ -175,24 +174,21 @@
 									</span>
 								</a>
 							</div>
-						<!-- /CORREO -->
+							<!-- /CORREO -->
 
 						</div>
 					</div>
 				</div>
-				<!-- Contenedor de iconos de contacto -->
+				<!-- /Contenedor de iconos de contacto -->
 
 				<!-- Contenedor de botón de envío -->
 				<div class="row justify-content-center">
-					<!--Grid column-->
 					<div class="text-center text-md-left">
-						<!-- Se activa cuando se llenan los campos (JS) -->
 						<button class="btn btn-outline-primary" id="contacto-submit" type="submit">
 							Enviar <i class="far fa-paper-plane"></i>
 						</button>
 					</div>
 					<div class="status"></div>
-					<!--Grid column-->
 				</div>
 				<!-- /Contenedor de botón de envío -->
 		
@@ -200,7 +196,7 @@
 			</form>
 	</section>
 </div>
-<!--Section: Contact v.2-->
+<!-- /Section: Contact v.2-->
 
 <!-- /CONTACT FORM -->
 
@@ -223,30 +219,8 @@
 			$("#email-detail").fadeToggle();
 		});
 
-		// Para habilitar o deshabilitar el submit del form de contacto
-		validarFormContacto();
-		$("contacto-nombre, #contacto-email, #contacto-asunto, #contacto-consulta").on('keyup', validarFormContacto);
-
 	});
 
-	// Valida que el formulario de contacto esté completo para habilitar el botón de submit
-	function validarFormContacto() {
-		var inputsLlenos = 0;
-
-		var formInputs = $("contacto-nombre, #contacto-email, #contacto-asunto, #contacto-consulta")
-
-		formInputs.each(function(e) {
-			if ($(this).val()) {
-				inputsLlenos += 1;
-			}
-		});
-
-		if (inputsLlenos == formInputs.length) {
-			$("#contacto-submit").prop("disabled", false);
-		} else {
-			$("#contacto-submit").prop("disabled", true);
-		}
-	}
 </script>
 
 <!-- /SCRIPTS -->
