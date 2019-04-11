@@ -13,8 +13,12 @@
 <!-- Scripts del login (propios) -->
 <script type="text/javascript">
 	$(document).ready(function(){
-
 		
+		var alert = "<%= ((String)request.getAttribute("alert")) %>"
+
+		if(alert != "null"){
+			window.alert(alert);
+		}
 		//Pone en rojo si la contraseña no tiene más de 8 caracteres
 		$("#reg-password").focusout(function(){
 
@@ -55,11 +59,11 @@
 						<div class="col-lg-12">
 
 							<!-- Formualario de login -->
-							<form id="login-form" action="" method="post" role="form" style="display: block;">
+							<form id="login-form" action="/tp_java/login" method="post" role="form" style="display: block;">
 
 								<!-- Email -->
 								<div class="form-group">
-									<input type="email" name="login-email" id="email" tabindex="1" class="form-control" placeholder="E-mail" value="" required>
+									<input type="email" name="login-email" id="email" tabindex="1" class="form-control" placeholder="E-mail" value="" autofocus required>
 								</div>
 								<!-- /Email -->
 								
@@ -81,7 +85,7 @@
 								<div class="form-group">
 									<div class="row">
 										<div class="col-sm-6 col-sm-offset-3">
-											<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Ingresar">
+											<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="ingresar">
 										</div>
 									</div>
 								</div>

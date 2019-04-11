@@ -80,9 +80,6 @@
 						<li>
 							<a href="https://www.rosario.gob.ar/web/agenda" target="_blank" style="text-decoration:none">Agenda cultural</a>
 						</li>
-						<li>
-							<a href="#!" style="text-decoration:none">Link 4</a>
-						</li>
 					</ul>
 
 				</div>
