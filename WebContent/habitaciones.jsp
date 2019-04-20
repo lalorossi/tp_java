@@ -1,5 +1,14 @@
 <%@include file=".\master_header.jsp" %>
 
+<script type="text/javascript">
+
+// Activa la opción de la nav bar
+$("#nav-item-home").removeClass("active");
+$("#nav-item-habitaciones").addClass("active");
+$("#nav-item-servicios").removeClass("active");
+
+</script>
+
 <div class="container">
 	<div class="row">
 		<div class="col-12 col-sm-3 mt-3">

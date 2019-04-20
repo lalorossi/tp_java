@@ -29,6 +29,7 @@
 			}
 		});
 
+		// Cambio de vista entre registro y login
 		$('input[type=radio][name="form_option"]').change(function () {
 		    // window.alert($(this).attr('id'));
 		    if($(this).attr('id') == "form_option-registro"){
