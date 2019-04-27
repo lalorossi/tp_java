@@ -8,7 +8,7 @@
 	"Doble línea telefónica",
 	"Escritorio ejecutivo de trabajo",
 	"Libre acceso a nuestro Health Club & Spa, piscina y gimnasio.",
-	"Pantalla LCD de 32” con DVD.",
+	"Pantalla LCD de 32'' con DVD.",
 	"Sistema de climatización individual",
 	"Voice mail"
 	]

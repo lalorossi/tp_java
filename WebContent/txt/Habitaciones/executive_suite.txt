@@ -1,6 +1,6 @@
 {
 "tipoHabitacion" : "Executive Suite",
-"descripcion" : "Este tipo de habitación ofrece una antesala con diván y escritorio, toilette de cortesía, cama King Size (2 x 2 mts.) en la habitación principal y el baño principal cuenta con jacuzzi para dos personas.",
+"descripcion" : "Este tipo de habitación ofrece una antesala con diván y escritorio, toilette de cortesía, cama King Size (2 x 2 mts.) en la habitación principal y el ba�o principal cuenta con jacuzzi para dos personas.",
 "amenities" : [
 	"Acceso a Internet por Banda Ancha desde la habitación.",
 	"Cofre de seguridad digital",
@@ -10,7 +10,7 @@
 	"Estacionamiento con servicio de valet parking",
 	"Internet inalámbrico (Wi-Fi) en todas las áreas del hotel",
 	"Libre acceso a nuestro Health Club & Spa, piscina y gimnasio.",
-	"Pantalla LCD de 32” con DVD.",
+	"Pantalla LCD de 32'' con DVD.",
 	"Room service las 24 hs",
 	"Sistema de climatización individual",
 	"Voice mail"

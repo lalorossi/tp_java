@@ -10,8 +10,8 @@
 	"Estacionamiento con servicio de valet parking",
 	"Internet inalámbrico (Wi-Fi) en todas las áreas del hotel",
 	"Libre acceso a nuestro Health Club & Spa, piscina y gimnasio.",
-	"Pantalla LCD de 32”",
-	"Pantalla LCD de 32” con DVD.",
+	"Pantalla LCD de 32''",
+	"Pantalla LCD de 32'' con DVD.",
 	"Room service las 24 hs",
 	"Sistema de climatización individual",
 	"Voice mail"

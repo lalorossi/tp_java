@@ -1,14 +1,14 @@
 {
 "tipoHabitacion" : "Deluxe Plus",
-"descripcion" : "Estas habitaciones pueden contar con cama King Size (2 x 2 mts) o dos camas de 1.30 x 1.90 mts cada una, el ba√±o a diferencia de las Deluxe, est√° equipado con hidromasaje simple.",
+"descripcion" : "Estas habitaciones pueden contar con cama King Size (2 x 2 mts) o dos camas de 1.30 x 1.90 mts cada una, el baÒo a diferencia de las Deluxe, est· equipado con hidromasaje simple.",
 "amenities" : [
-	"Acceso a Internet por Banda Ancha desde la habitaci√≥n.",
+	"Acceso a Internet por Banda Ancha desde la habitaciÛn.",
 	"Cofre de seguridad digital",
 	"Desayuno Americano Buffet servido en nuestro restaurante.",
-	"Doble l√≠nea telef√≥nica",
+	"Doble lÌnea telefÛnica",
 	"Escritorio ejecutivo de trabajo",
 	"Libre acceso a nuestro Health Club & Spa, piscina y gimnasio.",
-	"Pantalla LCD de 32‚Äù con DVD.",
-	"Sistema de climatizaci√≥n individual"
+	"Pantalla LCD de 32'' con DVD.",
+	"Sistema de climatizaciÛn individual"
 	]
 }
