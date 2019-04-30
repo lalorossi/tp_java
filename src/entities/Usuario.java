@@ -3,11 +3,11 @@ package entities;
 public class Usuario extends Entidad {
 	
 	
-	public String getNombreUsuario() {
-		return nombreUsuario;
+	public String getEmail() {
+		return email;
 	}
-	public void setNombreUsuario(String nombreUsuario) {
-		this.nombreUsuario = nombreUsuario;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getContrasena() {
 		return contrasena;
@@ -16,6 +16,6 @@ public class Usuario extends Entidad {
 		this.contrasena = contrasena;
 	}
 	
-	String nombreUsuario;
+	String email;
 	String contrasena;
 }

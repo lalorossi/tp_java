@@ -5,25 +5,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.Admin;
+import entities.Usuario;
 
 
 public class DataAdmin {
-	public ArrayList<Admin> getAll() throws Exception{
+	public ArrayList<Usuario> getAll() throws Exception{
 		
 		Statement stmt=null;
 		ResultSet rs=null;
-		ArrayList<Admin> cats= new ArrayList<Admin>();
+		ArrayList<Usuario> usuarios= new ArrayList<Usuario>();
+
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
-			rs = stmt.executeQuery("select * from admin");
+			rs = stmt.executeQuery("select * from usuario");
 			if(rs!=null){
 				while(rs.next()){
-					Admin c = new Admin();
-					c.setId(rs.getInt("id"));
-					c.setDescripcion(rs.getString("descripcion"));
-					cats.add(c);
+					Usuario usr = new Usuario();
+					usr.setId(rs.getInt("id_usuario"));
+					usr.setEmail(rs.getString("email"));
+					usuarios.add(usr);
+					// System.out.println(usr.getId());
+					// System.out.println(usr.getEmail());
 				}
 			}
 		} catch (Exception e){
@@ -38,7 +41,7 @@ public class DataAdmin {
 			e.printStackTrace();
 		}
 		
-		return cats;
+		return usuarios;
 	}
 
 }

@@ -6,11 +6,11 @@ public class FactoryConection {
 
 	
 	private String driver="com.mysql.jdbc.Driver";
-	private String host="localhost";
+	private String host="127.0.0.1";
 	private String port="3306";
-	private String user="java";
-	private String password="java";
-	private String db="java2017";
+	private String user="root";
+	private String password="root";
+	private String db="arroz_tower";
 	
 	private static FactoryConection instancia;
 		
