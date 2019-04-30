@@ -1,0 +1,15 @@
+{
+"tipoHabitacion" : "Junior Suite",
+"descripcion" : "Presenta dimensiones mas amplias que Deluxe y Deluxe Plus, dispone de una antesala con diván y escritorio, la habitación principal cuenta con cama King Size (2 x 2 mts).",
+"amenities" : [
+	"Acceso a Internet por Banda Ancha desde la habitación.",
+	"Cofre de seguridad digital",
+	"Desayuno Americano Buffet servido en nuestro restaurante.",
+	"Doble línea telefónica",
+	"Escritorio ejecutivo de trabajo",
+	"Libre acceso a nuestro Health Club & Spa, piscina y gimnasio.",
+	"Pantalla LCD de 32'' con DVD.",
+	"Sistema de climatización individual",
+	"Voice mail"
+	]
+}

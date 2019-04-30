@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 		RequestDispatcher requestDispatcher;
 		
 		// antes tiene que fijarse que la URL no tenga datos para procesar
-		requestDispatcher = request.getRequestDispatcher("login.jsp");	// por defectmo, te manda al login
+		requestDispatcher = request.getRequestDispatcher("login.jsp");	// por defecto, te manda al login
  
         requestDispatcher.forward(request, response);
         

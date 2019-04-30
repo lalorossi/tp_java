@@ -1,0 +1,19 @@
+{
+"tipoHabitacion" : "Suite Presidencial",
+"descripcion" : "La Suite Presidencial es única en su categoría. Ubicada estratégicamente cuenta con amplios espacios y servicios de primera categoría. Se pueden realizar reuniones en su exclusiva sala de directorio. La Suite cuenta para ello con dos entradas independientes, la principal de ellas a la habitación, mientras que la segunda, es un acceso directo solamente a la sala de reuniones. Cuenta con equipamiento de última generación para cumplir con los requerimientos de cualquier tipo de reunión.",
+"amenities" : [
+	"Acceso a Internet por Banda Ancha desde la habitación.",
+	"Cofre de seguridad digital",
+	"Desayuno Americano Buffet servido en nuestro restaurante.",
+	"Doble línea telefónica",
+	"Escritorio ejecutivo de trabajo",
+	"Estacionamiento con servicio de valet parking",
+	"Internet inalámbrico (Wi-Fi) en todas las áreas del hotel",
+	"Libre acceso a nuestro Health Club & Spa, piscina y gimnasio.",
+	"Pantalla LCD de 32''",
+	"Pantalla LCD de 32'' con DVD.",
+	"Room service las 24 hs",
+	"Sistema de climatización individual",
+	"Voice mail"
+	]
+}

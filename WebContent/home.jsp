@@ -1,5 +1,13 @@
 <%@include file=".\master_header.jsp" %>
 
+<script type="text/javascript">
+
+// Activa la opción de la nav bar
+$("#nav-item-home").addClass("active");
+$("#nav-item-habitaciones").removeClass("active");
+$("#nav-item-servicios").removeClass("active");
+
+</script>
 
 <!--  CAROUSEL  -->
 <h1><%= ((String)request.getAttribute("username")) %></h1>
