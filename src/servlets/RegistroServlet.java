@@ -62,14 +62,15 @@ public class RegistroServlet extends HttpServlet {
 
 			ArrayList<Usuario> usuarios = usrLogic.getAll();
 			
-			if(usrLogic.Exist(usuarios, username)) {
+			if(usrLogic.getOne(username).equals(null)) {
 				// Si ya existe un usuario con ese email
 				System.out.println("Ya existe ese usuario");
 				
 				String alert = "El email ingresado ya pertenece a un usuario registrado";
 				request.setAttribute("alert", alert);
 				
-				requestDispatcher = request.getRequestDispatcher("login.jsp");
+				requestDispatcher = request.getRequestDispatcher("login.jsp");	 
+		        requestDispatcher.forward(request, response);
 			}
 			else {
 				// El email no pertenece a ningun usuario
