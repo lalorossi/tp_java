@@ -1,4 +1,4 @@
-<%@include file=".\master_header.jsp" %>
+<%@include file="./master_header.jsp" %>
 
 <script type="text/javascript">
 
@@ -233,4 +233,4 @@ $("#nav-item-servicios").removeClass("active");
 
 <!-- /SCRIPTS -->
 
-<%@include file=".\master_footer.jsp" %>
+<%@include file="./master_footer.jsp" %>

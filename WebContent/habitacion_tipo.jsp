@@ -1,4 +1,4 @@
-<%@include file=".\master_header.jsp" %>
+<%@include file="./master_header.jsp" %>
 
 <script type="text/javascript">
 
@@ -48,7 +48,9 @@ $(document).ready(function(){
 			var containerHTML = $("#amenities_container").html();
 
 			for(i in objHabitacion.amenities){
-				var newDiv = "<div class='', id='amenities" + i + "'>" + objHabitacion.amenities[i] + "</div>";
+				// <li class="list-group-item col-xs-6">Row1</li>
+				// var newDiv = "<div class='', id='amenities" + i + "'>" + objHabitacion.amenities[i] + "</div>";
+				var newDiv = "<li class='list-group-item col-xs-6', id='amenities" + i + "'>" + objHabitacion.amenities[i] + "</div>";
 				containerHTML += newDiv;
 			}
 			$("#amenities_container").html(containerHTML);
@@ -71,10 +73,10 @@ $(document).ready(function(){
 	<div class="col-md-4">
 		<h5 id="descripcion_habitacion"></h5>
 		<h4>Amenities</h4>
-		<div id="amenities_container"></div>
+		<ul class="row" id="amenities_container">
+		</ul>
 	</div>
 </div>
 
 
-
-<%@include file=".\master_footer.jsp" %>
+<%@include file="./master_footer.jsp" %>

@@ -1,4 +1,4 @@
-<%@include file=".\master_header.jsp" %>
+<%@include file="./master_header.jsp" %>
 
 <!-- Scripts del login (bootstrap) -->
 <!-- https://bootsnipp.com/snippets/z1Bpy -->
@@ -443,4 +443,4 @@
 </div>
 
 
-<%@include file=".\master_footer.jsp" %>
+<%@include file="./master_footer.jsp" %>
