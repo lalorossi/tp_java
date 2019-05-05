@@ -113,11 +113,17 @@
 						<!-- Datos Personales -->
 						<label>Datos personales</label>
 
-						<!-- Nombre y apellido -->
+						<!-- Nombre -->
 						<div class="form-label-group">
-							<input type="text" name="reg-nombre_apellido" id="reg-nombre_apellido" tabindex="1" class="form-control" placeholder="Nombre y apellido" value="">
+							<input type="text" name="reg-nombre" id="reg-nombre" tabindex="1" class="form-control" placeholder="Nombre" value="">
 						</div>
-						<!-- /Nombre y apellido -->
+						<!-- /Nombre -->
+
+						<!-- Apellido -->
+						<div class="form-label-group">
+							<input type="text" name="reg-apellido" id="reg-apellido" tabindex="1" class="form-control" placeholder="Apellido" value="">
+						</div>
+						<!-- /Apellido -->
 
 						<!-- Documento -->
 						<div class="form-label-group">
@@ -127,7 +133,7 @@
 
 						<!-- Telefono -->
 						<div class="form-label-group">
-							<input type="text" name="reg-telefono" id="reg-telefono" tabindex="3" class="form-control" placeholder="Número de teléfono" value="" required>
+							<input type="number" name="reg-telefono" id="reg-telefono" tabindex="3" class="form-control" placeholder="Número de teléfono" value="" required>
 						</div>
 						<!-- /Telefono -->
 
@@ -389,7 +395,7 @@
 
 						<!-- Código postal -->
 						<div class="form-label-group">
-							<input type="text" name="reg-cp" id="reg-cp" tabindex="6" class="form-control" placeholder="Código postal" value="" required>
+							<input type="number" name="reg-cp" id="reg-cp" tabindex="6" class="form-control" placeholder="Código postal" value="" required>
 						</div>
 						<!-- /Código postal -->
 

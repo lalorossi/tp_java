@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import database.DataAdmin;
 import entities.Usuario;
 import logic.UsuarioLogic;
+import util.Encode;
 
 /**
  * Servlet implementation class RegistroServlet
@@ -55,6 +56,7 @@ public class RegistroServlet extends HttpServlet {
 		
 		String username = request.getParameter("reg-email");
 		String password = request.getParameter("reg-password");
+		password = Encode.md5(password);
 		
 		
 		UsuarioLogic usrLogic = new UsuarioLogic();
@@ -82,9 +84,10 @@ public class RegistroServlet extends HttpServlet {
 				Usuario nuevoUsuario = new Usuario();
 				nuevoUsuario.setEmail(username);
 				nuevoUsuario.setContrasena(password);
-				nuevoUsuario.setNombre( request.getParameter("reg-nombre_apellido") );
-				nuevoUsuario.setDni( Integer.parseInt(request.getParameter("reg-documento")) );
-				nuevoUsuario.setTelefono( Integer.parseInt(request.getParameter("reg-telefono")) );
+				nuevoUsuario.setNombre( request.getParameter("reg-nombre") );
+				nuevoUsuario.setApellido( request.getParameter("reg-apellido") );
+				nuevoUsuario.setDni( request.getParameter("reg-documento") );
+				nuevoUsuario.setTelefono( request.getParameter("reg-telefono") );
 				nuevoUsuario.setPais( request.getParameter("reg-pais") );
 				nuevoUsuario.setCiudad( request.getParameter("reg-ciudad") );
 				nuevoUsuario.setCodigo_postal( Integer.parseInt(request.getParameter("reg-cp")) );

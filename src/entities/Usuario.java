@@ -19,10 +19,10 @@ public class Usuario extends Entidad {
 	public void setId_admin(int id_admin) {
 		this.id_admin = id_admin;
 	}
-	public int getDni() {
+	public String getDni() {
 		return dni;
 	}
-	public void setDni(int dni) {
+	public void setDni(String dni) {
 		this.dni = dni;
 	}
 	public String getNombre() {
@@ -37,10 +37,10 @@ public class Usuario extends Entidad {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-	public int getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
-	public void setTelefono(int telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 	public String getPais() {
@@ -91,10 +91,10 @@ public class Usuario extends Entidad {
 	int id_admin;
 	String email;
 	String contrasena;
-	int dni;
+	String dni;
 	String nombre;
 	String apellido;
-	int telefono;
+	String telefono;
 	String pais;
 	String ciudad;
 	int codigo_postal;

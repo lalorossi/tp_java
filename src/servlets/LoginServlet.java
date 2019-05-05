@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import logic.UsuarioLogic;
+import util.Encode;
 import entities.Usuario;
 
 /**
@@ -55,49 +56,42 @@ public class LoginServlet extends HttpServlet {
 		
 		String username = request.getParameter("login-email");
 		String password = request.getParameter("login-password");
+		password = Encode.md5(password);
 		
-		// System.out.println(username);
-		// System.out.println(password);
-		
-		if(username.equals("admin@admin.com") && password.equals("admin")) {
-			// System.out.println("entra");
+		 System.out.println(username);
+		 System.out.println(password);
 
-			UsuarioLogic usrLogic = new UsuarioLogic();
-			try {
+		UsuarioLogic usrLogic = new UsuarioLogic();
 
-				ArrayList<Usuario> usuarios = usrLogic.getAll();
-				int flag = 0;
-				for (int i=0; i<usuarios.size(); i++) {
-				    System.out.println(usuarios.get(i).getEmail());
-				    System.out.println(usuarios.get(i).getContrasena());
-					if(usuarios.get(i).getEmail().equals(username) && usuarios.get(i).getContrasena().equals(password)) {
-						flag=1;
-						break;
-					}
-				}
-				if(flag==1) {
+		try {
+
+			Usuario usuarioEncontrado = usrLogic.getOne(username);
+
+			if(!usuarioEncontrado.isEmpty()) {
+				// Hay un usuario con ese email. Falta checkear contraseña
+				System.out.println("Existe el email");
+				if(usuarioEncontrado.getContrasena().equals(password)) {
+					System.out.println("Coinciden las contraseñas");
 					request.setAttribute("username", username);
 					request.setAttribute("password", password);
 
 			        requestDispatcher = request.getRequestDispatcher("home.jsp");
+			        requestDispatcher.forward(request, response);
 				}
-				else {
-					System.out.println("alerta");
-
-					String alert = "Email de usuario o contraseña inválidos";
-					request.setAttribute("alert", alert);
-
-					requestDispatcher = request.getRequestDispatcher("login.jsp");
-				}
-
-		        requestDispatcher.forward(request, response);
-
 			}
-			catch (Exception e) {
-				// TODO Auto-generated catch block
-				System.out.println("error");
-				e.printStackTrace();
-			}
+			System.out.println("Usuario o contraseña incorrectos");
+
+			String alert = "Email de usuario o contraseña inválidos";
+			request.setAttribute("alert", alert);
+
+			requestDispatcher = request.getRequestDispatcher("login.jsp");
+	        requestDispatcher.forward(request, response);
+
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error al ingresar como usuario");
+			e.printStackTrace();
 		}
 	}
 

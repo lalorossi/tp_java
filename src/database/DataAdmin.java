@@ -18,7 +18,7 @@ public class DataAdmin {
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
-			rs = stmt.executeQuery("select * from usuario");
+			rs = stmt.executeQuery("select * from usuarios");
 			if(rs!=null){
 				while(rs.next()){
 					Usuario usr = new Usuario();

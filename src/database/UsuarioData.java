@@ -17,7 +17,7 @@ public class UsuarioData {
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
-			rs = stmt.executeQuery("select * from usuario");
+			rs = stmt.executeQuery("select * from usuarios");
 			if(rs!=null){
 				while(rs.next()){
 					Usuario usr = new Usuario();
@@ -53,7 +53,7 @@ public class UsuarioData {
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
-			rs = stmt.executeQuery("select * from usuario where id_usuario = '" + id_usuario + "'");
+			rs = stmt.executeQuery("select * from usuarios where id_usuario = '" + id_usuario + "'");
 			if(rs!=null){
 				while(rs.next()){
 					usr.setId(rs.getInt("id_usuario"));
@@ -87,7 +87,7 @@ public class UsuarioData {
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
-			String sentencia = "select * from usuario where email = '" + email +"'";
+			String sentencia = "select * from usuarios where email = '" + email +"'";
 			System.out.println("Se va a ejecutar la sentecnia SQL: " + sentencia);
 			rs = stmt.executeQuery(sentencia);
 			if(rs!=null){
@@ -123,13 +123,14 @@ public class UsuarioData {
 					.getConn().createStatement();
 			String email = usr.getEmail();
 			String password = usr.getContrasena();
-			int dni = usr.getDni();
+			String dni = usr.getDni();
 			String nombre = usr.getNombre();
-			int telefono = usr.getTelefono();
+			String apellido = usr.getApellido();
+			String telefono = usr.getTelefono();
 			
-			String sentencia = "insert into usuario"
+			String sentencia = "insert into usuarios"
 					+ "(email, password, dni, nombre, apellido, telefono)"
-					+ "values ('" + email + "', '" + password + "', '" + dni + "', '" + nombre + "', '" + nombre + "', '" + telefono + "')";
+					+ "values ('" + email + "', '" + password + "', '" + dni + "', '" + nombre + "', '" + apellido + "', '" + telefono + "')";
 			
 			System.out.println("Se va a ejecutar la sentencia SQL: "+ sentencia);
 			
