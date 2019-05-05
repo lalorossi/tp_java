@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import logic.UsuarioLogic;
+import entities.Usuario;
 
 /**
  * Servlet implementation class LoginServlet
@@ -57,24 +61,44 @@ public class LoginServlet extends HttpServlet {
 		
 		if(username.equals("admin@admin.com") && password.equals("admin")) {
 			// System.out.println("entra");
-			
-			request.setAttribute("username", username);
-			request.setAttribute("password", password);
-			 
-	        requestDispatcher = request.getRequestDispatcher("home.jsp");
+
+			UsuarioLogic usrLogic = new UsuarioLogic();
+			try {
+
+				ArrayList<Usuario> usuarios = usrLogic.getAll();
+				int flag = 0;
+				for (int i=0; i<usuarios.size(); i++) {
+				    System.out.println(usuarios.get(i).getEmail());
+				    System.out.println(usuarios.get(i).getContrasena());
+					if(usuarios.get(i).getEmail().equals(username) && usuarios.get(i).getContrasena().equals(password)) {
+						flag=1;
+						break;
+					}
+				}
+				if(flag==1) {
+					request.setAttribute("username", username);
+					request.setAttribute("password", password);
+
+			        requestDispatcher = request.getRequestDispatcher("home.jsp");
+				}
+				else {
+					System.out.println("alerta");
+
+					String alert = "Email de usuario o contraseña inválidos";
+					request.setAttribute("alert", alert);
+
+					requestDispatcher = request.getRequestDispatcher("login.jsp");
+				}
+
+		        requestDispatcher.forward(request, response);
+
+			}
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("error");
+				e.printStackTrace();
+			}
 		}
-		else {
-			System.out.println("alerta");
-			
-			String alert = "Email de usuario o contraseña inválidos";
-			request.setAttribute("alert", alert);
-			
-			requestDispatcher = request.getRequestDispatcher("login.jsp");
-		}
- 
-        requestDispatcher.forward(request, response);
-        
-		// request.getParameter("nombre");
 	}
 
 }

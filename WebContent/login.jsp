@@ -108,7 +108,7 @@
 					<!-- /Formulario de ingreso -->
 
 					<!-- Formulario de registro -->
-					<form id="register-form" class="cool-form" action="/tp_java/login" method="post" role="form" style="display: none;">
+					<form id="register-form" class="cool-form" action="/tp_java/registro" method="post" role="form" style="display: none;">
 
 						<!-- Datos Personales -->
 						<label>Datos personales</label>
@@ -127,7 +127,7 @@
 
 						<!-- Telefono -->
 						<div class="form-label-group">
-							<input type="number" name="reg-telefono" id="reg-telefono" tabindex="3" class="form-control" placeholder="Número de teléfono" value="" required>
+							<input type="text" name="reg-telefono" id="reg-telefono" tabindex="3" class="form-control" placeholder="Número de teléfono" value="" required>
 						</div>
 						<!-- /Telefono -->
 

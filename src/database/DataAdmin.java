@@ -24,6 +24,7 @@ public class DataAdmin {
 					Usuario usr = new Usuario();
 					usr.setId(rs.getInt("id_usuario"));
 					usr.setEmail(rs.getString("email"));
+					usr.setContrasena(rs.getString("password"));
 					usuarios.add(usr);
 					// System.out.println(usr.getId());
 					// System.out.println(usr.getEmail());
