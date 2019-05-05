@@ -1,8 +1,12 @@
 package entities;
 
 public class Usuario extends Entidad {
-	
-	
+
+	public Usuario() {
+		// Setea un valor inicial de id imposible para poder ver si es vacio más adelante
+		this.setId(-1);
+	}
+
 	public int getId_usuario() {
 		return id_usuario;
 	}
@@ -75,7 +79,14 @@ public class Usuario extends Entidad {
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
 	}
-	
+
+	public boolean isEmpty() {
+		if(this.getId() == -1) {
+			return true;
+		}
+		return false;
+	}
+
 	int id_usuario;
 	int id_admin;
 	String email;

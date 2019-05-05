@@ -58,11 +58,14 @@ public class RegistroServlet extends HttpServlet {
 		
 		
 		UsuarioLogic usrLogic = new UsuarioLogic();
+
 		try {
 
 			ArrayList<Usuario> usuarios = usrLogic.getAll();
-			
-			if(usrLogic.getOne(username).equals(null)) {
+			Usuario usuarioEncontrado = usrLogic.getOne(username);
+			System.out.println("ID: " + usuarioEncontrado.getId());
+			 // if(usuarioEncontrado.getId() != -1) {
+			if(!usuarioEncontrado.isEmpty()) {
 				// Si ya existe un usuario con ese email
 				System.out.println("Ya existe ese usuario");
 				

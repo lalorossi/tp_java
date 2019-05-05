@@ -55,11 +55,13 @@ public class UsuarioData {
 					.getConn().createStatement();
 			rs = stmt.executeQuery("select * from usuario where id_usuario = '" + id_usuario + "'");
 			if(rs!=null){
-				usr.setId(rs.getInt("id_usuario"));
-				usr.setEmail(rs.getString("email"));
-				usr.setContrasena(rs.getString("password"));
-				// System.out.println(usr.getId());
-				// System.out.println(usr.getEmail());
+				while(rs.next()){
+					usr.setId(rs.getInt("id_usuario"));
+					usr.setEmail(rs.getString("email"));
+					usr.setContrasena(rs.getString("password"));
+					// System.out.println(usr.getId());
+					// System.out.println(usr.getEmail());
+				}
 			}
 		} catch (Exception e){
 			throw e;
@@ -85,16 +87,18 @@ public class UsuarioData {
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
-			String sentencia = "select * from usuario where id_usuario = '" + email +"'";
+			String sentencia = "select * from usuario where email = '" + email +"'";
 			System.out.println("Se va a ejecutar la sentecnia SQL: " + sentencia);
 			rs = stmt.executeQuery(sentencia);
 			if(rs!=null){
-				System.out.println("rs != null");
-				usr.setId(rs.getInt("id_usuario"));
-				usr.setEmail(rs.getString("email"));
-				usr.setContrasena(rs.getString("password"));
-				// System.out.println(usr.getId());
-				// System.out.println(usr.getEmail());
+				while(rs.next()){
+					usr.setId(rs.getInt("id_usuario"));
+					usr.setEmail(rs.getString("email"));
+					usr.setContrasena(rs.getString("password"));
+					// System.out.println(usr.getId());
+					// System.out.println(usr.getEmail());
+				}
+
 			}
 		} catch (Exception e){
 			System.out.println("Error al buscar el usuario");
