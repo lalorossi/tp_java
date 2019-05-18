@@ -7,6 +7,8 @@ $("#nav-item-home").removeClass("active");
 $("#nav-item-habitaciones").addClass("active");
 $("#nav-item-servicios").removeClass("active");
 
+// Cambia el título de la página
+document.title = "Arroz Tower - Habitaciones";
 
 $(document).ready(function(){
 	$("#mas_info-1, #mas_info-2, #mas_info-3, #mas_info-4, #mas_info-5").click(function(){

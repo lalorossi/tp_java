@@ -10,6 +10,9 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
+		// Cambia el título de la página
+		document.title = "Arroz Tower - Ingreso";
+
 		// Muestra una alerta si el usuario o contraseña con son válidos
 		var alert = "<%= ((String)request.getAttribute("alert")) %>"
 

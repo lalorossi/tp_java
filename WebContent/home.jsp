@@ -7,6 +7,9 @@ $("#nav-item-home").addClass("active");
 $("#nav-item-habitaciones").removeClass("active");
 $("#nav-item-servicios").removeClass("active");
 
+//Cambia el título de la página
+document.title = "Arroz Tower";
+
 </script>
 
 <!--  CAROUSEL  -->
