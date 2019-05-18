@@ -77,7 +77,7 @@ public class HomeServlet extends HttpServlet {
 		else {
 			Cliente usuarioActual = new Cliente();
 			//System.out.println(nombreDeUsuario);
-			usuarioActual.setNombreUsuario(nombreDeUsuario);
+			usuarioActual.setEmail(nombreDeUsuario);
 			request.getSession(true).setAttribute("usuarioActual", usuarioActual);
 			request.getRequestDispatcher("home.jsp").forward(request, response);
 			// la otra es response.sendRedirect("home.jsp") pero no guarda la request

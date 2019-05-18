@@ -101,7 +101,7 @@ public class UsuarioData {
 
 			}
 		} catch (Exception e){
-			System.out.println("Error al buscar el usuario");
+			System.out.println("Error al buscar el usuario en la DB");
 			throw e;
 		}
 		

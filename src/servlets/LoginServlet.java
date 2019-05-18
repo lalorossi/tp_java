@@ -64,21 +64,26 @@ public class LoginServlet extends HttpServlet {
 		UsuarioLogic usrLogic = new UsuarioLogic();
 
 		try {
-
+			// Busca el usuario con el mail ingresado
 			Usuario usuarioEncontrado = usrLogic.getOne(username);
 
 			if(!usuarioEncontrado.isEmpty()) {
-				// Hay un usuario con ese email. Falta checkear contraseña
+				// Hay un usuario con ese email
 				System.out.println("Existe el email");
+
+				// Checkea la contraseña guardada con la ingresada
 				if(usuarioEncontrado.getContrasena().equals(password)) {
 					System.out.println("Coinciden las contraseñas");
 					request.setAttribute("username", username);
 					request.setAttribute("password", password);
 
+					// Te manda al home
 			        requestDispatcher = request.getRequestDispatcher("home.jsp");
 			        requestDispatcher.forward(request, response);
 				}
 			}
+
+			// Si llegaste a esta línea es porque erraste en usuario o contraseña
 			System.out.println("Usuario o contraseña incorrectos");
 
 			String alert = "Email de usuario o contraseña inválidos";
@@ -91,7 +96,14 @@ public class LoginServlet extends HttpServlet {
 		catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Error al ingresar como usuario");
-			e.printStackTrace();
+			e.printStackTrace();	// Si esto muestra el error en la página, hay que sacarlo
+
+			// Muestra el error general en el login
+			String alert = "Ups... Hubo un error tratando de iniciar sesion. Intenta más tarde";
+			request.setAttribute("alert", alert);
+
+			requestDispatcher = request.getRequestDispatcher("login.jsp");
+	        requestDispatcher.forward(request, response);
 		}
 	}
 
