@@ -8,6 +8,7 @@
 
 <!-- Scripts del login (propios) -->
 <script type="text/javascript">
+
 	$(document).ready(function(){
 
 		// Cambia el título de la página
@@ -17,7 +18,8 @@
 		var alert = "<%= ((String)request.getAttribute("alert")) %>"
 
 		if(alert != "null"){
-			window.alert(alert);
+			// window.alert(alert);
+			modalDanger(alert);
 		}
 
 		//Pone en rojo si la contraseña no tiene más de 8 caracteres
