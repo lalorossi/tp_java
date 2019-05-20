@@ -72,7 +72,7 @@ $("#nav-item-servicios").removeClass("active");
 <!-- Section: Contact v.2-->
 <div class="col-md-6 offset-md-3">
 	<section class="mb-4">
-			<form id="contact-form" name="contact-form" action="<!-- mail.php -->" method="POST">
+			<form id="contact-form" name="contact-form" action="home" method="POST">
 
 				<!-- Título del formulario de consulta-->
 				<h2 class="h1-responsive font-weight-bold text-center my-4">Contactanos</h2>
@@ -192,7 +192,7 @@ $("#nav-item-servicios").removeClass("active");
 				<!-- Contenedor de botón de envío -->
 				<div class="row justify-content-center">
 					<div class="text-center text-md-left">
-						<button class="btn btn-outline-primary" id="contacto-submit" type="submit">
+						<button class="btn btn-outline-primary" id="contacto-submit" type="submit" value="submit-consulta" name="submit">
 							Enviar <i class="far fa-paper-plane"></i>
 						</button>
 					</div>

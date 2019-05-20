@@ -76,6 +76,7 @@ public class RegistroServlet extends HttpServlet {
 				
 				requestDispatcher = request.getRequestDispatcher("login.jsp");	 
 		        requestDispatcher.forward(request, response);
+		        return;
 			}
 			else {
 				// El email no pertenece a ningun usuario
@@ -104,6 +105,7 @@ public class RegistroServlet extends HttpServlet {
 			
 	        requestDispatcher = request.getRequestDispatcher("home.jsp");	 
 	        requestDispatcher.forward(request, response);
+	        return;
 			
 		} 
 		catch (Exception e) {

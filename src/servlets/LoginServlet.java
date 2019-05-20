@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import logic.UsuarioLogic;
 import util.Encode;
@@ -33,7 +34,6 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 		RequestDispatcher requestDispatcher;
 		
@@ -77,9 +77,13 @@ public class LoginServlet extends HttpServlet {
 					request.setAttribute("username", username);
 					request.setAttribute("password", password);
 
-					// Te manda al home
+					// Si estás bien loggeado, te manda al home y guarda la session con el usuario
+					HttpSession session = request.getSession();
+					session.setAttribute("usuarioActual", usuarioEncontrado);
+
 			        requestDispatcher = request.getRequestDispatcher("home.jsp");
 			        requestDispatcher.forward(request, response);
+			        return;
 				}
 			}
 
@@ -91,6 +95,7 @@ public class LoginServlet extends HttpServlet {
 
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
 	        requestDispatcher.forward(request, response);
+	        return;
 
 		}
 		catch (Exception e) {

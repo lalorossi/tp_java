@@ -72,7 +72,7 @@
 					<hr class="my-4">
 
 					<!-- Formulario de ingreso -->
-					<form id="login-form" class="cool-form" action="/tp_java/login" method="post" role="form" style="display: block;">
+					<form id="login-form" class="cool-form" action="login" method="post" role="form" style="display: block;">
 
 						<!-- Email -->
 						<div class="form-label-group">
@@ -108,7 +108,7 @@
 					<!-- /Formulario de ingreso -->
 
 					<!-- Formulario de registro -->
-					<form id="register-form" class="cool-form" action="/tp_java/registro" method="post" role="form" style="display: none;">
+					<form id="register-form" class="cool-form" action="registro" method="post" role="form" style="display: none;">
 
 						<!-- Datos Personales -->
 						<label>Datos personales</label>
