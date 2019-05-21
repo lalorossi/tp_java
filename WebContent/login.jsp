@@ -77,7 +77,7 @@
 					<hr class="my-4">
 
 					<!-- Formulario de ingreso -->
-					<form id="login-form" class="cool-form" action="/tp_java/login" method="post" role="form" style="display: block;">
+					<form id="login-form" class="cool-form" action="login" method="post" role="form" style="display: block;">
 
 						<!-- Email -->
 						<div class="form-label-group">
@@ -113,16 +113,22 @@
 					<!-- /Formulario de ingreso -->
 
 					<!-- Formulario de registro -->
-					<form id="register-form" class="cool-form" action="/tp_java/login" method="post" role="form" style="display: none;">
+					<form id="register-form" class="cool-form" action="registro" method="post" role="form" style="display: none;">
 
 						<!-- Datos Personales -->
 						<label>Datos personales</label>
 
-						<!-- Nombre y apellido -->
+						<!-- Nombre -->
 						<div class="form-label-group">
-							<input type="text" name="reg-nombre_apellido" id="reg-nombre_apellido" tabindex="1" class="form-control" placeholder="Nombre y apellido" value="">
+							<input type="text" name="reg-nombre" id="reg-nombre" tabindex="1" class="form-control" placeholder="Nombre" value="">
 						</div>
-						<!-- /Nombre y apellido -->
+						<!-- /Nombre -->
+
+						<!-- Apellido -->
+						<div class="form-label-group">
+							<input type="text" name="reg-apellido" id="reg-apellido" tabindex="1" class="form-control" placeholder="Apellido" value="">
+						</div>
+						<!-- /Apellido -->
 
 						<!-- Documento -->
 						<div class="form-label-group">
@@ -394,7 +400,7 @@
 
 						<!-- Código postal -->
 						<div class="form-label-group">
-							<input type="text" name="reg-cp" id="reg-cp" tabindex="6" class="form-control" placeholder="Código postal" value="" required>
+							<input type="number" name="reg-cp" id="reg-cp" tabindex="6" class="form-control" placeholder="Código postal" value="" required>
 						</div>
 						<!-- /Código postal -->
 

@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import logic.UsuarioLogic;
+import util.Encode;
+import entities.Usuario;
 
 /**
  * Servlet implementation class LoginServlet
@@ -28,7 +34,6 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 		RequestDispatcher requestDispatcher;
 		
@@ -51,30 +56,60 @@ public class LoginServlet extends HttpServlet {
 		
 		String username = request.getParameter("login-email");
 		String password = request.getParameter("login-password");
+		password = Encode.md5(password);
 		
-		// System.out.println(username);
-		// System.out.println(password);
-		
-		if(username.equals("admin@admin.com") && password.equals("admin")) {
-			// System.out.println("entra");
-			
-			request.setAttribute("username", username);
-			request.setAttribute("password", password);
-			 
-	        requestDispatcher = request.getRequestDispatcher("home.jsp");
-		}
-		else {
-			System.out.println("alerta");
-			
+		 System.out.println(username);
+		 System.out.println(password);
+
+		UsuarioLogic usrLogic = new UsuarioLogic();
+
+		try {
+			// Busca el usuario con el mail ingresado
+			Usuario usuarioEncontrado = usrLogic.getOne(username);
+
+			if(!usuarioEncontrado.isEmpty()) {
+				// Hay un usuario con ese email
+				System.out.println("Existe el email");
+
+				// Checkea la contraseña guardada con la ingresada
+				if(usuarioEncontrado.getContrasena().equals(password)) {
+					System.out.println("Coinciden las contraseñas");
+					request.setAttribute("username", username);
+					request.setAttribute("password", password);
+
+					// Si estás bien loggeado, te manda al home y guarda la session con el usuario
+					HttpSession session = request.getSession();
+					session.setAttribute("usuarioActual", usuarioEncontrado);
+
+			        requestDispatcher = request.getRequestDispatcher("home.jsp");
+			        requestDispatcher.forward(request, response);
+			        return;
+				}
+			}
+
+			// Si llegaste a esta línea es porque erraste en usuario o contraseña
+			System.out.println("Usuario o contraseña incorrectos");
+
 			String alert = "Email de usuario o contraseña inválidos";
 			request.setAttribute("alert", alert);
-			
+
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
+	        requestDispatcher.forward(request, response);
+	        return;
+
 		}
- 
-        requestDispatcher.forward(request, response);
-        
-		// request.getParameter("nombre");
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error al ingresar como usuario");
+			e.printStackTrace();	// Si esto muestra el error en la página, hay que sacarlo
+
+			// Muestra el error general en el login
+			String alert = "Ups... Hubo un error tratando de iniciar sesion. Intenta más tarde";
+			request.setAttribute("alert", alert);
+
+			requestDispatcher = request.getRequestDispatcher("login.jsp");
+	        requestDispatcher.forward(request, response);
+		}
 	}
 
 }

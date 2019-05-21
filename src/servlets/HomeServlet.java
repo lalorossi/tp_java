@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,8 +29,14 @@ public class HomeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+		RequestDispatcher requestDispatcher;
+
+		// antes tiene que fijarse que la URL no tenga datos para procesar
+		requestDispatcher = request.getRequestDispatcher("home.jsp");	// Cuando llega por get, te manda al home.jsp
+
+        requestDispatcher.forward(request, response);
+
 	}
 
 	/**
@@ -36,54 +44,45 @@ public class HomeServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String nombreDeUsuario = request.getParameter("usuario");
-		String clave = request.getParameter("password");
+		RequestDispatcher requestDispatcher;
 
-		/*
+		// Checkea si la request viene del boton de mandar consulta o de reserva
+		String submitAction = request.getParameter("submit");
 
-			// Trata de encontrar un usuario por su nombre de usuario y contraseña
-			 *
-			Usuario usuarioActual = UsuarioLogic.LogTry(nombreDeUsuario, Contraseña);
-			if (usuarioActual == null) {
-				response.sendRedirect("/"); //Esto lo manda al login (raiz) si no hay un usuario seteado
-			}
-
-
-			// Ver si el usuario es admin o cliente
-			 *
-			 if(usuarioActual.tipoUsuario == "cliente"){
-			 }
-			 else if(usuarioActual.tipoUsuario == "admin"){
-			 }
-
-		*/
-
-		/* ------------------------------- SOLO PARA PRUEBAS ------------------------------------------- */
-
-		if(!nombreDeUsuario.equals("admin") || !clave.contentEquals("admin")) {
-			/*
-			 * Método 1: tratando de usar redirect y session
-			*/
-				request.getSession(false).setAttribute("mensaje", "No se encuentra el usuario");
-				response.sendRedirect("/tp_java/"); //No está mostrando el mensaje
-			/*
-			 * Método 2: usando forward y request (o session, debería funcionar)
-			request.getSession(false).setAttribute("mensaje", "No se encuentra el usuario");
-			request.getRequestDispatcher("login.jsp").forward(request, response);
-			*/
-			System.out.println("error de autenticacion");
-			System.out.println(nombreDeUsuario + "-" + clave);
+		if (submitAction == null) {
+			System.out.println("No sé cómo llegaste acá si no apretaste ningún botón");
 		}
+
+		else if (submitAction.equals("submit-consulta")) {
+			System.out.println("Procesando el formulario de consulta");
+		}
+
+		else if (submitAction.equals("submit-reserva")) {
+			System.out.println("Procesando el botón de reserva");
+
+		    // Se fija si hay una sesión iniciada. Si no hay, te mada al login
+		    Object usuarioActual = request.getSession().getAttribute("usuarioActual");
+		    if(usuarioActual == null) {
+				System.out.println("Usuario no loggeado. Lo mando al login");
+				// No uso forward porque quiero que cambie la URL
+				// requestDispatcher = request.getRequestDispatcher("login.jsp");
+				// requestDispatcher.forward(request, response);
+				response.sendRedirect("login");
+				return;
+		    }
+		    else {
+				// Te manda a la página de reserva
+				System.out.println("Usuario loggeado. Lo mando a reservas");
+				requestDispatcher = request.getRequestDispatcher("habitaciones.jsp");
+				requestDispatcher.forward(request, response);
+				return;
+		    }
+		}
+
 		else {
-			Cliente usuarioActual = new Cliente();
-			//System.out.println(nombreDeUsuario);
-			usuarioActual.setNombreUsuario(nombreDeUsuario);
-			request.getSession(true).setAttribute("usuarioActual", usuarioActual);
-			request.getRequestDispatcher("home.jsp").forward(request, response);
-			// la otra es response.sendRedirect("home.jsp") pero no guarda la request
+			System.out.println("No sé qué apretaste, pero llegaste acá");
+			System.out.println("Apretaste el botón: " + submitAction);
 		}
-
-		/* --------------------------------------------------------------------------------------------- */
 	}
 
 }
