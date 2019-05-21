@@ -85,12 +85,20 @@
 
 	$(document).ready(function(){
 
-			// Hover del boton de reserva
-			$("#navbar-btn-reserva").hover(function(){
-				$("#navbar-btn-text").toggle(150);
-			});
+		// Hover del boton de reserva
+		$("#navbar-btn-reserva").hover(function(){
+			$("#navbar-btn-text").toggle(150);
 		});
 
+		// Muestra el dropdown del navbar si hay un usuario loggeado
+		<%-- if( <%= (Object) request.getSession().getAttribute("usuarioActual") == null %> ){ --%>
+		if( <%= (String) request.getAttribute("username") %> != "admin@admin.com"){
+			$("#dropdown-logged_user").hide();
+		}
+		else{
+			$("#dropdown-logged_user").show();
+		}
+	});
 	</script>
 	<!-- /NavBar Script -->
 
@@ -117,9 +125,27 @@
 				<a class="nav-link" href="#">Servicios </a>
 			</li>
 		</ul>
+
+		<!-- Botón de reserva -->
 		<button id="navbar-btn-reserva" class="btn btn-sm btn-outline-warning navbar-btn" type="button">
 			<a href="/reserva" style="text-decoration: none; color: #000000b3; "><span id="navbar-btn-text" style="display: none">Reserva  </span> <i class="fas fa-concierge-bell"></i></a>
 		</button>
+		<!-- /Botón de reserva -->
+
+		<!-- Botón de usuario -->
+		<div class="btn-group ml-2" id="dropdown-logged_user">
+			<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-user-alt"></i>
+			</button>
+			<div class="dropdown-menu dropdown-menu-right">
+				<a class="dropdown-item" href="#">Mi usuario</a>
+				<a class="dropdown-item" href="#">Mis reservas</a>
+				<!-- <a class="dropdown-item" href="#">Something else here</a> -->
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">Cerrar Sesión</a>
+			</div>
+		</div>
+		<!-- /Botón de usuario -->
 	</div>
 </nav>
 
