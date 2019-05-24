@@ -18,6 +18,27 @@ USE `arroz_tower`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `usuarios` (
+  `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `dni` varchar(10) DEFAULT NULL,
+  `nombre` varchar(20) DEFAULT NULL,
+  `apellido` varchar(20) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `id_admin` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`),
+  UNIQUE KEY `dni_UNIQUE` (`dni`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `usuarios`
 --
 
@@ -36,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-05 13:11:44
+-- Dump completed on 2019-05-24 15:32:15
