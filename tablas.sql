@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `arroz_tower` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `arroz_tower`;
--- MySQL dump 10.13  Distrib 8.0.16, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: arroz_tower
 -- ------------------------------------------------------
@@ -33,9 +33,13 @@ CREATE TABLE `usuarios` (
   `apellido` varchar(20) DEFAULT NULL,
   `telefono` varchar(15) DEFAULT NULL,
   `id_admin` int(11) DEFAULT NULL,
+  `pais` varchar(50) DEFAULT NULL,
+  `ciudad` varchar(50) DEFAULT NULL,
+  `codigo_postal` int(10) DEFAULT NULL,
+  `direccion` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +48,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL),(6,'seba.a.rossi@gmail.com','ed37a736bd1f173fe8ce0825ba749608','39951271','Sebastian','Rossi','123',NULL),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL);
+INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL,NULL,NULL,NULL,NULL),(6,'seba.a.rossi@gmail.com','ed37a736bd1f173fe8ce0825ba749608','39951271','Sebastian','Rossi','123',NULL,NULL,NULL,NULL,NULL),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL,NULL,NULL,NULL,NULL),(8,'rama_arias@hotmail.es','25d55ad283aa400af464c76d713c07ad','39951174','Chino','arias','12312321',NULL,'AR','Baigorriga amigo',2152,'Ameghino'),(9,'asd@asd.net','25d55ad283aa400af464c76d713c07ad','123','asd','asd','123',NULL,'AM','Toha',2413,'Toja');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-24 15:32:15
+-- Dump completed on 2019-05-24 18:18:16
