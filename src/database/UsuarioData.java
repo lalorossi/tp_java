@@ -24,6 +24,16 @@ public class UsuarioData {
 					usr.setId(rs.getInt("id_usuario"));
 					usr.setEmail(rs.getString("email"));
 					usr.setContrasena(rs.getString("password"));
+					
+					usr.setApellido(rs.getString("apellido"));
+					usr.setNombre(rs.getString("nombre"));
+					usr.setDireccion(rs.getString("direccion"));
+					usr.setCiudad(rs.getString("ciudad"));					
+					usr.setPais(rs.getString("pais"));					
+					usr.setCodigo_postal(rs.getInt("codigo_postal"));
+					usr.setDni(rs.getString("dni"));
+					usr.setTelefono(rs.getString("telefono"));
+					
 					usuarios.add(usr);
 					// System.out.println(usr.getId());
 					// System.out.println(usr.getEmail());
@@ -59,6 +69,16 @@ public class UsuarioData {
 					usr.setId(rs.getInt("id_usuario"));
 					usr.setEmail(rs.getString("email"));
 					usr.setContrasena(rs.getString("password"));
+					
+					usr.setApellido(rs.getString("apellido"));
+					usr.setNombre(rs.getString("nombre"));
+					usr.setDireccion(rs.getString("direccion"));
+					usr.setCiudad(rs.getString("ciudad"));					
+					usr.setPais(rs.getString("pais"));					
+					usr.setCodigo_postal(rs.getInt("codigo_postal"));
+					usr.setDni(rs.getString("dni"));
+					usr.setTelefono(rs.getString("telefono"));
+					
 					// System.out.println(usr.getId());
 					// System.out.println(usr.getEmail());
 				}
@@ -95,8 +115,32 @@ public class UsuarioData {
 					usr.setId(rs.getInt("id_usuario"));
 					usr.setEmail(rs.getString("email"));
 					usr.setContrasena(rs.getString("password"));
-					// System.out.println(usr.getId());
-					// System.out.println(usr.getEmail());
+													
+					//usr.setId_admin("id_admin");
+					//usr.setId_usuario("id_usuario");
+															
+					usr.setApellido(rs.getString("apellido"));
+					usr.setNombre(rs.getString("nombre"));
+					usr.setDireccion(rs.getString("direccion"));
+					usr.setCiudad(rs.getString("ciudad"));					
+					usr.setPais(rs.getString("pais"));					
+					usr.setCodigo_postal(rs.getInt("codigo_postal"));
+					usr.setDni(rs.getString("dni"));
+					usr.setTelefono(rs.getString("telefono"));
+				
+					
+					//System.out.println(usr.getId());
+					//System.out.println(usr.getEmail());
+					//System.out.println(usr.getContrasena());
+					//System.out.println(usr.getApellido());
+					//System.out.println(usr.getNombre());
+					//System.out.println(usr.getDireccion());
+					//System.out.println(usr.getCiudad());
+					//System.out.println(usr.getPais());
+					//System.out.println(usr.getCodigo_postal());
+					//System.out.println(usr.getDni());
+					//System.out.println(usr.getTelefono());
+					
 				}
 
 			}
@@ -128,9 +172,15 @@ public class UsuarioData {
 			String apellido = usr.getApellido();
 			String telefono = usr.getTelefono();
 			
-			String sentencia = "insert into usuarios"
-					+ "(email, password, dni, nombre, apellido, telefono)"
-					+ "values ('" + email + "', '" + password + "', '" + dni + "', '" + nombre + "', '" + apellido + "', '" + telefono + "')";
+			String ciudad = usr.getCiudad();
+			String pais = usr.getPais();
+			String codigo_postal = Integer.toString(usr.getCodigo_postal());
+			String direccion = usr.getDireccion();
+			
+			
+			String sentencia = "insert into usuarios "
+					+ "(email, password, dni, nombre, apellido, telefono, ciudad, pais, codigo_postal, direccion) "
+					+ "values ('" + email + "', '" + password + "', '" + dni + "', '" + nombre + "', '" + apellido + "', '" + telefono + "','" + ciudad + "', '" + pais + "','" + codigo_postal + "',   '" + direccion +"')";
 			
 			System.out.println("Se va a ejecutar la sentencia SQL: "+ sentencia);
 			
