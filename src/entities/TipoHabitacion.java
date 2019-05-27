@@ -1,6 +1,7 @@
 package entities;
 
 public class TipoHabitacion extends Entidad  {
+
 	enum tipo {
 		Doble,
 		DoblePremium,
@@ -8,8 +9,16 @@ public class TipoHabitacion extends Entidad  {
 		TriplePremium,
 		Cuadruple
 	}
-	
-	tipo tipoHabitacion;	
+
+	/* Atributos */
+	tipo tipoHabitacion;
+	String descripcion;
+	int capacidad;
+	/* -- Atributos -- */
+
+
+	/* Getters y Setters */
+
 	public tipo getTipoHabitacion() {
 		return tipoHabitacion;
 	}
@@ -17,20 +26,20 @@ public class TipoHabitacion extends Entidad  {
 		this.tipoHabitacion = tipoHabitacion;
 	}
 
-	String descripcion;	
 	public String getDescripcion() {
 		return descripcion;
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
-	int capacidad;
+
 	public int getCapacidad() {
 		return capacidad;
 	}
 	public void setCapacidad(int capacidad) {
 		this.capacidad = capacidad;
 	}
-	
+
+	/* -- Getters y Setters -- */
+
 }
