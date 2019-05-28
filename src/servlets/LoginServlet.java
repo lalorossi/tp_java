@@ -53,6 +53,7 @@ public class LoginServlet extends HttpServlet {
 		// doGet(request, response);
 		
 		RequestDispatcher requestDispatcher;
+		HttpSession session = request.getSession();
 		
 		String username = request.getParameter("login-email");
 		String password = request.getParameter("login-password");
@@ -74,11 +75,8 @@ public class LoginServlet extends HttpServlet {
 				// Checkea la contraseña guardada con la ingresada
 				if(usuarioEncontrado.getContrasena().equals(password)) {
 					System.out.println("Coinciden las contraseñas");
-					request.setAttribute("username", username);
-					request.setAttribute("password", password);
 
 					// Si estás bien loggeado, te manda al home y guarda la session con el usuario
-					HttpSession session = request.getSession();
 					session.setAttribute("usuarioActual", usuarioEncontrado);
 
 			        requestDispatcher = request.getRequestDispatcher("home.jsp");
@@ -93,6 +91,8 @@ public class LoginServlet extends HttpServlet {
 			String alert = "Email de usuario o contraseña inválidos";
 			request.setAttribute("alert", alert);
 
+			session.setAttribute("usuarioActual", null);
+
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
 	        requestDispatcher.forward(request, response);
 	        return;
@@ -106,6 +106,8 @@ public class LoginServlet extends HttpServlet {
 			// Muestra el error general en el login
 			String alert = "Ups... Hubo un error tratando de iniciar sesion. Intenta más tarde";
 			request.setAttribute("alert", alert);
+
+			session.setAttribute("usuarioActual", null);
 
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
 	        requestDispatcher.forward(request, response);

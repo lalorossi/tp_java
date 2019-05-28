@@ -47,7 +47,7 @@ public class Usuario extends Entidad {
 	}
 
 	public boolean isAdmin() {
-		if(this.getClass().getName().equals("Admin"))
+		if(this.getClass().getName().equals("entities.Admin"))
 			return true;
 		return false;
 	}

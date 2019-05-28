@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import database.DataAdmin;
 import entities.Usuario;
+import entities.Cliente;
 import logic.UsuarioLogic;
 import util.Encode;
 
@@ -54,6 +55,7 @@ public class RegistroServlet extends HttpServlet {
 		// doGet(request, response);
 
 		RequestDispatcher requestDispatcher;
+		HttpSession session = request.getSession();
 
 		String username = request.getParameter("reg-email");
 		String password = request.getParameter("reg-password");
@@ -74,6 +76,8 @@ public class RegistroServlet extends HttpServlet {
 				String alert = "El email ingresado ya pertenece a un usuario registrado";
 				request.setAttribute("alert", alert);
 
+				session.setAttribute("usuarioActual", null);
+
 				requestDispatcher = request.getRequestDispatcher("login.jsp");	 
 		        requestDispatcher.forward(request, response);
 		        return;
@@ -82,25 +86,24 @@ public class RegistroServlet extends HttpServlet {
 				// El email no pertenece a ningun usuario
 				System.out.println("Se va a crear un nuevo usuario");
 				
-				Usuario nuevoUsuario = new Usuario();
-				nuevoUsuario.setEmail(username);
-				nuevoUsuario.setContrasena(password);
-				nuevoUsuario.setNombre( request.getParameter("reg-nombre") );
-				nuevoUsuario.setApellido( request.getParameter("reg-apellido") );
-				nuevoUsuario.setDni( request.getParameter("reg-documento") );
-				nuevoUsuario.setTelefono( request.getParameter("reg-telefono") );
-				nuevoUsuario.setPais( request.getParameter("reg-pais") );
-				nuevoUsuario.setCiudad( request.getParameter("reg-ciudad") );
-				nuevoUsuario.setCodigo_postal( Integer.parseInt(request.getParameter("reg-cp")) );
-				nuevoUsuario.setDireccion( request.getParameter("reg-direccion") );
+				Cliente nuevoCliente = new Cliente();
+				nuevoCliente.setEmail(username);
+				nuevoCliente.setContrasena(password);
+				nuevoCliente.setNombre( request.getParameter("reg-nombre") );
+				nuevoCliente.setApellido( request.getParameter("reg-apellido") );
+				nuevoCliente.setDni( request.getParameter("reg-documento") );
+				nuevoCliente.setTelefono( request.getParameter("reg-telefono") );
+				nuevoCliente.setPais( request.getParameter("reg-pais") );
+				nuevoCliente.setCiudad( request.getParameter("reg-ciudad") );
+				nuevoCliente.setCodigo_postal( Integer.parseInt(request.getParameter("reg-cp")) );
+				nuevoCliente.setDireccion( request.getParameter("reg-direccion") );
 
 				System.out.println("Datos ingresados correctos para el nuevo usuario");
 
-				usrLogic.Create(nuevoUsuario);
+				usrLogic.Create(nuevoCliente);
 				System.out.println("Usuario creado exitosamente");
 
-				HttpSession session = request.getSession();
-				session.setAttribute("usuarioActual", usuarioEncontrado);
+				session.setAttribute("usuarioActual", nuevoCliente);
 
 		        requestDispatcher = request.getRequestDispatcher("home.jsp");
 		        requestDispatcher.forward(request, response);
@@ -116,6 +119,8 @@ public class RegistroServlet extends HttpServlet {
 			// Muestra el error general en el login
 			String alert = "Ups... Hubo un error tratando de crear tu usuario. Intenta más tarde";
 			request.setAttribute("alert", alert);
+
+			session.setAttribute("usuarioActual", null);
 
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
 	        requestDispatcher.forward(request, response);

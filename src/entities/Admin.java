@@ -18,4 +18,9 @@ public class Admin extends Usuario {
 
 	/* -- Getters y Setters -- */
 
+
+	public boolean isAdmin() {
+		return true;
+	}
+
 }

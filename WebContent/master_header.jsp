@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%@ page import="entities.Usuario" %>
+
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -91,8 +93,9 @@
 		});
 
 		// Muestra el dropdown del navbar si hay un usuario loggeado
-		<%-- if( <%= (Object) request.getSession().getAttribute("usuarioActual") == null %> ){ --%>
-		if( <%= (String) request.getAttribute("username") %> != "admin@admin.com"){
+		<%-- if( <%= (String) request.getAttribute("username") %> != "admin@admin.com"){ --%>
+		if( <%= (Object) request.getSession().getAttribute("usuarioActual") == null %> ){
+			// Debería directamente destruirse el botón
 			$("#dropdown-logged_user").hide();
 		}
 		else{
@@ -137,7 +140,21 @@
 		<!-- Botón de usuario -->
 		<div class="btn-group ml-2" id="dropdown-logged_user">
 			<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<i class="fas fa-user-alt"></i>
+				<%
+				Usuario usuarioActual = ( ((Usuario)request.getSession().getAttribute("usuarioActual")) );
+				if(usuarioActual != null){
+					if(usuarioActual.isAdmin()){
+						%>
+							<i class="fas fa-lg fa-user-tie"></i>
+						<%
+					}
+					else{
+						%>
+							<i class="fas fa-lg fa-user-alt"></i>
+						<%
+					}
+				}
+				%>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right">
 				<a class="dropdown-item" href="#">Mi usuario</a>

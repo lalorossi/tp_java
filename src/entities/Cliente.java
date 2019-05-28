@@ -74,4 +74,9 @@ public class Cliente extends Usuario {
 
 	/* -- Getters y Setters -- */
 
+
+	public boolean isAdmin() {
+		return false;
+	}
+
 }
