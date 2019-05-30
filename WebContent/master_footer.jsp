@@ -113,6 +113,34 @@
 
 <!-- /FOOTER -->
 
+<!-- TOAST -->
+<div id="toast-container"  style="position: fixed; top: 0; right: 0;">
+	<div class="toast mr-3 mt-3" id="toast-warning" style="position: relative">
+		<div class="toast-warning-header bg-warning">
+			<strong class="mr-auto">
+				<i class="fas fa-exclamation-circle ml-1"></i> Tarjetas permitidas
+			</strong>
+			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="toast-body" id="toast-warning-body">
+		</div>
+	</div>
+	<div class="toast mr-3 mt-3" id="toast-danger" style="position: relative">
+		<div class="toast-danger-header bg-danger">
+			<strong class="mr-auto">
+				<i class="fas fa-exclamation-circle ml-1"></i> Tarjetas bloqueadas
+			</strong>
+			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="toast-body" id="toast-danger-body">
+		</div>
+	</div>
+</div>
+<!-- /TOAST -->
 
 </body>
 </html>

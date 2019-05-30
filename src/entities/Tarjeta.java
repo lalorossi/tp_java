@@ -4,10 +4,16 @@ import java.util.Date;
 
 public class Tarjeta extends Entidad  {
 
+	public enum Estado{
+		activa,
+		anulada
+	}
+
 	/* Atributos */
 	int numeroTarjeta;
 	Date fechaAlta;
 	Date fechaBaja;
+	Estado estado;
 	/* -- Atributos -- */
 
 
@@ -32,6 +38,13 @@ public class Tarjeta extends Entidad  {
 	}
 	public void setFechaBaja(Date fechaBaja) {
 		this.fechaBaja = fechaBaja;
+	}
+
+	public Estado getEstado() {
+		return this.estado;
+	}
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	/* -- Getters y Setters -- */

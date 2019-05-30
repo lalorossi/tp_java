@@ -2,6 +2,10 @@
 <html>
 <head>
 	<%@ page import="entities.Usuario" %>
+	<%@ page import="entities.EventoTarjeta" %>
+	<%@ page import="logic.EventosLogic" %>
+	<%@ page import="java.util.Date" %>
+	<%@ page import="java.util.ArrayList" %>
 
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -101,7 +105,63 @@
 		else{
 			$("#dropdown-logged_user").show();
 		}
+
+		// Prepara la toast
+		$(".toast").toast({ delay: 2000 });
+
+
+		function myPeriodicMethod() {
+			var ts = new Date();
+			var stringDate = ts.getFullYear()+"-"+(ts.getMonth()+1)+"-"+ts.getDate()+" "+ts.getHours()+":"+ts.getMinutes()+":"+(ts.getSeconds()-5);
+
+			$.ajax({
+				url: 'EventServlet',
+				data: { fromDate : stringDate },
+				success: function(responseText) {
+					if(responseText != "") {
+						eventos = JSON.parse(responseText);
+						var dangerMessage = "";
+						var warningMessage = "";
+						var hasDanger = false;
+						var hasWarning = false;
+						// console.log(responseText);
+						for(var index in eventos){
+							evt = eventos[index];
+							console.log(eventos[index]);
+							if(evt.estado=="warning"){
+								hasWarning = true;
+								warningMessage += "<p>ID: " + evt.idTarjeta + "</p>";
+							}
+							if(evt.estado=="danger"){
+								hasDanger = true;
+								dangerMessage += "<p>ID: " + evt.idTarjeta + "</p>";
+							}
+						}
+						if(hasWarning){
+							$('#toast-warning-body').html(warningMessage);
+							$("#toast-warning").toast('show');
+							console.log("warning");
+						}
+						if(hasDanger){
+							$('#toast-danger-body').html(dangerMessage);
+							$("#toast-danger").toast('show');
+							console.log("danger");
+						}
+
+					}
+				},
+				complete: function() {
+					// schedule the next request *only* when the current one is complete:
+					setTimeout(myPeriodicMethod, 5000);
+				}
+			});
+		}
+
+		// schedule the first invocation:
+		setTimeout(myPeriodicMethod, 5000);
+
 	});
+
 	</script>
 	<!-- /NavBar Script -->
 
@@ -170,6 +230,7 @@
 
 <!--  /NAV BAR  -->
 
+	<button id="eseBoton">AJAX</button>
 
 <!-- MODAL -->
 
@@ -193,3 +254,5 @@
 </div>
 
 <!-- /MODAL -->
+
+<button onclick="$('.toast').toast('show');">TOAST</button>
