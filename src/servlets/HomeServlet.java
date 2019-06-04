@@ -49,39 +49,58 @@ public class HomeServlet extends HttpServlet {
 		// Checkea si la request viene del boton de mandar consulta o de reserva
 		String submitAction = request.getParameter("submit");
 
+
 		if (submitAction == null) {
 			System.out.println("No sé cómo llegaste acá si no apretaste ningún botón");
 		}
 
-		else if (submitAction.equals("submit-consulta")) {
-			System.out.println("Procesando el formulario de consulta");
-		}
-
-		else if (submitAction.equals("submit-reserva")) {
-			System.out.println("Procesando el botón de reserva");
-
-		    // Se fija si hay una sesión iniciada. Si no hay, te mada al login
-		    Object usuarioActual = request.getSession().getAttribute("usuarioActual");
-		    if(usuarioActual == null) {
-				System.out.println("Usuario no loggeado. Lo mando al login");
-				// No uso forward porque quiero que cambie la URL
-				// requestDispatcher = request.getRequestDispatcher("login.jsp");
-				// requestDispatcher.forward(request, response);
-				response.sendRedirect("login");
-				return;
-		    }
-		    else {
-				// Te manda a la página de reserva
-				System.out.println("Usuario loggeado. Lo mando a reservas");
-				requestDispatcher = request.getRequestDispatcher("habitaciones.jsp");
-				requestDispatcher.forward(request, response);
-				return;
-		    }
-		}
-
 		else {
-			System.out.println("No sé qué apretaste, pero llegaste acá");
-			System.out.println("Apretaste el botón: " + submitAction);
+
+			switch(submitAction) {
+
+
+				case "submit-consulta":
+					System.out.println("Procesando el formulario de consulta");
+					break;
+
+
+				case "submit-reserva":
+					System.out.println("Procesando el botón de reserva");
+
+				    // Se fija si hay una sesión iniciada. Si no hay, te mada al login
+				    Object usuarioActual = request.getSession().getAttribute("usuarioActual");
+				    if(usuarioActual == null) {
+						System.out.println("Usuario no loggeado. Lo mando al login");
+						// No uso forward porque quiero que cambie la URL
+						// requestDispatcher = request.getRequestDispatcher("login.jsp");
+						// requestDispatcher.forward(request, response);
+						response.sendRedirect("login");
+						return;
+				    }
+				    else {
+						// Te manda a la página de reserva
+						System.out.println("Usuario loggeado. Lo mando a reservas");
+						requestDispatcher = request.getRequestDispatcher("habitaciones.jsp");
+						requestDispatcher.forward(request, response);
+						return;
+				    }
+
+
+				case "submit-logout":
+					// Saca el usuario de la session y te manda al login
+					System.out.println("Sacando al usuario de la session");
+					request.getSession().removeAttribute("usuarioActual");
+					requestDispatcher = request.getRequestDispatcher("login.jsp");
+					requestDispatcher.forward(request, response);
+					break;
+
+
+				default:
+					System.out.println("No sé qué apretaste, pero llegaste acá");
+					System.out.println("Apretaste el botón: " + submitAction);
+					break;
+
+			}
 		}
 	}
 

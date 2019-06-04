@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import entities.EventoTarjeta;
+import entities.Evento;
 import logic.EventosLogic;
 
 /**
@@ -44,33 +44,27 @@ public class TarjetaServlet extends HttpServlet {
 		RequestDispatcher requestDispatcher;
 
 		// Checkea si la request viene del boton de mandar consulta o de reserva
-		String submitAction = request.getParameter("id_tarjeta");
+		String submitTarjeta = request.getParameter("id_tarjeta");
+		String submitUsuario = request.getParameter("id_usuario");
 
-		EventoTarjeta evtTar = new EventoTarjeta();
-		evtTar.setHoraEvento(new Date());
+		Evento evt = new Evento();
+		evt.setHoraEvento(new Date());
 
-		/* Esta es una manera muy básica de pasar tarjeta sabiendo que hay 3 tarjetas posibles */
-		if (submitAction == null) {
-			System.out.println("No sé cómo llegaste acá si no apretaste ningún botón");
+		if (submitTarjeta == null) {
+			// Tocaste el botón de usuario
+			evt.setTipo(Evento.Tipos.usuario);
+			System.out.println("Pasando tarjeta " + submitUsuario);
+			evt.setIdRelacionado(Integer.parseInt(submitUsuario));
 		}
-
-		else if (submitAction.equals("1")) {
-			System.out.println("Pasando tarjeta 1");
-			evtTar.setIdTarjeta(1);
-		}
-
-		else if (submitAction.equals("2")) {
-			System.out.println("Pasanado tarjeta 2");
-			evtTar.setIdTarjeta(2);
-		}
-
-		else if (submitAction.equals("3")) {
-			System.out.println("Pasando tarjeta 3");
-			evtTar.setIdTarjeta(3);
+		else {
+			// Tocaste el botón de tarjeta
+			evt.setTipo(Evento.Tipos.tarjeta);
+			System.out.println("Pasando tarjeta " + submitTarjeta);
+			evt.setIdRelacionado(Integer.parseInt(submitTarjeta));
 		}
 
 		try {
-			(new EventosLogic()).create(evtTar);
+			(new EventosLogic()).create(evt);
 			requestDispatcher = request.getRequestDispatcher("pasarTarjeta.jsp");
 	        requestDispatcher.forward(request, response);
 		} catch (Exception e) {

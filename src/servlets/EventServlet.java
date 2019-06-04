@@ -17,10 +17,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import entities.EventoTarjeta;
+import entities.Evento;
 import entities.Tarjeta;
 import logic.EventosLogic;
 import logic.TarjetaLogic;
+import logic.UsuarioLogic;
 
 /**
  * Servlet implementation class AjaxServlet
@@ -45,14 +46,14 @@ public class EventServlet extends HttpServlet {
 
 		String fromDate = request.getParameter("fromDate").trim();
 
-		String resp = "";
+		String respuesta = "";
 
 		response.setContentType("text/plain");
 		// response.getWriter().write(greetings);
 
 		try {
 			// Busca eventos nuevos en la DB
-			ArrayList<EventoTarjeta> nuevosEventos = (new EventosLogic()).getFromDate(fromDate);
+			ArrayList<Evento> nuevosEventos = (new EventosLogic()).getFromDate(fromDate);
 			System.out.println("Se encontraron: " + nuevosEventos.size() + " eventos");
 
 			if(nuevosEventos.size()>0){
@@ -60,35 +61,55 @@ public class EventServlet extends HttpServlet {
 
 				TarjetaLogic tarjetaLogic = new TarjetaLogic();
 
-				JSONArray list = new JSONArray();
+				JSONArray listaJson = new JSONArray();
 
 				for(int i=0; i<nuevosEventos.size(); i++) {
 
-					JSONObject obj = new JSONObject();
+					JSONObject objetoJson = new JSONObject();
 
-					int idTarjeta = nuevosEventos.get(i).getIdTarjeta();
-					resp += "(" + Integer.toString(idTarjeta) + ")";
-					obj.put("idTarjeta", idTarjeta);
+					int idRelacionado = nuevosEventos.get(i).getIdRelacionado();
+					Evento.Tipos tipoEvento = nuevosEventos.get(i).getTipo();
+					respuesta += "(" + Integer.toString(idRelacionado) + ")";
+					//objetoJson.put("idRelacionado", idRelacionado);
 
-					// Si la tarjeta está activa, el toast es warning (amarillo) y si no, es danger (rojo)
-					if(tarjetaLogic.getOne(idTarjeta).getEstado() == Tarjeta.Estado.activa) {
-						obj.put("estado", "warning");
+					System.out.println(tipoEvento.toString());
+
+					switch(tipoEvento) {
+					case tarjeta:
+						// Si la tarjeta está activa, el toast es warning (amarillo) y si no, es danger (rojo)
+						if(tarjetaLogic.getOne(idRelacionado).getEstado() == Tarjeta.Estado.activa) {
+							objetoJson.put("estado", "warning");
+						}
+						else {
+							objetoJson.put("estado", "danger");
+						}
+						objetoJson.put("label", "tarjeta nro: ");
+						objetoJson.put("data", idRelacionado);
+						break;
+
+					case usuario:
+						objetoJson.put("estado", "success");
+
+						// Busca el email de usuario en la DB
+						String email = (new UsuarioLogic()).getOne(idRelacionado).getEmail();
+
+						objetoJson.put("label", "Email de usuario: ");
+						objetoJson.put("data", email);
+					default:
+						break;
 					}
-					else {
-						obj.put("estado", "danger");
-					}
 
-					list.add(obj);
+					listaJson.add(objetoJson);
 				}
 
 				StringWriter out = new StringWriter();
-				list.writeJSONString(out);
-				String jsonText = out.toString();
+				listaJson.writeJSONString(out);
+				String textoJson = out.toString();
 
-				System.out.println(jsonText);
+				System.out.println(textoJson);
 
 				// Vuelve al JSP con el JSON de los eventos
-				response.getWriter().write(jsonText);
+				response.getWriter().write(textoJson);
 
 			}
 			else {

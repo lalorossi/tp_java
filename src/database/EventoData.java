@@ -8,31 +8,33 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import entities.EventoTarjeta;
+import entities.Evento;
+import entities.Tarjeta;
 import entities.Usuario;
 
 public class EventoData {
 
-	public ArrayList<EventoTarjeta> getFromDate(String fromDate) throws Exception{
+	public ArrayList<Evento> getFromDate(String fromDate) throws Exception{
 		// TODO hacer que el evento reciba el tipo Date
 		Statement stmt=null;
 		ResultSet rs=null;
 
-		ArrayList<EventoTarjeta> evts = new ArrayList<EventoTarjeta>();
+		ArrayList<Evento> evts = new ArrayList<Evento>();
 
 		System.out.println("Se buscan eventos a partir de: " + fromDate);
 
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
-			rs = stmt.executeQuery("select * from eventos_tarjeta where hora_evento > '" + fromDate + "'");
+			rs = stmt.executeQuery("select * from eventos where hora_evento > '" + fromDate + "'");
 			if(rs!=null){
 				while(rs.next()){
 
-					EventoTarjeta evt= new EventoTarjeta();
+					Evento evt= new Evento();
 
-					evt.setIdTarjeta(rs.getInt("id_tarjeta"));
+					evt.setIdRelacionado(rs.getInt("id_relacionado"));
 					evt.setHoraEvento(rs.getDate("hora_evento"));
+					evt.setTipo(Evento.Tipos.valueOf(rs.getString("tipo_evento")));
 
 					evts.add(evt);
 
@@ -53,23 +55,24 @@ public class EventoData {
 		return evts;
 	}
 
-	public void Create(EventoTarjeta evtTar) throws Exception {
+	public void Create(Evento evt) throws Exception {
 		Statement stmt=null;
 		try{
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
 
 
-			int idTarjeta = evtTar.getIdTarjeta();
-			Date horaEvento = evtTar.getHoraEvento();
+			int idRelacionado = evt.getIdRelacionado();
+			Date horaEvento = evt.getHoraEvento();
+			String tipoEvento = evt.getTipo().toString();
 
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 			String dateString = format.format( horaEvento );
 
-			String sentencia = "insert into eventos_tarjeta "
-					+ "(id_tarjeta, hora_evento) "
-					+ "values ('"+ Integer.toString(idTarjeta) +"', '"+ dateString +"')";
+			String sentencia = "insert into eventos "
+					+ "(id_relacionado, hora_evento, tipo_evento) "
+					+ "values ('"+ Integer.toString(idRelacionado) +"', '"+ dateString +"', '" + tipoEvento + "')";
 
 
 			System.out.println("Se va a ejecutar la sentencia SQL: "+ sentencia);
