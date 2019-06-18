@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entities.Usuario;
 import entities.Admin;
 import entities.Cliente;
+import entities.Usuario;
 
 public class UsuarioData {
 	public ArrayList<Usuario> getAll() throws Exception{
@@ -207,7 +207,7 @@ public class UsuarioData {
 			String password = usr.getContrasena();
 
 			String sentencia = "insert into usuarios "
-					+ "(email, password, dni, nombre, apellido, telefono, ciudad, pais, codigo_postal, direccion, id_admin) "
+					+ "(email, password, dni, nombre, apellido, telefono, ciudad, pais, codigo_postal, direccion, id_admin,hash,verificado) "
 					+ "values ('" + email + "', '" + password;
 
 			if(usr.isAdmin()) {
@@ -226,8 +226,13 @@ public class UsuarioData {
 				String codigo_postal = Integer.toString(((Cliente) usr).getCodigo_postal());
 				String direccion = ((Cliente) usr).getDireccion();
 
+				String hash = ((Cliente) usr).getHash();
+				Boolean verificado = ((Cliente) usr).getVerificado();
 
-				 sentencia += ("', '" + dni + "', '" + nombre + "', '" + apellido + "', '" + telefono + "','" + ciudad + "', '" + pais + "','" + codigo_postal + "', '" + direccion +"', null)");
+
+				sentencia += ("', '" + dni + "', '" + nombre + "', '" + apellido + "', '" + telefono + "','" + ciudad
+						+ "', '" + pais + "','" + codigo_postal + "', '" + direccion + "', null, '" + hash + "', "
+						+ verificado + ")");
 			}
 
 			/*
@@ -245,6 +250,24 @@ public class UsuarioData {
 			System.out.println("Error al crear el usuario en la DB");
 			throw e;
 		}
+	}
+
+	public void Activar(String email, String hash) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		Usuario usr = new Usuario();
+		try {
+			usr = this.getOne(email);
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			String sentencia = "UPDATE usuarios SET verificado = 1 WHERE (id_usuario = '" + usr.getId() + "');";
+			System.out.println("Se va a ejecutar la sentecnia SQL: " + sentencia);
+			stmt.executeUpdate(sentencia);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

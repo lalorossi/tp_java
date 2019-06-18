@@ -2,6 +2,10 @@ package entities;
 
 public class Cliente extends Usuario {
 
+	public Cliente() {
+		this.setVerificado(false);
+	}
+
 	/* Atributos */
 	String dni;
 	String nombre;
@@ -11,6 +15,7 @@ public class Cliente extends Usuario {
 	String ciudad;
 	int codigoPostal;
 	String direccion;
+	Boolean verificado;
 	/* -- Atributos -- */
 
 
@@ -68,13 +73,33 @@ public class Cliente extends Usuario {
 	public String getDireccion() {
 		return direccion;
 	}
+
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
 
+	public Boolean getVerificado() {
+		return verificado;
+	}
+
+	public void setVerificado(Boolean verificado) {
+		this.verificado = verificado;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+
+	String hash;
+
 	/* -- Getters y Setters -- */
 
 
+	@Override
 	public boolean isAdmin() {
 		return false;
 	}
