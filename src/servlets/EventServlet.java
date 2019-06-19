@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.Cliente;
 import entities.Evento;
 import entities.Tarjeta;
 import logic.EventosLogic;
@@ -72,7 +73,7 @@ public class EventServlet extends HttpServlet {
 					respuesta += "(" + Integer.toString(idRelacionado) + ")";
 					//objetoJson.put("idRelacionado", idRelacionado);
 
-					System.out.println(tipoEvento.toString());
+					System.out.println("nuevo evento de tipo: " + tipoEvento.toString());
 
 					switch(tipoEvento) {
 					case tarjeta:
@@ -83,6 +84,8 @@ public class EventServlet extends HttpServlet {
 						else {
 							objetoJson.put("estado", "danger");
 						}
+
+						// Esta label y data deberían ser de la habitación más que de la tarjeta
 						objetoJson.put("label", "tarjeta nro: ");
 						objetoJson.put("data", idRelacionado);
 						break;
@@ -91,9 +94,15 @@ public class EventServlet extends HttpServlet {
 						objetoJson.put("estado", "success");
 
 						// Busca el email de usuario en la DB
-						String email = (new UsuarioLogic()).getOne(idRelacionado).getEmail();
+						UsuarioLogic usrLogic = new UsuarioLogic();
+						String email = usrLogic.getOne(idRelacionado).getEmail();
+						String nombreUsuario = ((Cliente) usrLogic.getOne(idRelacionado)).getNombre();
+						String apellidoUsuario = ((Cliente) usrLogic.getOne(idRelacionado)).getApellido();
 
-						objetoJson.put("label", "Email de usuario: ");
+						String jsonLabel = nombreUsuario + " " + apellidoUsuario + ": ";
+						System.out.println(jsonLabel + " - " + email);
+
+						objetoJson.put("label", jsonLabel);
 						objetoJson.put("data", email);
 					default:
 						break;

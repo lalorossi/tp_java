@@ -71,21 +71,17 @@ function eventToaster() {
 				for(var index in eventos){
 
 					evt = eventos[index];
-					// console.log(eventos[index]);
-
+					console.log(evt.label + " - " + evt.data);
 					if(evt.estado=="success"){
 						hasSuccess = true;
-						//addSuccessToast("ID: " + evt.idRelacionado);
 						addSuccessToast(evt.label + evt.data);
 					}
 					if(evt.estado=="warning"){
 						hasWarning = true;
-						//addWarningToast("ID: " + evt.idRelacionado);
 						addWarningToast(evt.label + evt.data);
 					}
 					if(evt.estado=="danger"){
 						hasDanger = true;
-						//addDangerToast("ID: " + evt.idRelacionado);
 						addDangerToast(evt.label + evt.data);
 					}
 				}

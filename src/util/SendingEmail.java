@@ -44,7 +44,7 @@ public class SendingEmail {
 			message.setFrom(new InternetAddress(email));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
 			message.setSubject("ArrozTower.com Link de VERIFICACION de email");
-			message.setText("Haga click en el Link para verificar la cuenta" + "http://localhost:8080/tp_java/ActiveAccount?key1=" + userEmail + "&key2=" +myHash);
+			message.setText("Haga click en el Link para verificar la cuenta: " + "http://localhost:8080/tp_java/ActiveAccount?key1=" + userEmail + "&key2=" +myHash);
 			System.out.println("Se va a ejecutar" + "http://localhost:8080/tp_java/ActivateAccount?key1=" + userEmail
 					+ "&key2=" + myHash);
 			Transport t = session.getTransport("smtp");

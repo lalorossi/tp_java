@@ -121,7 +121,7 @@
 	<div class="toast mr-3 mt-3" id="toast-success" style="position: relative">
 		<div class="toast-success-header bg-success">
 			<strong class="mr-auto">
-				<i class="far fa-check-circle ml-2"></i> Usuarios Confirmados
+				<i class="far fa-check-circle ml-2"></i> Usuarios Verificados
 			</strong>
 			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 				<span aria-hidden="true">&times;</span>

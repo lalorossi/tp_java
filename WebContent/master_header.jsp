@@ -46,7 +46,7 @@
 	$(document).ready(function(){
 
 		// Prepara la toast
-		$(".toast").toast({ delay: 2000 });
+		$(".toast").toast({ delay: 3500 });
 
 		// Setea el usuario loggeado (siempre comprobar que no sea null)
 		<% Usuario usuarioActual = ( ((Usuario)request.getSession().getAttribute("usuarioActual")) ); %>
@@ -58,7 +58,7 @@
 
 		// Muestra el dropdown del navbar si hay un usuario loggeado, invoca la llamada a eventos si es admin
 		var isUserNull = <%= usuarioActual == null || usuarioActual.isEmpty() %>;
-		var isUserAdmin = <%= usuarioActual != null && usuarioActual.isAdmin() %>;
+		var isUserAdmin = <%= usuarioActual != null && usuarioActual.isAdmin() %>; // El primer termino debería ser !isUserNull
 
 		console.log("null: " + isUserNull);
 		console.log("admin: " + isUserAdmin);
@@ -71,7 +71,7 @@
 			$("#dropdown-logged_user").show();
 
 			if(isUserAdmin){
-				// Primera invocación de búsqueda de eventos
+				// Primera invocación de búsqueda de eventos solo si el usuario actual es admin
 				console.log("setting timeout");
 				setTimeout(eventToaster, 5000);
 			}
