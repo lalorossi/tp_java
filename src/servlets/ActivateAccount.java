@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,9 +31,10 @@ public class ActivateAccount extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		RequestDispatcher requestDispatcher;
+
+		// response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		String email = request.getParameter("key1");
 		String hash = request.getParameter("key2");
@@ -44,6 +46,12 @@ public class ActivateAccount extends HttpServlet {
 		} catch (Exception ex) {
 			System.out.println("Error al buscar el usuario" + ex);
 		}
+
+		String alert = "Email confirmado con éxito. Ya podés ingresar como usuario";
+		request.setAttribute("alert", alert);
+
+		requestDispatcher = request.getRequestDispatcher("home.jsp");
+		requestDispatcher.forward(request, response);
 
 	}
 

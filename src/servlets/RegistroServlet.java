@@ -110,13 +110,14 @@ public class RegistroServlet extends HttpServlet {
 				usrLogic.Create(nuevoCliente);
 				System.out.println("Usuario creado exitosamente");
 
-				session.setAttribute("usuarioActual", nuevoCliente);
+				// session.setAttribute("usuarioActual", nuevoCliente);
 
 				SendingEmail enviarmail = new SendingEmail(username, userHash);
 				enviarmail.sendEmail();
 
 				System.out.println("Se ejecuto el envio de mail " + username);
 
+				// Esto te debería mandar a una página de aviso de envío de mail
 		        requestDispatcher = request.getRequestDispatcher("home.jsp");
 		        requestDispatcher.forward(request, response);
 		        return;
@@ -137,11 +138,6 @@ public class RegistroServlet extends HttpServlet {
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
 	        requestDispatcher.forward(request, response);
 		}
-	}
-
-	private void SendingEmail(String username, String userHash) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

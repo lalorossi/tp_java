@@ -45,6 +45,15 @@
 
 	$(document).ready(function(){
 
+		// Muestra una alerta si el usuario o contraseña con son válidos
+		var alert = "<%= ((String)request.getAttribute("alert")) %>"
+
+		if(alert != "null"){
+			// window.alert(alert);
+			modalDanger(alert);
+		}
+
+
 		// Prepara la toast
 		$(".toast").toast({ delay: 3500 });
 
@@ -109,7 +118,7 @@
 		<!-- Botón de reserva -->
 		<form action="/tp_java/home" method="post" role="form">
 			<button id="navbar-btn-reserva" type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-outline-warning navbar-btn">
-				<a href="/reserva" style="text-decoration: none; color: #000000b3; "><span id="navbar-btn-text" style="display: none">Reserva  </span> <i class="fas fa-concierge-bell"></i></a>
+				<a href="reserva" style="text-decoration: none; color: #000000b3; "><span id="navbar-btn-text" style="display: none">Reserva  </span> <i class="fas fa-concierge-bell"></i></a>
 			</button>
 		</form>
 		<!-- /Botón de reserva -->

@@ -14,14 +14,6 @@
 		// Cambia el título de la página
 		document.title = "Arroz Tower - Ingreso";
 
-		// Muestra una alerta si el usuario o contraseña con son válidos
-		var alert = "<%= ((String)request.getAttribute("alert")) %>"
-
-		if(alert != "null"){
-			// window.alert(alert);
-			modalDanger(alert);
-		}
-
 		//Pone en rojo si la contraseña no tiene más de 8 caracteres
 		$("#reg-password").focusout(function(){
 

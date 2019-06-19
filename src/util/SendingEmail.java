@@ -3,6 +3,7 @@ package util;
 import java.util.Properties;
 
 import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -29,15 +30,15 @@ public class SendingEmail {
 		properties.put("mail.smtp.host", "smtp.gmail.com");
 		properties.put("mail.smtp.port","587");
 
-		/*
-		 * Session session = Session.getDefaultInstance(properties, new
-		 * javax.mail.Authenticator() {
-		 *
-		 * @Override protected PasswordAuthentication getPasswordAuthentication() {
-		 * return new PasswordAuthentication(email, pword); } });
-		 */
+		Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
 
-		Session session = Session.getDefaultInstance(properties);
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(email, pword);
+			}
+		});
+
+//		Session session = Session.getDefaultInstance(properties);
 
 		try {
 			MimeMessage message = new MimeMessage(session);
