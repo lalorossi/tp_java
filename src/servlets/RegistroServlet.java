@@ -1,5 +1,6 @@
 package servlets;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.Random;
 
@@ -63,11 +64,6 @@ public class RegistroServlet extends HttpServlet {
 		String password = request.getParameter("reg-password");
 		password = Encode.md5(password);
 
-		// Ver implementacion de https://hashids.org/java/ po ahora va a lo pete
-		Random random = new Random();
-		random.nextInt(999999);
-		String userHash = Encode.md5(password + random);
-
 		UsuarioLogic usrLogic = new UsuarioLogic();
 
 		try {
@@ -105,21 +101,23 @@ public class RegistroServlet extends HttpServlet {
 				nuevoCliente.setCiudad( request.getParameter("reg-ciudad") );
 				nuevoCliente.setCodigo_postal( Integer.parseInt(request.getParameter("reg-cp")) );
 				nuevoCliente.setDireccion( request.getParameter("reg-direccion") );
-				nuevoCliente.setHash(userHash);
+
+				// Genera una friendly ID codificando el DNI con el email como "seed"
+				String friendlyID = Encode.friendlyID(nuevoCliente.getDni(), nuevoCliente.getEmail());
+				nuevoCliente.setFriendlyID(friendlyID);
+				System.out.println("Friendly ID del usuario: " + friendlyID);
 
 				System.out.println("Datos ingresados correctos para el nuevo usuario");
 
 				usrLogic.Create(nuevoCliente);
 				System.out.println("Usuario creado exitosamente");
 
-				// session.setAttribute("usuarioActual", nuevoCliente);
-
-				SendingEmail enviarmail = new SendingEmail(username, userHash);
+				SendingEmail enviarmail = new SendingEmail(username, friendlyID);
 				enviarmail.sendEmail();
 
 				System.out.println("Se ejecuto el envio de mail " + username);
 
-				// Esto te debería mandar a una página de aviso de envío de mail
+				// TODO Esto te debería mandar a una página de aviso de envío de mail
 		        requestDispatcher = request.getRequestDispatcher("home.jsp");
 		        requestDispatcher.forward(request, response);
 		        return;

@@ -16,6 +16,7 @@ public class Cliente extends Usuario {
 	int codigoPostal;
 	String direccion;
 	Boolean verificado;
+	String friendlyID;
 	/* -- Atributos -- */
 
 
@@ -86,15 +87,13 @@ public class Cliente extends Usuario {
 		this.verificado = verificado;
 	}
 
-	public String getHash() {
-		return hash;
+	public String getFriendlyID() {
+		return friendlyID;
 	}
 
-	public void setHash(String hash) {
-		this.hash = hash;
+	public void setFriendlyID(String friendlyID) {
+		this.friendlyID = friendlyID;
 	}
-
-	String hash;
 
 	/* -- Getters y Setters -- */
 

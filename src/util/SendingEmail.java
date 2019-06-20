@@ -11,11 +11,11 @@ import javax.mail.internet.MimeMessage;
 
 public class SendingEmail {
 	private String userEmail;
-	private String myHash;
+	private String friendlyID;
 
-	public SendingEmail(String userEmail, String myHash) {
+	public SendingEmail(String userEmail, String friendlyID) {
 		this.userEmail = userEmail;
-		this.myHash = myHash;
+		this.friendlyID = friendlyID;
 
 	}
 
@@ -45,9 +45,11 @@ public class SendingEmail {
 			message.setFrom(new InternetAddress(email));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
 			message.setSubject("ArrozTower.com Link de VERIFICACION de email");
-			message.setText("Haga click en el Link para verificar la cuenta: " + "http://localhost:8080/tp_java/ActiveAccount?key1=" + userEmail + "&key2=" +myHash);
-			System.out.println("Se va a ejecutar" + "http://localhost:8080/tp_java/ActivateAccount?key1=" + userEmail
-					+ "&key2=" + myHash);
+
+			String link = "http://localhost:8080/tp_java/ActiveAccount?k=" + friendlyID;
+			message.setText("Haga click en el Link para verificar la cuenta: " + link);
+			System.out.println("Se va a enviar el link: " + link);
+
 			Transport t = session.getTransport("smtp");
 			t.connect(email, pword);
 			t.sendMessage(message, message.getAllRecipients());

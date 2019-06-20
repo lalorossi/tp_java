@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Encode {
-	
+
 	// Es metodo de clase. No hace falta instanciarlo para usarlo
 	public static String md5(String input) {
 		MessageDigest md;
@@ -29,5 +29,10 @@ public class Encode {
 			e1.printStackTrace();
 		}
 		return output;
+	}
+
+	public static String friendlyID(String input, String seed) {
+		Hashids generador = new Hashids(seed);
+		return generador.encode(Integer.parseInt(input));
 	}
 }

@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.16, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: arroz_tower
 -- ------------------------------------------------------
@@ -29,7 +29,7 @@ CREATE TABLE `eventos` (
   `tipo_evento` enum('tarjeta','usuario') DEFAULT NULL,
   PRIMARY KEY (`id_evento`),
   UNIQUE KEY `id_evento_UNIQUE` (`id_evento`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `eventos` (
 
 LOCK TABLES `eventos` WRITE;
 /*!40000 ALTER TABLE `eventos` DISABLE KEYS */;
-INSERT INTO `eventos` VALUES (1,'2019-06-19 18:03:35',34,'usuario'),(2,'2019-06-19 18:05:29',34,'usuario'),(3,'2019-06-19 18:05:37',34,'usuario');
+INSERT INTO `eventos` VALUES (1,'2019-06-19 18:03:35',34,'usuario'),(2,'2019-06-19 18:05:29',34,'usuario'),(3,'2019-06-19 18:05:37',34,'usuario'),(4,'2019-06-19 21:35:41',37,'usuario'),(5,'2019-06-20 13:22:31',39,'usuario'),(6,'2019-06-20 13:24:44',40,'usuario'),(7,'2019-06-20 14:02:37',41,'usuario'),(8,'2019-06-20 14:39:08',41,'usuario'),(9,'2019-06-20 14:40:25',41,'usuario');
 /*!40000 ALTER TABLE `eventos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,10 +201,11 @@ CREATE TABLE `usuarios` (
   `codigo_postal` int(10) DEFAULT NULL,
   `direccion` varchar(50) DEFAULT NULL,
   `verificado` bit(1) DEFAULT b'0',
-  `hash` varchar(32) DEFAULT NULL,
+  `friendly_id` varchar(10) NOT NULL,
   PRIMARY KEY (`id_usuario`),
+  UNIQUE KEY `friendly_id_UNIQUE` (`friendly_id`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +214,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL,NULL,NULL,NULL,NULL,_binary '',NULL),(11,'d10s@gmail.com','25d55ad283aa400af464c76d713c07ad','10 ','juan ','roman','10',NULL,'AR','Buenos Aires ',1,'bombonera',NULL,NULL),(12,'jhonny@gmail.com','25d55ad283aa400af464c76d713c07ad','asd ','prueba hash 1','hashin','123',NULL,'AR','vgg',0,'en la esquina',_binary '\0','31ffad21b34e66ee7937d2cf593defc6'),(33,'ariasramirox@gmail.com','b643f311b21f660a5f8e6c5987207e3b','123123','3123123','123123','123123',NULL,'AR','123123',123123,'12312312',_binary '','aeb40acae433f86e045d7331b773e393'),(34,'seba.a.rossi@gmail.com','e0bbd224aa782e5396a7941694b2018f','39951271|','SebastiÃ¡n','Rossi','3416572511',NULL,'AR','Rosario',2000,'San MartÃ­n 1466',_binary '','d5400fdf1e2775116754943d2ccbe355');
+INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,_binary '\0','1'),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL,NULL,NULL,NULL,NULL,_binary '\0','2'),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL,NULL,NULL,NULL,NULL,_binary '','3'),(11,'d10s@gmail.com','25d55ad283aa400af464c76d713c07ad','10 ','juan ','roman','10',NULL,'AR','Buenos Aires ',1,'bombonera',_binary '\0','4'),(12,'jhonny@gmail.com','25d55ad283aa400af464c76d713c07ad','asd ','prueba hash 1','hashin','123',NULL,'AR','vgg',0,'en la esquina',_binary '\0','5'),(33,'ariasramirox@gmail.com','b643f311b21f660a5f8e6c5987207e3b','123123','3123123','123123','123123',NULL,'AR','123123',123123,'12312312',_binary '','6'),(38,'aasd@asd.conadf','a3dcb4d229de6fde0db5686dee47145d','123','asd','asd','213',NULL,'AR','asd',123,'assd',_binary '\0','PQY'),(41,'seba.a.rossi@gmail.com','e0bbd224aa782e5396a7941694b2018f','39951271','SebastiÃ¡n','Rossi','3416572511',NULL,'AR','Rosario',2000,'San MartÃ­n 1466',_binary '','GM2QQ9');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -257,4 +258,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-19 18:54:08
+-- Dump completed on 2019-06-20 14:50:52

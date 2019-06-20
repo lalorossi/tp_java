@@ -18,10 +18,14 @@ public class UsuarioLogic {
 
 	public Usuario getOne(int id_usuario) throws Exception {
 		return usrData.getOne(id_usuario);
-	};
+	}
 
 	public Usuario getOne(String email) throws Exception{
 		return usrData.getOne(email);
+	}
+
+	public Usuario getOneByFriendlyID(String friendlyID) throws Exception{
+		return usrData.getOneByFriendlyID(friendlyID);
 	}
 
 	public boolean Exist(ArrayList<Usuario> usuarios, String email) {
@@ -34,7 +38,7 @@ public class UsuarioLogic {
 		return false;
 	}
 
-	public void Activar(String email, String hash) {
-		usrData.Activar(email, hash);
+	public void Activar(Usuario usr) throws Exception {
+		usrData.Activar(usr);
 	}
 }
