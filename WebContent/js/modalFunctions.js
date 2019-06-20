@@ -1,7 +1,3 @@
-function setModalText(mensaje){
-	$("#modal-text").text(mensaje);
-}
-
 function showModal(idModal){
 	// Por defecto muestra el modal de mensaje normal
 	if(idModal == undefined)
@@ -15,12 +11,15 @@ function showModal(idModal){
 		})
 }
 
-// Estilización del modal según la ocasión
-function setModalMode(idModal, mode){
+function setModalText(mensaje){
+	$("#modal-text").text(mensaje);
+}
 
-	// Por defecto usa el modal de mensaje normal
-	if(idModal == undefined)
-		idModal = "modalMensaje";
+
+// Estilización del modal según la ocasión
+function setModalMode(mode){
+
+	idModal = "modalMensaje";
 
 	$("#"+idModal).find(".modal-header").addClass("bg-"+mode);
 	$("#modalMensajeLabel").addClass("text-white");
@@ -28,20 +27,60 @@ function setModalMode(idModal, mode){
 
 }
 
-function modalDanger(mensaje, idModal){
-	setModalMode(idModal, "danger");
+function setModalTitle(titulo){
+	$("#modalMensajeLabel").text(titulo);
+}
+
+function modalDanger(mensaje, titulo){
+	setModalMode("danger");
 	setModalText(mensaje);
+
+	if(titulo == undefined){
+		// Título por defecto si no se le manda ningún título
+		titulo = "Error...";
+	}
+
+	setModalTitle(titulo);
 	showModal(idModal);
 }
-function modalSuccess(mensaje, idModal){
-	setModalMode(idModal, "success");
+function modalSuccess(mensaje, titulo){
+	setModalMode("success");
 	setModalText(mensaje);
+
+	if(titulo == undefined){
+		// Título por defecto si no se le manda ningún título
+		titulo = "Atención";
+	}
+
+	setModalTitle(titulo);
 	showModal(idModal);
 }
-function modalWarning(mensaje, idModal){
-	setModalMode(idModal, "warning");
+function modalWarning(mensaje, titulo){
+	setModalMode("warning");
 	setModalText(mensaje);
+
+	if(titulo == undefined){
+		// Título por defecto si no se le manda ningún título
+		titulo = "OK!";
+	}
+
+	setModalTitle(titulo);
 	showModal(idModal);
+}
+
+function ActivateModal(mensaje, titulo, tipo){
+	if(tipo == "danger"){
+		modalDanger(mensaje, titulo);
+	}
+	else if(tipo == "warning"){
+		modalWarning(mensaje, titulo);
+	}
+	else if(tipo == "success"){
+		modalSuccess(mensaje, titulo);
+	}
+	else{
+		modalDanger(mensaje, titulo);
+	}
 }
 
 /* --Funciones para manipulación del modal-- */

@@ -81,6 +81,8 @@ public class RegistroServlet extends HttpServlet {
 
 				String alert = "El email ingresado ya pertenece a un usuario registrado";
 				request.setAttribute("alert", alert);
+				request.setAttribute("alert_mode", "warning");
+				request.setAttribute("alert_title", "No se puede registrar el usuario");
 
 				session.setAttribute("usuarioActual", null);
 
@@ -130,8 +132,10 @@ public class RegistroServlet extends HttpServlet {
 			e.printStackTrace();	// Si esto muestra el error en la página, hay que sacarlo
 
 			// Muestra el error general en el login
-			String alert = "Ups... Hubo un error tratando de crear tu usuario. Intenta más tarde";
+			String alert = "Hubo un error tratando de crear tu usuario. Intenta más tarde";
 			request.setAttribute("alert", alert);
+			request.setAttribute("alert_mode", "danger");
+			request.setAttribute("alert_title", "Ups...");
 
 			session.setAttribute("usuarioActual", null);
 

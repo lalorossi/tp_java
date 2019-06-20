@@ -47,10 +47,18 @@
 
 		// Muestra una alerta si el usuario o contraseña con son válidos
 		var alert = "<%= ((String)request.getAttribute("alert")) %>"
+		var alertTitle = "<%= ((String)request.getAttribute("alert_title")) %>"
+		var alertMode = "<%= ((String)request.getAttribute("alert_mode")) %>"
+
 
 		if(alert != "null"){
-			// window.alert(alert);
-			modalDanger(alert);
+			if(alertTitle != "null"){
+				ActivateModal(alert, alertTitle, alertMode);
+			}
+			else{
+				// Va a tomar el tipo por default según el tipo de modal
+				modalDanger(alert);
+			}
 		}
 
 
@@ -69,8 +77,8 @@
 		var isUserNull = <%= usuarioActual == null || usuarioActual.isEmpty() %>;
 		var isUserAdmin = <%= usuarioActual != null && usuarioActual.isAdmin() %>; // El primer termino debería ser !isUserNull
 
-		console.log("null: " + isUserNull);
-		console.log("admin: " + isUserAdmin);
+		console.log("Usuario null: " + isUserNull);
+		console.log("Usuario admin: " + isUserAdmin);
 
 		if( isUserNull ){
 			// Debería directamente destruirse el botón

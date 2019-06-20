@@ -21,7 +21,7 @@ import entities.Usuario;
 @WebServlet({ "/Login", "/login" })
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,15 +34,15 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		RequestDispatcher requestDispatcher;
-		
+
 		// antes tiene que fijarse que la URL no tenga datos para procesar
 		requestDispatcher = request.getRequestDispatcher("login.jsp");	// por defecto, te manda al login
- 
+
         requestDispatcher.forward(request, response);
-        
-		
+
+
 	}
 
 	/**
@@ -51,14 +51,14 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
-		
+
 		RequestDispatcher requestDispatcher;
 		HttpSession session = request.getSession();
-		
+
 		String username = request.getParameter("login-email");
 		String password = request.getParameter("login-password");
 		password = Encode.md5(password);
-		
+
 		 System.out.println(username);
 		 System.out.println(password);
 
@@ -90,6 +90,8 @@ public class LoginServlet extends HttpServlet {
 
 			String alert = "Email de usuario o contraseña inválidos";
 			request.setAttribute("alert", alert);
+			request.setAttribute("alert_mode", "warning");
+			request.setAttribute("alert_title", "Ingreso incorrecto");
 
 			session.setAttribute("usuarioActual", null);
 
@@ -104,8 +106,10 @@ public class LoginServlet extends HttpServlet {
 			e.printStackTrace();	// Si esto muestra el error en la página, hay que sacarlo
 
 			// Muestra el error general en el login
-			String alert = "Ups... Hubo un error tratando de iniciar sesion. Intenta más tarde";
+			String alert = "Hubo un error tratando de iniciar sesion. Intenta más tarde";
 			request.setAttribute("alert", alert);
+			request.setAttribute("alert_mode", "danger");
+			request.setAttribute("alert_title", "Ups... ");
 
 			session.setAttribute("usuarioActual", null);
 

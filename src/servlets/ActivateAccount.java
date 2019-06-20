@@ -49,6 +49,8 @@ public class ActivateAccount extends HttpServlet {
 
 		String alert = "Email confirmado con éxito. Ya podés ingresar como usuario";
 		request.setAttribute("alert", alert);
+		request.setAttribute("alert_mode", "success");
+		request.setAttribute("alert_title", "Usuario verificado");
 
 		requestDispatcher = request.getRequestDispatcher("home.jsp");
 		requestDispatcher.forward(request, response);
