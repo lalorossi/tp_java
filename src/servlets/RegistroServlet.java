@@ -16,7 +16,7 @@ import entities.Cliente;
 import entities.Usuario;
 import logic.UsuarioLogic;
 import util.Encode;
-import util.SendingEmail;
+import util.EmailDelivery;
 
 /**
  * Servlet implementation class RegistroServlet
@@ -62,6 +62,7 @@ public class RegistroServlet extends HttpServlet {
 
 		String username = request.getParameter("reg-email");
 		String password = request.getParameter("reg-password");
+		String dni = request.getParameter("reg-documento");
 		password = Encode.md5(password);
 
 		UsuarioLogic usrLogic = new UsuarioLogic();
@@ -75,7 +76,7 @@ public class RegistroServlet extends HttpServlet {
 				// Si ya existe un usuario con ese email
 				System.out.println("Ya existe ese usuario");
 
-				String alert = "El email ingresado ya pertenece a un usuario registrado";
+				String alert = "El email '" + username + "' ya pertenece a un usuario registrado";
 				request.setAttribute("alert", alert);
 				request.setAttribute("alert_mode", "warning");
 				request.setAttribute("alert_title", "No se puede registrar el usuario");
@@ -86,50 +87,95 @@ public class RegistroServlet extends HttpServlet {
 		        requestDispatcher.forward(request, response);
 		        return;
 			}
-			else {
-				// El email no pertenece a ningun usuario
-				System.out.println("Se va a crear un nuevo usuario");
+			// El email no pertenece a ningun usuario
+			usuarioEncontrado = usrLogic.getOneByDNI(dni);
 
-				Cliente nuevoCliente = new Cliente();
-				nuevoCliente.setEmail(username);
-				nuevoCliente.setContrasena(password);
-				nuevoCliente.setNombre( request.getParameter("reg-nombre") );
-				nuevoCliente.setApellido( request.getParameter("reg-apellido") );
-				nuevoCliente.setDni( request.getParameter("reg-documento") );
-				nuevoCliente.setTelefono( request.getParameter("reg-telefono") );
-				nuevoCliente.setPais( request.getParameter("reg-pais") );
-				nuevoCliente.setCiudad( request.getParameter("reg-ciudad") );
-				nuevoCliente.setCodigo_postal( Integer.parseInt(request.getParameter("reg-cp")) );
-				nuevoCliente.setDireccion( request.getParameter("reg-direccion") );
+			if(!usuarioEncontrado.isEmpty()) {
 
-				// Genera una friendly ID codificando el DNI con el email como "seed"
-				String friendlyID = Encode.friendlyID(nuevoCliente.getDni(), nuevoCliente.getEmail());
-				nuevoCliente.setFriendlyID(friendlyID);
-				System.out.println("Friendly ID del usuario: " + friendlyID);
+				// Si ya existe un usuario con ese dni
+				System.out.println("Ya existe ese DNI de usuario");
 
-				System.out.println("Datos ingresados correctos para el nuevo usuario");
+				String alert = "El número de documento '" + dni +"' ya pertenece a un usuario registrado";
+				request.setAttribute("alert", alert);
+				request.setAttribute("alert_mode", "warning");
+				request.setAttribute("alert_title", "No se puede registrar el usuario");
 
-				usrLogic.Create(nuevoCliente);
-				System.out.println("Usuario creado exitosamente");
+				session.setAttribute("usuarioActual", null);
 
-				SendingEmail enviarmail = new SendingEmail(username, friendlyID);
-				enviarmail.sendEmail();
-
-				System.out.println("Se ejecuto el envio de mail " + username);
-
-				// TODO Esto te debería mandar a una página de aviso de envío de mail
-		        requestDispatcher = request.getRequestDispatcher("home.jsp");
+				requestDispatcher = request.getRequestDispatcher("login.jsp");
 		        requestDispatcher.forward(request, response);
 		        return;
 			}
 
+			System.out.println("Se va a crear un nuevo usuario");
+
+			Cliente nuevoCliente = new Cliente();
+			nuevoCliente.setEmail(username);
+			nuevoCliente.setContrasena(password);
+			nuevoCliente.setNombre( request.getParameter("reg-nombre") );
+			nuevoCliente.setApellido( request.getParameter("reg-apellido") );
+			nuevoCliente.setDni( request.getParameter("reg-documento") );
+			nuevoCliente.setTelefono( request.getParameter("reg-telefono") );
+			nuevoCliente.setPais( request.getParameter("reg-pais") );
+			nuevoCliente.setCiudad( request.getParameter("reg-ciudad") );
+			nuevoCliente.setCodigo_postal( Integer.parseInt(request.getParameter("reg-cp")) );
+			nuevoCliente.setDireccion( request.getParameter("reg-direccion") );
+
+			// Genera una friendly ID codificando el DNI con el email como "seed"
+			String friendlyID = Encode.friendlyID(nuevoCliente.getDni(), nuevoCliente.getEmail());
+			nuevoCliente.setFriendlyID(friendlyID);
+			System.out.println("Friendly ID del usuario: " + friendlyID);
+
+			System.out.println("Datos ingresados correctos para el nuevo usuario");
+
+			usrLogic.Create(nuevoCliente);
+			System.out.println("Usuario creado exitosamente");
+
+			try {
+
+				EmailDelivery enviarmail = new EmailDelivery(username, friendlyID);
+				enviarmail.sendEmail();
+
+				System.out.println("Se ejecuto el envio de mail " + username);
+
+				String alert = "Enviamos un correo a '" + username + "' para verificar tu usuario";
+				request.setAttribute("alert", alert);
+				request.setAttribute("alert_mode", "success");
+				request.setAttribute("alert_title", "Se creó tu cuenta de usaurio en ArrozTower!");
+
+
+		        requestDispatcher = request.getRequestDispatcher("home.jsp");
+		        requestDispatcher.forward(request, response);
+		        return;
+		        // TODO Si no se pudo mandar el mail, hacer en un try catch diferente, que se borre el usuario en la DB, para que se pueda volver a registrar sin que le tire mail o dni repetido
+			}
+			catch (Exception ex) {
+				// No se pudo mandar el mail
+				System.out.println("Error al enviar el mail");
+
+				// Muestra el error en el login
+				String alert = "Hubo un error tratando de crear tu usuario. Intenta más tarde";
+				request.setAttribute("alert", alert);
+				request.setAttribute("alert_mode", "danger");
+				request.setAttribute("alert_title", "Ups...");
+
+				session.setAttribute("usuarioActual", null);
+
+				// Borra el usuario recién creado de la DB
+				nuevoCliente = (Cliente) usrLogic.getOne(username);
+				usrLogic.Delete(nuevoCliente);
+
+				requestDispatcher = request.getRequestDispatcher("login.jsp");
+		        requestDispatcher.forward(request, response);
+
+			}
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
+			// No se pudo crear el usaurio
 			System.out.println("Error al crear el usuario");
-			e.printStackTrace();	// Si esto muestra el error en la página, hay que sacarlo
+			e.printStackTrace();
 
-			// Muestra el error general en el login
+			// Muestra el error en el login
 			String alert = "Hubo un error tratando de crear tu usuario. Intenta más tarde";
 			request.setAttribute("alert", alert);
 			request.setAttribute("alert_mode", "danger");

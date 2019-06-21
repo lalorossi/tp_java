@@ -28,6 +28,10 @@ public class UsuarioLogic {
 		return usrData.getOneByFriendlyID(friendlyID);
 	}
 
+	public Usuario getOneByDNI(String dni) throws Exception{
+		return usrData.getOneByDNI(dni);
+	}
+
 	public boolean Exist(ArrayList<Usuario> usuarios, String email) {
 		for (int i=0; i<usuarios.size(); i++) {
 		    System.out.println(usuarios.get(i).getEmail());
@@ -40,5 +44,9 @@ public class UsuarioLogic {
 
 	public void Activar(Usuario usr) throws Exception {
 		usrData.Activar(usr);
+	}
+
+	public void Delete(Usuario usr) throws Exception {
+		usrData.Delete(usr);
 	}
 }

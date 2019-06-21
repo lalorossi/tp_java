@@ -124,7 +124,7 @@
 
 						<!-- Documento -->
 						<div class="form-label-group">
-							<input type="text" name="reg-documento" id="reg-documento" tabindex="2" class="form-control" placeholder="Número de documento" value="" required>
+							<input type="number" name="reg-documento" id="reg-documento" tabindex="2" class="form-control" placeholder="Número de documento" value="" required>
 						</div>
 						<!-- /Documento -->
 
