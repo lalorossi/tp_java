@@ -48,17 +48,15 @@
 		// Muestra una alerta si el usuario o contraseña con son válidos
 		var alert = "<%= ((String)request.getAttribute("alert")) %>"
 		var alertTitle = "<%= ((String)request.getAttribute("alert_title")) %>"
+		var alertHTML = "<%= ((String)request.getAttribute("alert_html")) %>"
 		var alertMode = "<%= ((String)request.getAttribute("alert_mode")) %>"
+
+		alertHTML = alertHTML != "null" ? alertHTML : undefined;
+		alertTitle = alertTitle != "null" ? alertTitle : undefined;
 
 
 		if(alert != "null"){
-			if(alertTitle != "null"){
-				ActivateModal(alert, alertTitle, alertMode);
-			}
-			else{
-				// Va a tomar el tipo por default según el tipo de modal
-				modalDanger(alert);
-			}
+			ActivateModal(alert, alertTitle, alertMode, alertHTML);
 		}
 
 

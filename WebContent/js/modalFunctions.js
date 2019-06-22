@@ -31,7 +31,11 @@ function setModalTitle(titulo){
 	$("#modalMensajeLabel").text(titulo);
 }
 
-function modalDanger(mensaje, titulo){
+function setModalHTML(htmlElement){
+	$("#modal-text").append(htmlElement);
+}
+
+function modalDanger(mensaje, titulo, htmlElement){
 	setModalMode("danger");
 	setModalText(mensaje);
 
@@ -40,23 +44,15 @@ function modalDanger(mensaje, titulo){
 		titulo = "Error...";
 	}
 
-	setModalTitle(titulo);
-	showModal(idModal);
-}
-function modalSuccess(mensaje, titulo){
-	setModalMode("success");
-	setModalText(mensaje);
-
-	if(titulo == undefined){
-		// Título por defecto si no se le manda ningún título
-		titulo = "Atención";
+	if(htmlElement != undefined){
+		setModalHTML(htmlElement);
 	}
 
 	setModalTitle(titulo);
 	showModal(idModal);
 }
-function modalWarning(mensaje, titulo){
-	setModalMode("warning");
+function modalSuccess(mensaje, titulo, htmlElement){
+	setModalMode("success");
 	setModalText(mensaje);
 
 	if(titulo == undefined){
@@ -64,22 +60,42 @@ function modalWarning(mensaje, titulo){
 		titulo = "OK!";
 	}
 
+	if(htmlElement != undefined){
+		setModalHTML(htmlElement);
+	}
+
+	setModalTitle(titulo);
+	showModal(idModal);
+}
+function modalWarning(mensaje, titulo, htmlElement){
+	setModalMode("warning");
+	setModalText(mensaje);
+
+	if(titulo == undefined){
+		// Título por defecto si no se le manda ningún título
+		titulo = "Atención";
+	}
+
+	if(htmlElement != undefined){
+		setModalHTML(htmlElement);
+	}
+
 	setModalTitle(titulo);
 	showModal(idModal);
 }
 
-function ActivateModal(mensaje, titulo, tipo){
+function ActivateModal(mensaje, titulo, tipo, htmlElement){
 	if(tipo == "danger"){
-		modalDanger(mensaje, titulo);
+		modalDanger(mensaje, titulo, htmlElement);
 	}
 	else if(tipo == "warning"){
-		modalWarning(mensaje, titulo);
+		modalWarning(mensaje, titulo, htmlElement);
 	}
 	else if(tipo == "success"){
-		modalSuccess(mensaje, titulo);
+		modalSuccess(mensaje, titulo, htmlElement);
 	}
 	else{
-		modalDanger(mensaje, titulo);
+		modalDanger(mensaje, titulo, htmlElement);
 	}
 }
 
