@@ -179,7 +179,7 @@
         <span id="modal-text"></span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-close_modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-close_modal">Ok</button>
       </div>
     </div>
   </div>

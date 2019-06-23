@@ -2,8 +2,11 @@ package servlets;
 
 import java.io.Console;
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.util.Random;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,15 +41,94 @@ public class RegistroServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
 		RequestDispatcher requestDispatcher;
 
-		// antes tiene que fijarse que la URL no tenga datos para procesar
-		requestDispatcher = request.getRequestDispatcher("login.jsp");	// por defecto, te manda al login
+		// Si en la URL le mandaste el mail de un usurio, le reenvía el mail de verificación
+		String emailAccount = request.getParameter("acc");
 
-        requestDispatcher.forward(request, response);
+		if(emailAccount == null) {
 
+			requestDispatcher = request.getRequestDispatcher("login.jsp");	// por defecto, te manda al login
+
+	        requestDispatcher.forward(request, response);
+
+		}
+		else if(emailAccount.equals("")) {
+			// Si el mail viene vacío, también te mando al home
+			System.out.println("URL con email vacío para reenviar");
+			requestDispatcher = request.getRequestDispatcher("login.jsp");
+			requestDispatcher.forward(request, response);
+		}
+		else {
+			// Se fija que efectivamente no esté registrado
+			UsuarioLogic usrLogic = new UsuarioLogic();
+			try {
+
+				Usuario usuarioReenvio = usrLogic.getOne(emailAccount);
+
+				if(!usuarioReenvio.isEmpty()) {
+					// El usuario existe
+
+					if( !((Cliente)usuarioReenvio).getVerificado() ) {
+						// El usuario no está verificado
+
+						System.out.println("Reenviando mail de verifiación a: " + emailAccount);
+
+						String friendlyID = ((Cliente)usuarioReenvio).getFriendlyID();
+						this.sendEmail(emailAccount, friendlyID);
+
+						String alert = "Revisa tu correo para acceder al link de verificación";
+						request.setAttribute("alert", alert);
+						request.setAttribute("alert_mode", "success");
+						request.setAttribute("alert_title", "Reenvío confirmado");
+
+						System.out.println("Reenvio completo. Volviendo a home");
+
+						requestDispatcher = request.getRequestDispatcher("home.jsp");
+				        requestDispatcher.forward(request, response);
+
+					}
+					else {
+						// El usuario ya está verificado
+						System.out.println("La cuenta ya está verificada: " + emailAccount);
+
+						String alert = "El usuario que intenta verificar ya puede iniciar sesión en la página.";
+						request.setAttribute("alert", alert);
+						request.setAttribute("alert_mode", "warning");
+						request.setAttribute("alert_title", "El usuario ya está verificado");
+
+						requestDispatcher = request.getRequestDispatcher("home.jsp");
+				        requestDispatcher.forward(request, response);
+					}
+
+				}
+				else {
+					// No existe el usuario.
+					System.out.println("No existe un usuario con el email: " + emailAccount);
+
+					String alert = "Intentá nuevamente más tarde o comunicate con nosotros.";
+					request.setAttribute("alert", alert);
+					request.setAttribute("alert_mode", "danger");
+					request.setAttribute("alert_title", "No se pudo enviar el correo de verificación");
+
+					requestDispatcher = request.getRequestDispatcher("home.jsp");
+			        requestDispatcher.forward(request, response);
+				}
+			} catch (Exception e) {
+				// No se pudo reenviar el mail
+				System.out.println("No se pudo reenviar el mail de verificacion a : " + emailAccount);
+				e.printStackTrace();
+
+				String alert = "Intentá nuevamente más tarde o comunicate con nosotros.";
+				request.setAttribute("alert", alert);
+				request.setAttribute("alert_mode", "danger");
+				request.setAttribute("alert_title", "No se puede reenviar el correo de verificación");
+
+				requestDispatcher = request.getRequestDispatcher("home.jsp");
+		        requestDispatcher.forward(request, response);
+			}
+		}
 	}
 
 	/**
@@ -130,11 +212,10 @@ public class RegistroServlet extends HttpServlet {
 
 			usrLogic.Create(nuevoCliente);
 			System.out.println("Usuario creado exitosamente");
-
 			try {
+				// Si esta función no activa el catch, sale del servlet por sí misma
+				this.sendEmail(username, friendlyID);
 
-				EmailDelivery enviarmail = new EmailDelivery(username, friendlyID);
-				enviarmail.sendEmail();
 
 				System.out.println("Se ejecuto el envio de mail " + username);
 
@@ -146,8 +227,8 @@ public class RegistroServlet extends HttpServlet {
 
 		        requestDispatcher = request.getRequestDispatcher("home.jsp");
 		        requestDispatcher.forward(request, response);
-		        return;
-		        // TODO Si no se pudo mandar el mail, hacer en un try catch diferente, que se borre el usuario en la DB, para que se pueda volver a registrar sin que le tire mail o dni repetido
+
+				return;
 			}
 			catch (Exception ex) {
 				// No se pudo mandar el mail
@@ -186,6 +267,15 @@ public class RegistroServlet extends HttpServlet {
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
 	        requestDispatcher.forward(request, response);
 		}
+	}
+
+	private void sendEmail(String username, String friendlyID) throws AddressException, MessagingException{
+
+
+		EmailDelivery enviarmail = new EmailDelivery(username, friendlyID);
+		enviarmail.sendEmail();
+
+        return;
 	}
 
 }

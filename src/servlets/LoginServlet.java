@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import logic.UsuarioLogic;
 import util.Encode;
+import entities.Cliente;
 import entities.Usuario;
 
 /**
@@ -75,6 +76,29 @@ public class LoginServlet extends HttpServlet {
 				// Checkea la contraseña guardada con la ingresada
 				if(usuarioEncontrado.getContrasena().equals(password)) {
 					System.out.println("Coinciden las contraseñas");
+
+					// Antes de loggear el usuario, se fija que si es un cliente, esté verificado
+					if( !usuarioEncontrado.isAdmin() ) {
+						System.out.println("El usuario es cliente");
+						if( !((Cliente)usuarioEncontrado).getVerificado() ) {
+							// El cliente no está verificado
+							System.out.println("El usuario no está verificado");
+
+							// No se completa el login. Lo mando al home con la advertencia de que revise el mail
+							String alert = "Por favor, revise su email para acceder al enlace de verificación.";
+							String alertHTML = "</br> (<a href='registro?acc=" + username + "'>Reennviar el correo de verificación</a>)";
+							request.setAttribute("alert", alert);
+							request.setAttribute("alert_html", alertHTML);
+							request.setAttribute("alert_mode", "warning");
+							request.setAttribute("alert_title", "Su cuenta aún no está verificada");
+
+
+					        requestDispatcher = request.getRequestDispatcher("home.jsp");
+					        requestDispatcher.forward(request, response);
+					        return;
+						}
+					}
+					System.out.println("El usuario es admin");
 
 					// Si estás bien loggeado, te manda al home y guarda la session con el usuario
 					session.setAttribute("usuarioActual", usuarioEncontrado);
