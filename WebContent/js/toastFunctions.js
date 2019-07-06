@@ -13,6 +13,7 @@ function resetToast(tipo){
 	$("#toast-" + tipo +  "-body").html("");
 }
 
+/*
 function addSuccessToast(mensaje){
 	addToastMessage("success", mensaje);
 }
@@ -24,6 +25,7 @@ function addWarningToast(mensaje){
 function addDangerToast(mensaje){
 	addToastMessage("danger", mensaje);
 }
+*/
 
 function resetAllToasts(){
 	resetToast("success");
@@ -74,28 +76,31 @@ function eventToaster() {
 					console.log(evt.label + " - " + evt.data);
 					if(evt.estado=="success"){
 						hasSuccess = true;
-						addSuccessToast(evt.label + evt.data);
+						addToastMessage("success", evt.label + evt.data);
+						// addSuccessToast(evt.label + evt.data);
 					}
 					if(evt.estado=="warning"){
 						hasWarning = true;
-						addWarningToast(evt.label + evt.data);
+						addToastMessage("warning", evt.label + evt.data);
+						// addWarningToast(evt.label + evt.data);
 					}
 					if(evt.estado=="danger"){
 						hasDanger = true;
-						addDangerToast(evt.label + evt.data);
+						addToastMessage("danger", evt.label + evt.data);
+						// addDangerToast(evt.label + evt.data);
 					}
 				}
 				if(hasSuccess){
 					mostrarToast("success");
-					console.log("success");
+					// console.log("success");
 				}
 				if(hasWarning){
 					mostrarToast("warning");
-					console.log("warning");
+					// console.log("warning");
 				}
 				if(hasDanger){
 					mostrarToast("danger");
-					console.log("danger");
+					// console.log("danger");
 				}
 
 			}
