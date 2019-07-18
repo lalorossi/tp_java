@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entities.Cliente;
+import entities.Evento;
 import entities.Usuario;
 import logic.UsuarioLogic;
 import util.Encode;
@@ -94,6 +96,12 @@ public class ActivateAccount extends HttpServlet {
 							// El usuario se verificó correctamente
 
 							System.out.println("Se verificó correctamente el usuario con la friendly ID: " + friendlyID);
+
+							// Crea el evento de creación de usuario
+							Evento evt = new Evento();
+							evt.setHoraEvento(new Date());
+							evt.setTipo(Evento.Tipos.tarjeta);
+							evt.setIdRelacionado(usr2.getId());
 
 							String alert = "Email confirmado con éxito. Ya podés ingresar como usuario";
 							request.setAttribute("alert", alert);
