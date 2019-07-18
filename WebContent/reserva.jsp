@@ -607,13 +607,13 @@
 	<div class="col-lg-12" id="step4-container" style="display: none">
 		<h2>Reserva completada!</h2>
 		<div class="col-md-4 offset-4 border rounded p-3">
-				<h5 class="col-md-12">Te esperamos el <span class="indicador-fecha_desde"></span> en nuestras instalaciones!</h5>
-				<h6 class="col-md-12 mt-2">También te enviamos un mail a tu dirección de correo para que guardes los detalles de la reserva</h6>
-				<div align="center">
-					<a class="btn info rounded mt-3" href="home">
-						<i class="fab fa-galactic-senate fa-lg"></i> Página Principal
-					</a>
-				</div>
+			<h5 class="col-md-12">Te esperamos el <span class="indicador-fecha_desde"></span> en nuestras instalaciones!</h5>
+			<h6 class="col-md-12 mt-2">También te enviamos un mail a tu dirección de correo para que guardes los detalles de la reserva</h6>
+			<div align="center">
+				<a class="btn btn-info rounded mt-3" href="home">
+					<i class="fab fa-galactic-senate fa-lg"></i> Página Principal
+				</a>
+			</div>
 		</div>
 		<!-- No sé qué poner acá. Capaz mostrar de nuevo los datos de la reserva y un botón fancy para ir al home a "mis reservas" -->
 	</div>
