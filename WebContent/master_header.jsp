@@ -63,6 +63,17 @@
 		// Prepara la toast
 		$(".toast").toast({ delay: 3500 });
 
+
+		// Cuando se quiere mostrar la toast, la "mete" en la página
+		$('.toast').on('show.bs.toast', function () {
+			$('#toast-container').css('top', '10%');
+		});
+
+		// Cuando se escondce la toast, la vuelve a "desplazar" de la página
+		$('.toast').on('hidden.bs.toast', function () {
+			$('#toast-container').css('top', '150%');
+		});
+
 		// Setea el usuario loggeado (siempre comprobar que no sea null)
 		<% Usuario usuarioActual = ( ((Usuario)request.getSession().getAttribute("usuarioActual")) ); %>
 

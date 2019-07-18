@@ -116,7 +116,7 @@
 
 <!-- TOAST -->
 
-<div id="toast-container" style="position: fixed; top: 10%; right: 0;">
+<div id="toast-container" style="position: fixed; top: 150%; right: 0;">
 
 	<div class="toast mr-3 mt-3" id="toast-success" style="position: relative">
 		<div class="toast-success-header bg-success">
