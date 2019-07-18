@@ -65,7 +65,11 @@ $(document).ready(function(){
 								<li class="list-group-item col-xs-6">Sistema de climatización individual</li>
 							</ul>
 						</div>
-						<a href="habitacion_tipo.jsp?tipoHab=deluxe" class="btn btn-sm btn-warning" style="float: right"><i class="fas fa-concierge-bell"></i> Reservar</a>
+						<form action="home" method="post" role="form">
+							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
+								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+							</button>
+						</form>
 					</div>
 				</div>
 
@@ -89,7 +93,11 @@ $(document).ready(function(){
 								<li class="list-group-item col-xs-6">Cofre de seguridad digital</li>
 							</ul>
 						</div>
-						<a href="habitacion_tipo.jsp?tipoHab=deluxe_plus" class="btn btn-sm btn-warning" style="float: right"><i class="fas fa-concierge-bell"></i> Reservar</a>
+						<form action="home" method="post" role="form">
+							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
+								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+							</button>
+						</form>
 					</div>
 				</div>
 
@@ -114,7 +122,11 @@ $(document).ready(function(){
 							<li class="list-group-item col-xs-6">Sistema de climatización individual</li>
 						</ul>
 						</div>
-						<a href="habitacion_tipo.jsp?tipoHab=junior_suite" class="btn btn-sm btn-warning" style="float: right"><i class="fas fa-concierge-bell"></i> Reservar</a>
+						<form action="home" method="post" role="form">
+							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
+								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+							</button>
+						</form>
 					</div>
 				</div>
 
@@ -142,7 +154,11 @@ $(document).ready(function(){
 								<li class="list-group-item col-xs-6">Sistema de climatización individual</li>
 							</ul>
 						</div>
-						<a href="habitacion_tipo.jsp?tipoHab=executive_suite" class="btn btn-sm btn-warning" style="float: right"><i class="fas fa-concierge-bell"></i> Reservar</a>
+						<form action="home" method="post" role="form">
+							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
+								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+							</button>
+						</form>
 					</div>
 				</div>
 
@@ -170,7 +186,11 @@ $(document).ready(function(){
 								<li class="list-group-item col-xs-6">Cofre de seguridad digital</li>
 							</ul>
 						</div>
-						<a href="habitacion_tipo.jsp?tipoHab=suite_presidencial" class="btn btn-sm btn-warning" style="float: right"><i class="fas fa-concierge-bell"></i> Reservar</a>
+						<form action="home" method="post" role="form">
+							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
+								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+							</button>
+						</form>
 					</div>
 				</div>
 

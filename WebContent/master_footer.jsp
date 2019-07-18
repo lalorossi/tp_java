@@ -51,13 +51,13 @@
 
 					<ul class="list-unstyled">
 						<li>
-							<a href="#!" style="text-decoration:none">Habitaciones</a>
+							<a href="habitaciones.jsp" style="text-decoration:none">Habitaciones</a>
 						</li>
 						<li>
 							<a href="#!" style="text-decoration:none">Servicios</a>
 						</li>
 						<li>
-							<a href="#!" style="text-decoration:none">Hacé tu reserva</a>
+							<a href="reserva.jsp" style="text-decoration:none">Hacé tu reserva</a>
 						</li>
 					</ul>
 
