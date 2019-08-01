@@ -1,4 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.16, for Linux (x86_64)
+CREATE DATABASE  IF NOT EXISTS `arroz_tower` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `arroz_tower`;
+-- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: arroz_tower
 -- ------------------------------------------------------
@@ -29,7 +31,7 @@ CREATE TABLE `eventos` (
   `tipo_evento` enum('tarjeta','usuario') DEFAULT NULL,
   PRIMARY KEY (`id_evento`),
   UNIQUE KEY `id_evento_UNIQUE` (`id_evento`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +40,7 @@ CREATE TABLE `eventos` (
 
 LOCK TABLES `eventos` WRITE;
 /*!40000 ALTER TABLE `eventos` DISABLE KEYS */;
-INSERT INTO `eventos` VALUES (1,'2019-06-19 18:03:35',34,'usuario'),(2,'2019-06-19 18:05:29',34,'usuario'),(3,'2019-06-19 18:05:37',34,'usuario'),(4,'2019-06-19 21:35:41',37,'usuario'),(5,'2019-06-20 13:22:31',39,'usuario'),(6,'2019-06-20 13:24:44',40,'usuario'),(7,'2019-06-20 14:02:37',41,'usuario'),(8,'2019-06-20 14:39:08',41,'usuario'),(9,'2019-06-20 14:40:25',41,'usuario');
+INSERT INTO `eventos` VALUES (1,'2019-06-19 18:03:35',34,'usuario'),(2,'2019-06-19 18:05:29',34,'usuario'),(3,'2019-06-19 18:05:37',34,'usuario');
 /*!40000 ALTER TABLE `eventos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,6 +98,61 @@ INSERT INTO `extras_habitacion` VALUES (11,'Acceso a Internet por Banda Ancha de
 UNLOCK TABLES;
 
 --
+-- Table structure for table `habitaciones`
+--
+
+DROP TABLE IF EXISTS `habitaciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `habitaciones` (
+  `id_habitacion` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tipo_habitacion` int(11) DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_habitacion`),
+  UNIQUE KEY `id_habitacion_UNIQUE` (`id_habitacion`),
+  KEY `fk_tipo_habitacion_habitacion_idx` (`id_tipo_habitacion`),
+  CONSTRAINT `fk_tipo_habitacion_habitacion` FOREIGN KEY (`id_tipo_habitacion`) REFERENCES `tipo_habitacion` (`id_tipo_habitacion`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `habitaciones`
+--
+
+LOCK TABLES `habitaciones` WRITE;
+/*!40000 ALTER TABLE `habitaciones` DISABLE KEYS */;
+INSERT INTO `habitaciones` VALUES (1,1,NULL),(2,1,NULL),(3,2,NULL),(4,2,NULL),(5,3,NULL),(6,3,NULL),(7,4,NULL),(8,4,NULL),(9,5,NULL),(10,5,NULL),(11,5,NULL);
+/*!40000 ALTER TABLE `habitaciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reserva_tipo_habitacion`
+--
+
+DROP TABLE IF EXISTS `reserva_tipo_habitacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `reserva_tipo_habitacion` (
+  `id_reserva` int(11) NOT NULL,
+  `id_tipo_habitacion` int(11) NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_reserva`,`id_tipo_habitacion`),
+  KEY `fk_reserva_tipo_habitacion_tipo_habitacion_idx` (`id_tipo_habitacion`),
+  CONSTRAINT `fk_reserva_tipo_habitacion_reserva` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id_reserva`),
+  CONSTRAINT `fk_reserva_tipo_habitacion_tipo_habitacion` FOREIGN KEY (`id_tipo_habitacion`) REFERENCES `tipo_habitacion` (`id_tipo_habitacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reserva_tipo_habitacion`
+--
+
+LOCK TABLES `reserva_tipo_habitacion` WRITE;
+/*!40000 ALTER TABLE `reserva_tipo_habitacion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reserva_tipo_habitacion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reservas`
 --
 
@@ -105,17 +162,15 @@ DROP TABLE IF EXISTS `reservas`;
 CREATE TABLE `reservas` (
   `id_reserva` int(11) NOT NULL AUTO_INCREMENT,
   `id_cliente` int(11) NOT NULL,
-  `id_tipo_habitacion` int(11) NOT NULL,
   `fecha_inicio` date NOT NULL,
   `fecha_fin` date NOT NULL,
-  `estado` enum('activa','cacelada','espera','terminada') NOT NULL DEFAULT 'espera',
+  `estado` enum('activa','cancelada','espera','terminada') NOT NULL DEFAULT 'espera',
+  `fecha_creacion` date DEFAULT NULL,
   PRIMARY KEY (`id_reserva`),
   UNIQUE KEY `id_reserva_UNIQUE` (`id_reserva`),
-  KEY `fk_tipo_habitacion_idx` (`id_tipo_habitacion`),
   KEY `fk_clientes_idx` (`id_cliente`),
-  CONSTRAINT `fk_reserva_clientes` FOREIGN KEY (`id_cliente`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_reserva_tipo_habitacion` FOREIGN KEY (`id_tipo_habitacion`) REFERENCES `tipo_habitacion` (`id_tipo_habitacion`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_reserva_clientes` FOREIGN KEY (`id_cliente`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,6 +179,7 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
+INSERT INTO `reservas` VALUES (3,1,'2000-07-01','2000-07-05','activa',NULL),(10,1,'2000-07-01','2000-07-05','cancelada',NULL),(11,1,'2000-07-01','2000-07-05','activa',NULL),(12,1,'2000-07-01','2000-07-05','cancelada',NULL),(13,1,'2000-07-01','2000-07-05','activa',NULL),(14,1,'2000-07-01','2000-07-05','cancelada',NULL),(15,1,'2007-07-03','2007-12-12','activa',NULL);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,13 +216,13 @@ DROP TABLE IF EXISTS `tipo_habitacion`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tipo_habitacion` (
   `id_tipo_habitacion` int(11) NOT NULL,
-  `tipo_habitacion` varchar(45) NOT NULL,
   `capacidad` int(2) NOT NULL,
   `descripcion` tinytext,
-  `detalle` tinytext,
+  `precio` int(11) DEFAULT NULL,
+  `tipo_habitacion` enum('deluxe','deluxeplus','juniorsuite','executivesuite','suitepresidencial') DEFAULT NULL,
   PRIMARY KEY (`id_tipo_habitacion`),
   UNIQUE KEY `id_tipo_habitacion_UNIQUE` (`id_tipo_habitacion`),
-  UNIQUE KEY `tipo_habitacion_UNIQUE` (`tipo_habitacion`)
+  UNIQUE KEY `tipo_habitacion1_UNIQUE` (`tipo_habitacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -176,7 +232,7 @@ CREATE TABLE `tipo_habitacion` (
 
 LOCK TABLES `tipo_habitacion` WRITE;
 /*!40000 ALTER TABLE `tipo_habitacion` DISABLE KEYS */;
-INSERT INTO `tipo_habitacion` VALUES (1,'Deluxe',2,'Nuestras habitaciones Deluxe son ideales para una estadía de negocios.','Estas habitaciones pueden disponer de cama King Size (2 x 2 mts.) o dos camas de 1.30 x 1.90 mts cada una.'),(2,'Deluxe Plus',2,'Combinación ideal para un viaje de negocios o para alojarse en familia.','Estas habitaciones pueden contar con cama King Size (2 x 2 mts) o dos camas de 1.30 x 1.90 mts cada una, el baño a diferencia de las Deluxe, está equipado con hidromasaje simple.'),(3,'Junior Suite',4,'Su exclusiva antesala brinda servicios adicionales para sumar comodidades a su estadía.','Presenta dimensiones mas amplias que Deluxe y Deluxe Plus, dispone de una antesala con diván y escritorio, la habitación principal cuenta con cama King Size (2 x 2 mts).'),(4,'Executive Suite',6,'Servicios de última generación, espacio adicional y jacuzzi para dos personas.','Este tipo de habitación ofrece una antesala con diván y escritorio, toilette de cortesía, cama King Size (2 x 2 mts.) en la habitación principal y el baño principal cuenta con jacuzzi para dos personas.'),(5,'Suite Presidencial',8,'Amplia habitación con servicios de categoría y sala de reuniones y equipamiento de última generación.','La Suite Presidencial es única en su categoría. Ubicada estratégicamente cuenta con amplios espacios y servicios de primera categoría.');
+INSERT INTO `tipo_habitacion` VALUES (1,2,'Nuestras habitaciones Deluxe son ideales para una estadía de negocios.',2000,'deluxe'),(2,2,'Combinación ideal para un viaje de negocios o para alojarse en familia.',4000,'deluxeplus'),(3,4,'Su exclusiva antesala brinda servicios adicionales para sumar comodidades a su estadía.',6000,'juniorsuite'),(4,6,'Servicios de última generación, espacio adicional y jacuzzi para dos personas.',8000,'executivesuite'),(5,8,'Amplia habitación con servicios de categoría y sala de reuniones y equipamiento de última generación.',10000,'suitepresidencial');
 /*!40000 ALTER TABLE `tipo_habitacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,11 +257,10 @@ CREATE TABLE `usuarios` (
   `codigo_postal` int(10) DEFAULT NULL,
   `direccion` varchar(50) DEFAULT NULL,
   `verificado` bit(1) DEFAULT b'0',
-  `friendly_id` varchar(10) NOT NULL,
+  `hash` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `friendly_id_UNIQUE` (`friendly_id`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,7 +269,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,_binary '\0','1'),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL,NULL,NULL,NULL,NULL,_binary '\0','2'),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL,NULL,NULL,NULL,NULL,_binary '','3'),(11,'d10s@gmail.com','25d55ad283aa400af464c76d713c07ad','10 ','juan ','roman','10',NULL,'AR','Buenos Aires ',1,'bombonera',_binary '\0','4'),(12,'jhonny@gmail.com','25d55ad283aa400af464c76d713c07ad','asd ','prueba hash 1','hashin','123',NULL,'AR','vgg',0,'en la esquina',_binary '\0','5'),(33,'ariasramirox@gmail.com','b643f311b21f660a5f8e6c5987207e3b','123123','3123123','123123','123123',NULL,'AR','123123',123123,'12312312',_binary '','6'),(38,'aasd@asd.conadf','a3dcb4d229de6fde0db5686dee47145d','123','asd','asd','213',NULL,'AR','asd',123,'assd',_binary '\0','PQY'),(41,'seba.a.rossi@gmail.com','e0bbd224aa782e5396a7941694b2018f','39951271','SebastiÃ¡n','Rossi','3416572511',NULL,'AR','Rosario',2000,'San MartÃ­n 1466',_binary '','GM2QQ9');
+INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL,NULL,NULL,NULL,NULL,_binary '',NULL),(11,'d10s@gmail.com','25d55ad283aa400af464c76d713c07ad','10 ','juan ','roman','10',NULL,'AR','Buenos Aires ',1,'bombonera',NULL,NULL),(12,'jhonny@gmail.com','25d55ad283aa400af464c76d713c07ad','asd ','prueba hash 1','hashin','123',NULL,'AR','vgg',0,'en la esquina',_binary '\0','31ffad21b34e66ee7937d2cf593defc6'),(33,'ariasramirox@gmail.com','b643f311b21f660a5f8e6c5987207e3b','123123','3123123','123123','123123',NULL,'AR','123123',123123,'12312312',_binary '','aeb40acae433f86e045d7331b773e393'),(34,'seba.a.rossi@gmail.com','e0bbd224aa782e5396a7941694b2018f','39951271|','SebastiÃ¡n','Rossi','3416572511',NULL,'AR','Rosario',2000,'San MartÃ­n 1466',_binary '','d5400fdf1e2775116754943d2ccbe355');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -258,4 +313,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-20 14:50:52
+-- Dump completed on 2019-08-01 14:01:38
