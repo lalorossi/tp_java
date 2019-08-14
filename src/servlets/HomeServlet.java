@@ -80,7 +80,7 @@ public class HomeServlet extends HttpServlet {
 				    else {
 						// Te manda a la página de reserva
 						System.out.println("Usuario loggeado. Lo mando a reservas");
-						requestDispatcher = request.getRequestDispatcher("habitaciones.jsp");
+						requestDispatcher = request.getRequestDispatcher("reserva.jsp");
 						requestDispatcher.forward(request, response);
 						return;
 				    }

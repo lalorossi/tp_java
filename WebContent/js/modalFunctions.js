@@ -35,6 +35,7 @@ function setModalHTML(htmlElement){
 	$("#modal-text").append(htmlElement);
 }
 
+/*
 function modalDanger(mensaje, titulo, htmlElement){
 	setModalMode("danger");
 	setModalText(mensaje);
@@ -83,8 +84,11 @@ function modalWarning(mensaje, titulo, htmlElement){
 	setModalTitle(titulo);
 	showModal(idModal);
 }
+*/
 
 function ActivateModal(mensaje, titulo, tipo, htmlElement){
+
+	/*
 	if(tipo == "danger"){
 		modalDanger(mensaje, titulo, htmlElement);
 	}
@@ -97,6 +101,31 @@ function ActivateModal(mensaje, titulo, tipo, htmlElement){
 	else{
 		modalDanger(mensaje, titulo, htmlElement);
 	}
+	*/
+
+
+	setModalMode(tipo);
+	setModalText(mensaje);
+
+	if(titulo == undefined){
+		// Título por defecto si no se le manda ningún título
+		if(tipo == "danger"){
+			titulo = "Error...";
+		}
+		else if(tipo == "warning"){
+			titulo = "Atención";
+		}
+		else if(tipo == "success"){
+			titulo = "OK";
+		}
+	}
+
+	if(htmlElement != undefined){
+		setModalHTML(htmlElement);
+	}
+
+	setModalTitle(titulo);
+	showModal(idModal);
 }
 
 /* --Funciones para manipulación del modal-- */
