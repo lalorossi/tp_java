@@ -2,26 +2,32 @@ package entities;
 
 public class TipoHabitacion extends Entidad  {
 
-	enum tipo {
-		Doble,
-		DoblePremium,
-		Triple,
-		TriplePremium,
-		Cuadruple
+	public enum tipo {
+		deluxe, deluxeplus, juniorsuite, executivesuite, suitepresidencial
 	}
 
 	/* Atributos */
 	tipo tipoHabitacion;
 	String descripcion;
 	int capacidad;
+	int precio;
+	int disponibilidad;
 	/* -- Atributos -- */
 
 
 	/* Getters y Setters */
-
 	public tipo getTipoHabitacion() {
 		return tipoHabitacion;
 	}
+
+	public int getDisponibilidad() {
+		return disponibilidad;
+	}
+
+	public void setDisponibilidad(int disponibilidad) {
+		this.disponibilidad = disponibilidad;
+	}
+
 	public void setTipoHabitacion(tipo tipoHabitacion) {
 		this.tipoHabitacion = tipoHabitacion;
 	}
@@ -39,6 +45,15 @@ public class TipoHabitacion extends Entidad  {
 	public void setCapacidad(int capacidad) {
 		this.capacidad = capacidad;
 	}
+
+	public int getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(int precio) {
+		this.precio = precio;
+	}
+
 
 	/* -- Getters y Setters -- */
 
