@@ -27,9 +27,11 @@ public class ReservaData {
 			String fechaDesde = formatter.format(desde);
 			String fechaHasta = formatter.format(hasta);
 			rs = stmt.executeQuery(
-					"select * from reservas where ((fecha_fin between '" + fechaDesde + "' and '" + fechaHasta
-							+ "') or (fecha_fin between '" + fechaDesde + "' and '" + fechaHasta
-							+ "')) and ( estado = 1 or  estado =3);");
+					"select * from reservas where (('" + fechaDesde + "' between fecha_inicio and  fecha_fin) or ('"
+							+ fechaHasta + "' between fecha_inicio and  fecha_fin) or ( (fecha_inicio between '"
+							+ fechaDesde + "' and '" + fechaHasta + "') and (fecha_fin between '" + fechaDesde
+							+ "' and '" + fechaHasta + "') ) ) and ( estado = 1 or  estado =3);");
+
 			if (rs != null) {
 				while (rs.next()) {
 					Reserva rsv = new Reserva();
@@ -76,6 +78,7 @@ public class ReservaData {
 				stmt = FactoryConection.getInstancia().getConn().createStatement();
 				rs = stmt.executeQuery("select cantidad from reserva_tipo_habitacion where id_reserva = '" + rsv.getId()
 						+ "' and id_tipo_habitacion = '" + idTH + "';");
+
 				if (rs != null) {
 					while (rs.next()) {
 						cantOcupados = cantOcupados + rs.getInt("cantidad");
@@ -90,6 +93,7 @@ public class ReservaData {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 		}
 
 		return cantOcupados;

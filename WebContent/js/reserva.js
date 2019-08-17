@@ -20,7 +20,7 @@ function stepperNext(event){
 		$.ajax({
 			type: 'POST',
 
-			url: 'home',	// RESERVA
+			url: 'reserva',	// RESERVA
 
 			data: {
 				paso: 1,
@@ -52,17 +52,17 @@ function stepperNext(event){
 		$('#btn-next-spinner').show();	// Muestra el spinner de carga
 
 		// Busca las cantidades de habitaciones pedidas
-		strCantidadDeluxe = $('#reserva-cantidad_deluxe').val() != "" ? $('#reserva-cantidad_deluxe').val() : "";
-		strCantidadDeluxePlus = $('#reserva-cantidad_deluxe_plus').val() != "" ? $('#reserva-cantidad_deluxe_plus').val() : "";
-		strCantidadJuniorSuite = $('#reserva-cantidad_junior_suite').val() != "" ? $('#reserva-cantidad_junior_suite').val() : "";
-		strCantidadExecutiveSuite = $('#reserva-cantidad_executive_suite').val() != "" ? $('#reserva-cantidad_executive_suite').val() : "";
-		strCantidadSuitePresidencial = $('#reserva-cantidad_suite_presidencial').val() != "" ? $('#reserva-cantidad_suite_presidencial').val() : "";
+		strCantidadDeluxe = $('#reserva-cantidad_deluxe').val() != "" ? $('#reserva-cantidad_deluxe').val() : "0";
+		strCantidadDeluxePlus = $('#reserva-cantidad_deluxe_plus').val() != "" ? $('#reserva-cantidad_deluxe_plus').val() : "0";
+		strCantidadJuniorSuite = $('#reserva-cantidad_junior_suite').val() != "" ? $('#reserva-cantidad_junior_suite').val() : "0";
+		strCantidadExecutiveSuite = $('#reserva-cantidad_executive_suite').val() != "" ? $('#reserva-cantidad_executive_suite').val() : "0";
+		strCantidadSuitePresidencial = $('#reserva-cantidad_suite_presidencial').val() != "" ? $('#reserva-cantidad_suite_presidencial').val() : "0";
 
 		console.log("haciendo AJAX del paso 2");
 		$.ajax({
 			type: 'POST',
 
-			url: 'home',	// RESERVA
+			url: 'reserva',	// RESERVA
 
 			data: {
 				paso: 2,
@@ -97,7 +97,7 @@ function stepperNext(event){
 		$.ajax({
 				type: 'POST',
 
-				url: 'home',	// RESERVA
+				url: 'reserva',	// RESERVA
 
 				data: {
 					paso: 3,
@@ -263,8 +263,6 @@ function submitNextForm(){
 
 function success1(resp){
 
-	console.log("exito en AJAX del paso 1");
-
 	$('#btn-next-spinner').hide();
 
 	// También actualiza los indicadores de fechas y cantidad de personas
@@ -274,12 +272,14 @@ function success1(resp){
 
 	if(resp != "" && resp != "[]"){
 		// Se va a tomar como que si me pasan un arreglo, es de habitaciones, y si no me mandan un arrgelo, hubo un error
+
 		respuesta = JSON.parse(resp);
 		// console.log(respuesta);
 
 		if(respuesta.length != undefined){
 			// La respuesta es el arreglo de habitaciones
-			cargarHabitaciones(respuesta);			activarPrevious(true);
+			cargarHabitaciones(respuesta);
+			activarPrevious(true);
 			checkStep2();
 			mostrarPaso(2);
 			$(".progress-bar").css("width", "33%");
@@ -310,7 +310,7 @@ function success2(resp){
 
 	$('#btn-next-spinner').hide();
 
-	if (resp != "" && resp != "[]"){
+	if (resp != "" && resp != "{}"){
 		respuesta = JSON.parse(resp);
 		// console.log(respuesta);
 		// Acá nada más me van a devolver un objeto con o sin error
@@ -372,7 +372,7 @@ function success2(resp){
 		ActivateModal("Hubo un error procesando tu reserva. Reintentá más tarde o comunicate con nosotros", "UPS...", "danger");
 	}
 	$('#btn-next-spinner').hide();
-	activarPrevious(false);
+	activarPrevious(true);
 	checkStep2();
 
 }
@@ -388,13 +388,19 @@ function cargarHabitaciones(habitaciones){
 	precioExecutiveSuite = 0;
 	precioSuitePresidencial = 0;
 
+	$('#deluxe-card').hide();
+	$('#deluxe_plus-card').hide();
+	$('#junior_suite-card').hide();
+	$('#executive_suite-card').hide();
+	$('#suite_presidencial-card').hide();
+
 	for(var index in habitaciones){
 		habitacion = habitaciones[index];
 
 		txtDisponibles = habitacion.cantidad > 1 ? " Habitaciones disponibles" : " Habitación disponible";
 
 		switch(habitacion.tipo){
-			case "Deluxe":
+			case "deluxe":
 				$('#deluxe-card').show();
 				$('#reserva-cantidad_deluxe').attr({"max" : habitacion.cantidad});
 				$('#disponible-deluxe').text(habitacion.cantidad + txtDisponibles);
@@ -402,7 +408,7 @@ function cargarHabitaciones(habitaciones){
 				precioDeluxe = habitacion.precio;
 				break;
 
-			case "Deluxe Plus":
+			case "deluxeplus":
 				$('#deluxe_plus-card').show();
 				$('#reserva-cantidad_deluxe_plus').attr({"max" : habitacion.cantidad});
 				$('#disponible-deluxe_plus').text(habitacion.cantidad + txtDisponibles);
@@ -410,7 +416,7 @@ function cargarHabitaciones(habitaciones){
 				precioDeluxePlus = habitacion.precio;
 				break;
 
-			case "Junior Suite":
+			case "juniorsuite":
 				$('#junior_suite-card').show();
 				$('#reserva-cantidad_junior_suite').attr({"max" : habitacion.cantidad});
 				$('#disponible-junior_suite').text(habitacion.cantidad + txtDisponibles);
@@ -418,7 +424,7 @@ function cargarHabitaciones(habitaciones){
 				precioJuniorSuite = habitacion.precio;
 				break;
 
-			case "Executive Suite":
+			case "executivesuite":
 				$('#executive_suite-card').show();
 				$('#reserva-cantidad_executive_suite').attr({"max" : habitacion.cantidad});
 				$('#disponible-executive_suite').text(habitacion.cantidad + txtDisponibles);
@@ -426,7 +432,7 @@ function cargarHabitaciones(habitaciones){
 				precioExecutiveSuite = habitacion.precio;
 				break;
 
-			case "Suite Presidencial":
+			case "suitepresidencial":
 				$('#suite_presidencial-card').show();
 				$('#reserva-cantidad_suite_presidencial').attr({"max" : habitacion.cantidad});
 				$('#disponible-suite_presidencial').text(habitacion.cantidad + txtDisponibles);
@@ -443,7 +449,7 @@ function success3(resp){
 	console.log("exito en AJAX del paso 3");
 
 	// Acá nada más me van a devolver un objeto con o sin error
-	if (resp != "" && resp != "[]"){
+	if (resp != "" && resp != "{}"){
 		respuesta = JSON.parse(resp);
 		// console.log(respuesta);
 		if(respuesta.alert == true){
@@ -453,24 +459,19 @@ function success3(resp){
 			tipoModal = respuesta.tipo == undefined ? "danger" : respuesta.tipo;
 			ActivateModal(msjModal, ttlModal, tipoModal);
 		}
-		else{
-			// Salió todo como debía
-			mostrarPaso(4);
-			$('#btn-next-spinner').hide();
-			$(".progress-bar").css("width", "100%");
-			$(".progress-bar").toggleClass("bg-success");
-			$("#step_buttons-container").remove();	// Elimina los botones de anterios, siguiente y cancelar
-			pasoActual = 4;
-			return
-		}
 	}
 	else{
-		// La respuesta vino vacía. Muestra la alerta y vuelve a activar el paso actual
-		console.log("El servlet no devolvió nada en el paso 3") // No debería pasar
-		ActivateModal("Hubo un error procesando tu reserva. Reintentá más tarde o comunicate con nosotros", "UPS...", "danger");
+		// Salió todo como debía
+		mostrarPaso(4);
+		$('#btn-next-spinner').hide();
+		$(".progress-bar").css("width", "100%");
+		$(".progress-bar").toggleClass("bg-success");
+		$("#step_buttons-container").remove();	// Elimina los botones de anterios, siguiente y cancelar
+		pasoActual = 4;
+		return
 	}
 	$('#btn-next-spinner').hide();
-	activarPrevious(false);
+	activarPrevious(true);
 	checkStep3();
 }
 
