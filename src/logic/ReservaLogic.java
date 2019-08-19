@@ -64,4 +64,21 @@ public class ReservaLogic {
 
 		return tiposDisponibles;
 	}
+
+	// crear MisReservasServlet
+	// idUsuario viene de session
+	// idReseva viene de parametro de request ver submitAction en homeServlet
+	// ArrayList<Reserva> Getall (idUsuario) todo
+	// Todas las reserva
+	// for en servlet que te muestre todo
+	// void cancelarReserva (idReserva)
+
+	public ArrayList<Reserva> getAllxUsr(int idUsuario) throws Exception {
+		return rsvData.getAllxUsr(idUsuario);
+	}
+
+	public void cancelarReservar(int idReserva) throws Exception {
+		rsvData.cancelarReservar(idReserva);
+	}
+
 }

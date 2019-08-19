@@ -12,10 +12,19 @@ public class TipoHabitacion extends Entidad  {
 	int capacidad;
 	int precio;
 	int disponibilidad;
+	int cantReservada;
 	/* -- Atributos -- */
 
 
 	/* Getters y Setters */
+	public int getCantReservada() {
+		return cantReservada;
+	}
+
+	public void setCantReservada(int cantReservada) {
+		this.cantReservada = cantReservada;
+	}
+
 	public tipo getTipoHabitacion() {
 		return tipoHabitacion;
 	}
@@ -53,8 +62,6 @@ public class TipoHabitacion extends Entidad  {
 	public void setPrecio(int precio) {
 		this.precio = precio;
 	}
-
-
 	/* -- Getters y Setters -- */
 
 }
