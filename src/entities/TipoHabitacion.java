@@ -11,18 +11,18 @@ public class TipoHabitacion extends Entidad  {
 	String descripcion;
 	int capacidad;
 	int precio;
-	int disponibilidad;
-	int cantReservada;
+	int _disponibilidad;
+	int _cantidadReservada;
 	/* -- Atributos -- */
 
 
 	/* Getters y Setters */
-	public int getCantReservada() {
-		return cantReservada;
+	public int getCantidadReservada() {
+		return _cantidadReservada;
 	}
 
-	public void setCantReservada(int cantReservada) {
-		this.cantReservada = cantReservada;
+	public void setCantidadReservada(int cantidadReservada) {
+		this._cantidadReservada = cantidadReservada;
 	}
 
 	public tipo getTipoHabitacion() {
@@ -30,11 +30,11 @@ public class TipoHabitacion extends Entidad  {
 	}
 
 	public int getDisponibilidad() {
-		return disponibilidad;
+		return _disponibilidad;
 	}
 
 	public void setDisponibilidad(int disponibilidad) {
-		this.disponibilidad = disponibilidad;
+		this._disponibilidad = disponibilidad;
 	}
 
 	public void setTipoHabitacion(tipo tipoHabitacion) {

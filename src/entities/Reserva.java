@@ -14,17 +14,17 @@ public class Reserva extends Entidad  {
 	Date fechaFin;
 	estado estadoActual;
 	Date fechaCreacion;
-	ArrayList<TipoHabitacion> arrayThReservadas = new ArrayList<TipoHabitacion>();
+	ArrayList<TipoHabitacion> _habitacionesReservadas = new ArrayList<TipoHabitacion>();
 	/* -- Atributos -- */
 
 
 	/* Getters y Setters */
-	public ArrayList<TipoHabitacion> getArrayThReservadas() {
-		return arrayThReservadas;
+	public ArrayList<TipoHabitacion> getHabitacionesReservadas() {
+		return _habitacionesReservadas;
 	}
 
-	public void setArrayThReservadas(ArrayList<TipoHabitacion> arrayThReservadas) {
-		this.arrayThReservadas = arrayThReservadas;
+	public void setHabitacionesReservadas(ArrayList<TipoHabitacion> habitacionesReservadas) {
+		this._habitacionesReservadas = habitacionesReservadas;
 	}
 
 	public int getIdCliente() {

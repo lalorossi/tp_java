@@ -5,8 +5,8 @@ import database.HabitacionData;;
 public class HabitacionLogic {
 	HabitacionData hData = new HabitacionData();
 
-	public int getCantHabitacionPorIDTipo(int idTipo) throws Exception {
-		return hData.getCantHabitacionPorIDTipo(idTipo);
+	public int getCantidadPorTipo(int idTipo) throws Exception {
+		return hData.getCantidadPorTipo(idTipo);
 	}
 
 }

@@ -7,11 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import entities.Admin;
-import entities.Cliente;
 import entities.Reserva;
 import entities.TipoHabitacion;
-import entities.Usuario;
+import logic.Reserva_TipoHabitacionLogic;
 import util.AppDataException;
 
 public class ReservaData {
@@ -30,7 +28,7 @@ public class ReservaData {
 					"select * from reservas where (('" + fechaDesde + "' between fecha_inicio and  fecha_fin) or ('"
 							+ fechaHasta + "' between fecha_inicio and  fecha_fin) or ( (fecha_inicio between '"
 							+ fechaDesde + "' and '" + fechaHasta + "') and (fecha_fin between '" + fechaDesde
-							+ "' and '" + fechaHasta + "') ) ) and ( estado = 1 or  estado =3);");
+							+ "' and '" + fechaHasta + "') ) ) and ( estado = 1 or  estado = 3);");
 
 			if (rs != null) {
 				while (rs.next()) {
@@ -64,42 +62,43 @@ public class ReservaData {
 		return ocupados;
 	}
 
-	public int cantOcupadosXTH(ArrayList<Reserva> reservas, int idTH) {
+	public int habitacionesOcupadasPorTipo(ArrayList<Reserva> reservas, int idTH) {
 		int cantOcupados = 0;
 
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		Reserva rsv = new Reserva();
-
-		// Hacer en una sola consulta
-
-		for (int i = 0; i < reservas.size(); i++) {
-			rsv = reservas.get(i);
-			try {
-				stmt = FactoryConection.getInstancia().getConn().createStatement();
-				rs = stmt.executeQuery("select cantidad from reserva_tipo_habitacion where id_reserva = '" + rsv.getId()
-						+ "' and id_tipo_habitacion = '" + idTH + "';");
-
-				if (rs != null) {
-					while (rs.next()) {
-						cantOcupados = cantOcupados + rs.getInt("cantidad");
-
-					}
-				}
-			} catch (SQLException e) {
-				System.out.printf("Error en cantOcupadosXTH, ReservaData");
-				e.printStackTrace();
-			} catch (AppDataException e) {
-				e.printStackTrace();
-			}
-
+		String idReservas = "(";
+		for(int i = 0; i < reservas.size(); i++) {
+			idReservas += String.valueOf(reservas.get(i).getId());
+			if(i != reservas.size()-1)
+				idReservas += ", ";
 		}
+		idReservas += ")";
+
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			rs = stmt.executeQuery("select cantidad from reserva_tipo_habitacion where id_reserva in " + idReservas
+					+ " and id_tipo_habitacion = '" + idTH + "';");
+
+			if (rs != null) {
+				while (rs.next()) {
+					cantOcupados = cantOcupados + rs.getInt("cantidad");
+
+				}
+			}
+		} catch (SQLException e) {
+			System.out.printf("Error en cantOcupadosXTH, ReservaData");
+			e.printStackTrace();
+		} catch (AppDataException e) {
+			e.printStackTrace();
+		}
+
 
 		return cantOcupados;
 	}
 
-	public int Create(Reserva rsv) throws Exception {
+	public int Create(Reserva reserva) throws Exception {
 		Statement stmt = null;
 		ResultSet rs = null;
 		int idReserva = 0;
@@ -110,9 +109,9 @@ public class ReservaData {
 
 			stmt.executeUpdate(
 					"insert into reservas (id_cliente, fecha_inicio, fecha_fin, estado, fecha_creacion) values ('"
-							+ rsv.getIdCliente() + "','" + formatter1.format(rsv.getFechaInicio()) + "','"
-							+ formatter1.format(rsv.getFechaFin()) + "','" + Reserva.estado.valueOf("espera") + "','"
-							+ formatter1.format(rsv.getFechaCreacion()) + "');",
+							+ reserva.getIdCliente() + "','" + formatter1.format(reserva.getFechaInicio()) + "','"
+							+ formatter1.format(reserva.getFechaFin()) + "','" + Reserva.estado.valueOf("espera") + "','"
+							+ formatter1.format(reserva.getFechaCreacion()) + "');",
 					Statement.RETURN_GENERATED_KEYS);
 
 			rs = stmt.getGeneratedKeys();
@@ -120,6 +119,12 @@ public class ReservaData {
 			if (rs != null) {
 				while (rs.next()) {
 					idReserva = rs.getInt(1);
+					Reserva_TipoHabitacionLogic rthLogic = new Reserva_TipoHabitacionLogic();
+					for(int i = 0; i < reserva.getHabitacionesReservadas().size(); i++) {
+						int idTipoHabitacion = reserva.getHabitacionesReservadas().get(i).getId();
+						int cantidadReservada = reserva.getHabitacionesReservadas().get(i).getCantidadReservada();
+						rthLogic.Create(idReserva, idTipoHabitacion, cantidadReservada);
+					}
 				}
 			}
 
@@ -174,7 +179,7 @@ public class ReservaData {
 							TipoHabitacion th = new TipoHabitacion();
 
 							th.setId(rs.getInt("id_reserva"));
-							th.setCantReservada(rs.getInt("cantidad"));
+							th.setCantidadReservada(rs.getInt("cantidad"));
 							// th.setDescripcion(descripcion);
 							// th.setCantReservada(cantReservada);
 
@@ -182,7 +187,7 @@ public class ReservaData {
 						}
 					}
 
-					rsv.setArrayThReservadas(tipoHabitaciones);
+					rsv.setHabitacionesReservadas(tipoHabitaciones);
 					reservas.add(rsv);
 
 				}

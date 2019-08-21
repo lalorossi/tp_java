@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,12 +19,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import entities.Reserva;
-import entities.Reserva_TipoHabitacion;
 import entities.TipoHabitacion;
 import entities.Usuario;
 
 import logic.ReservaLogic;
-import logic.Reserva_TipoHabitacionLogic;
+import logic.TipoHabitacionLogic;
 
 /**
  * Servlet implementation class TarjetaServlet
@@ -44,7 +44,6 @@ public class ReservaServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		Object usuarioActual = request.getSession().getAttribute("usuarioActual");
 		if (usuarioActual == null) {
 			System.out.println("Usuario no loggeado. Lo mando al login");
@@ -64,7 +63,6 @@ public class ReservaServlet extends HttpServlet {
 		if (submitAction != null && submitAction.equals("cancelar")) {
 			request.getSession().removeAttribute("camasSolicitadas");
 			request.getSession().removeAttribute("reservaActual");
-			request.getSession().removeAttribute("arrayRsvTH");
 
 			request.setAttribute("alert", "Se canceló el proceso de reserva exitosamente");
 			request.setAttribute("alert_mode", "success");
@@ -76,7 +74,7 @@ public class ReservaServlet extends HttpServlet {
 
 		int paso = Integer.parseInt(request.getParameter("paso"));
 
-		ReservaLogic rsvLogic = new ReservaLogic();
+		ReservaLogic reservaLogic = new ReservaLogic();
 
 		if (paso == 1) {
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -86,15 +84,16 @@ public class ReservaServlet extends HttpServlet {
 				Date hasta = formatter1.parse(request.getParameter("fechaHasta"));
 				int camasSolicitadas = Integer.parseInt(request.getParameter("cantidadPersonas"));
 
-				ArrayList<TipoHabitacion> thConDisp = new ArrayList<TipoHabitacion>();
+				ArrayList<TipoHabitacion> thDisponibles = new ArrayList<TipoHabitacion>();
 
-				thConDisp = rsvLogic.getTipoDisponible(desde, hasta);
+				// Esto debería ir en tipo habitación
+				thDisponibles = reservaLogic.getTiposDisponible(desde, hasta);
 
-				if (thConDisp.size() == 0) {
+				if (thDisponibles.size() == 0) {
 					JSONObject objetoJSON = new JSONObject();
 					objetoJSON.put("alert", true);
-					objetoJSON.put("mensaje", "No hay piezas disponibles en las fechas solocitadas");
-					objetoJSON.put("titulo", "No hay piezas disponibles");
+					objetoJSON.put("mensaje", "No contamos con habitaciones disponibles en el período seleccionado");
+					objetoJSON.put("titulo", "No hay habitaciones disponibles");
 
 					StringWriter output = new StringWriter();
 					objetoJSON.writeJSONString(output);
@@ -104,11 +103,11 @@ public class ReservaServlet extends HttpServlet {
 					return;
 
 				} else {
-					TipoHabitacion th = new TipoHabitacion();
+					TipoHabitacion th;
 					int camasDisponibles = 0;
 
-					for (int i = 0; i < thConDisp.size(); i++) {
-						th = thConDisp.get(i);
+					for (int i = 0; i < thDisponibles.size(); i++) {
+						th = thDisponibles.get(i);
 						camasDisponibles = camasDisponibles + (th.getCapacidad() * th.getDisponibilidad());
 
 					}
@@ -118,8 +117,8 @@ public class ReservaServlet extends HttpServlet {
 
 						JSONObject objetoJSON = new JSONObject();
 						objetoJSON.put("alert", true);
-						objetoJSON.put("mensaje", "No hay camas suficientes");
-						objetoJSON.put("titulo", "No hay suficientes camas");
+						objetoJSON.put("mensaje", "Las habitaciones disponibles no cuentan con capacidad suficiente para " + camasSolicitadas + " personas");
+						objetoJSON.put("titulo", "Capacidad disponible excedida");
 
 						StringWriter output = new StringWriter();
 						objetoJSON.writeJSONString(output);
@@ -133,8 +132,8 @@ public class ReservaServlet extends HttpServlet {
 						JSONObject objetoJSON = new JSONObject();
 						JSONArray arrayJSON = new JSONArray();
 
-						for (int i = 0; i < thConDisp.size(); i++) {
-							th = thConDisp.get(i);
+						for (int i = 0; i < thDisponibles.size(); i++) {
+							th = thDisponibles.get(i);
 							objetoJSON.put("tipo", th.getTipoHabitacion().toString());
 							objetoJSON.put("cantidad", th.getDisponibilidad());
 							objetoJSON.put("precio", th.getPrecio());
@@ -167,17 +166,51 @@ public class ReservaServlet extends HttpServlet {
 		}
 
 		if (paso == 2) {
-			ArrayList<Reserva_TipoHabitacion> arrayRsvTH = new ArrayList<Reserva_TipoHabitacion>();
-			Reserva rsv = (Reserva) request.getSession().getAttribute("reservaActual");
-			int IdReserva = rsv.getId();
+			Reserva reservaActual = (Reserva) request.getSession().getAttribute("reservaActual");
+
 			int cantidadCamas = 0;
 
-			// CantidadCamas HARDCODEADO
+			Enumeration<String> nombresParametros = request.getParameterNames();
+			TipoHabitacionLogic thLogic = new TipoHabitacionLogic();
+			int contadorIdTipoHabitacion = 0;
 
+			while(nombresParametros.hasMoreElements()) {
+				String parametro = nombresParametros.nextElement();
+				if( !parametro.equals("paso")) {
+					contadorIdTipoHabitacion ++;
+					if (Integer.parseInt(request.getParameter(parametro)) > 0) {
+						try {
+						TipoHabitacion th = thLogic.getOne(contadorIdTipoHabitacion);
+						th.setCantidadReservada(Integer.parseInt(request.getParameter(parametro)));
+						reservaActual.getHabitacionesReservadas().add(th);
+
+						cantidadCamas = cantidadCamas + (Integer.parseInt(request.getParameter(parametro)) * th.getCapacidad());
+
+						} catch (Exception e) {
+							System.out.println("Error buscando los tipos de habitación de la request");
+							e.printStackTrace();
+
+							JSONObject objetoJSON = new JSONObject();
+							objetoJSON.put("alert", true);
+							objetoJSON.put("mensaje", "Ocurrió un error interno al intentar crear la reserva. Intantá más tarde o comunicate con nostros");
+							objetoJSON.put("titulo", "Error interno al crear la reserva");
+
+							JSONArray arrayJSON = new JSONArray();
+							StringWriter output = new StringWriter();
+							arrayJSON.writeJSONString(output);
+							String textoJSON = output.toString();
+							response.getWriter().write(textoJSON);
+							return;
+						}
+					}
+				}
+			}
+
+			/*
 			if (Integer.parseInt(request.getParameter("cantidadDeluxe")) > 0) {
 				Reserva_TipoHabitacion rsvTH = new Reserva_TipoHabitacion();
-				rsvTH.setCantidad(Integer.parseInt(request.getParameter("cantidadDeluxe")));
-				rsvTH.setIdReserva(IdReserva);
+				rsvTH.setCantidadReservada(Integer.parseInt(request.getParameter("cantidadDeluxe")));
+				rsvTH.setIdReserva(idReservaActual);
 				rsvTH.setIdTipoHabitacion(1);
 				arrayRsvTH.add(rsvTH);
 
@@ -186,8 +219,8 @@ public class ReservaServlet extends HttpServlet {
 
 			if (Integer.parseInt(request.getParameter("cantidadDeluxePlus")) > 0) {
 				Reserva_TipoHabitacion rsvTH = new Reserva_TipoHabitacion();
-				rsvTH.setCantidad(Integer.parseInt(request.getParameter("cantidadDeluxePlus")));
-				rsvTH.setIdReserva(IdReserva);
+				rsvTH.setCantidadReservada(Integer.parseInt(request.getParameter("cantidadDeluxePlus")));
+				rsvTH.setIdReserva(idReservaActual);
 				rsvTH.setIdTipoHabitacion(2);
 				arrayRsvTH.add(rsvTH);
 
@@ -196,8 +229,8 @@ public class ReservaServlet extends HttpServlet {
 
 			if (Integer.parseInt(request.getParameter("cantidadJuniorSuite")) > 0) {
 				Reserva_TipoHabitacion rsvTH = new Reserva_TipoHabitacion();
-				rsvTH.setCantidad(Integer.parseInt(request.getParameter("cantidadJuniorSuite")));
-				rsvTH.setIdReserva(IdReserva);
+				rsvTH.setCantidadReservada(Integer.parseInt(request.getParameter("cantidadJuniorSuite")));
+				rsvTH.setIdReserva(idReservaActual);
 				rsvTH.setIdTipoHabitacion(3);
 				arrayRsvTH.add(rsvTH);
 
@@ -206,8 +239,8 @@ public class ReservaServlet extends HttpServlet {
 
 			if (Integer.parseInt(request.getParameter("cantidadExecutiveSuite")) > 0) {
 				Reserva_TipoHabitacion rsvTH = new Reserva_TipoHabitacion();
-				rsvTH.setCantidad(Integer.parseInt(request.getParameter("cantidadExecutiveSuite")));
-				rsvTH.setIdReserva(IdReserva);
+				rsvTH.setCantidadReservada(Integer.parseInt(request.getParameter("cantidadExecutiveSuite")));
+				rsvTH.setIdReserva(idReservaActual);
 				rsvTH.setIdTipoHabitacion(4);
 				arrayRsvTH.add(rsvTH);
 
@@ -216,29 +249,30 @@ public class ReservaServlet extends HttpServlet {
 
 			if (Integer.parseInt(request.getParameter("cantidadSuitePresidencial")) > 0) {
 				Reserva_TipoHabitacion rsvTH = new Reserva_TipoHabitacion();
-				rsvTH.setCantidad(Integer.parseInt(request.getParameter("cantidadSuitePresidencial")));
-				rsvTH.setIdReserva(IdReserva);
+				rsvTH.setCantidadReservada(Integer.parseInt(request.getParameter("cantidadSuitePresidencial")));
+				rsvTH.setIdReserva(idReservaActual);
 				rsvTH.setIdTipoHabitacion(5);
 				arrayRsvTH.add(rsvTH);
 
 				cantidadCamas = cantidadCamas
 						+ (Integer.parseInt(request.getParameter("cantidadSuitePresidencial")) * 8);
 			}
+			*/
 
 			JSONObject objetoJSON = new JSONObject();
 
-			if (arrayRsvTH.size() == 0) {
+			if (reservaActual.getHabitacionesReservadas().size() == 0) {
 				objetoJSON.put("alert", true);
-				objetoJSON.put("mensaje", "");
+				objetoJSON.put("mensaje", "Por favor, seleccione una habitación para continuar");
 				objetoJSON.put("titulo", "No hay habitaciones seleccionadas");
 
 			} else {
 				if (cantidadCamas < (int) request.getSession().getAttribute("camasSolicitadas")) {
 					objetoJSON.put("alert", true);
-					objetoJSON.put("mensaje", "");
-					objetoJSON.put("titulo", "Cantidad de camas seleccionadas menor a las solicitadas");
+					objetoJSON.put("mensaje", "Seleccione más habitaciones, o habitaciones con mayor capacidad");
+					objetoJSON.put("titulo", "Camas insuficientes en las habitaciones seleccionadas");
 				} else {
-					request.getSession().setAttribute("arrayRsvTH", arrayRsvTH);
+					request.getSession().setAttribute("reservaActual", reservaActual);
 					objetoJSON.put("alert", false);
 				}
 
@@ -254,15 +288,14 @@ public class ReservaServlet extends HttpServlet {
 
 		if (paso == 3) {
 			try {
-				rsvLogic.Create((Reserva) request.getSession().getAttribute("reservaActual"),
-						(ArrayList<Reserva_TipoHabitacion>) request.getSession().getAttribute("arrayRsvTH"));
+				reservaLogic.Create((Reserva) request.getSession().getAttribute("reservaActual"));
 				return;
 			} catch (Exception e) {
 
 				JSONObject objetoJSON = new JSONObject();
 				objetoJSON.put("alert", true);
-				objetoJSON.put("mensaje", "");
-				objetoJSON.put("titulo", "Cantidad de camas seleccionadas menor a las solicitadas");
+				objetoJSON.put("mensaje", "Por alguna razón, no pudimos crear la reserva. Intenta nuevamente o contactate con nosotros");
+				objetoJSON.put("titulo", "Error interno al crear la reserva");
 
 				JSONArray arrayJSON = new JSONArray();
 				StringWriter output = new StringWriter();

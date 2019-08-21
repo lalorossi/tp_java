@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class HabitacionData {
 
-	public int getCantHabitacionPorIDTipo(int idTipo) throws Exception {
+	public int getCantidadPorTipo(int idTipo) throws Exception {
 		Statement stmt = null;
 		ResultSet rs = null;
 		int cantidad = 0;
