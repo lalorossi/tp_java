@@ -10,6 +10,7 @@ import java.util.Date;
 import entities.Reserva;
 import entities.TipoHabitacion;
 import logic.Reserva_TipoHabitacionLogic;
+import logic.TipoHabitacionLogic;
 import util.AppDataException;
 
 public class ReservaData {
@@ -157,7 +158,7 @@ public class ReservaData {
 
 		try {
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("select * from reservas where id_reserva = '" + idUsuario + "';");
+			rs = stmt.executeQuery("select * from reservas where id_cliente = '" + idUsuario + "';");
 
 			if (rs != null) {
 				while (rs.next()) {
@@ -171,29 +172,13 @@ public class ReservaData {
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
 					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
 
-					rsTH = stmt.executeQuery(
-							"select * from reservas_tipo_habitacion rsvTH inner join tipo_habitacion th on th.id_tipo_habitacion = rsvTH.id_tipo_habitacion where id_reserva = '"
-									+ rs.getInt("id_reserva") + "';");
-					if (rsTH != null) {
-						while (rsTH.next()) {
-							TipoHabitacion th = new TipoHabitacion();
 
-							th.setId(rs.getInt("id_reserva"));
-							th.setCantidadReservada(rs.getInt("cantidad"));
-							// th.setDescripcion(descripcion);
-							// th.setCantReservada(cantReservada);
-
-							tipoHabitaciones.add(th);
-						}
-					}
-
-					rsv.setHabitacionesReservadas(tipoHabitaciones);
-					reservas.add(rsv);
+					reservas.add(this.getCantidadesReservadas(rsv));
 
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Error al buscar las reservasr del usuario" + idUsuario);
+			System.out.println("Error al buscar las reservasr del usuario " + idUsuario);
 			throw e;
 		}
 
@@ -209,4 +194,26 @@ public class ReservaData {
 
 		return reservas;
 	}
+
+public Reserva getCantidadesReservadas(Reserva reserva) throws Exception {
+	Statement stmt = null;
+	ResultSet rs = null;
+		stmt = FactoryConection.getInstancia().getConn().createStatement();
+		rs = stmt.executeQuery("select * from reserva_tipo_habitacion rsvTH inner join tipo_habitacion th on th.id_tipo_habitacion = rsvTH.id_tipo_habitacion where id_reserva = '"
+				+ reserva.getId() + "';");
+
+		if (rs != null) {
+			while (rs.next()) {
+				TipoHabitacion th = new TipoHabitacionLogic().getOne(rs.getInt("id_tipo_habitacion"));
+
+				th.setCantidadReservada(rs.getInt("cantidad"));
+				reserva.getHabitacionesReservadas().add(th);
+
+			}
+		}
+
+
+	return reserva;
+}
+
 }

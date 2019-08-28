@@ -160,7 +160,7 @@
 			</button>
 			<div class="dropdown-menu dropdown-menu-right">
 				<a class="dropdown-item" href="#">Mi usuario</a>
-				<a class="dropdown-item" href="#">Mis reservas</a>
+				<a class="dropdown-item" href="misreservas">Mis reservas</a>
 				<!-- <a class="dropdown-item" href="#">Something else here</a> -->
 				<div class="dropdown-divider"></div>
 				<form action="/tp_java/home" method="post" role="form" id="log_out-form">

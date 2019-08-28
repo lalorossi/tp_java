@@ -10,6 +10,7 @@
 
 <script src="js/reserva.js"></script>
 <script>
+	document.title = "Arroz Tower - Reserva";
 
 	$('document').ready(function(){
 
