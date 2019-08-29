@@ -9,9 +9,9 @@
 document.title = "Arroz Tower - Mis Reservas";
 
 
-function cancelarReserva(){
+function cancelarReserva(idReserva){
 	// Muestra los botones de confirmación
-	$('.btn-cancelar').toggle();
+	$('.btn-cancelar-' + idReseva).toggle();
 }
 
 function detalleHabitaciones(idReseva){
@@ -70,10 +70,10 @@ function detalleHabitaciones(idReseva){
 									<% if(!reservaVieja) { %>
 										<form id="cancelar_reserva-form" name="cancelar_reserva-form" action="misreservas" method="POST">
 											<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-cancelar btn btn-outline-danger" style="display: none">Sí</button>
-												<button type="button" class="btn-cancelar btn btn-danger rounded" onclick="cancelarReserva()">Cancelar Reserva</button>
-												<button type="button" class="btn-cancelar btn btn-outline-danger" disabled style="display: none">Seguro?</button>
-												<button type="button" class="btn-cancelar btn btn-outline-danger" style="display: none" onclick="cancelarReserva()">No</button>
+												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" style="display: none">Sí</button>
+												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-danger rounded" onclick="cancelarReserva(<%= reserva.getId() %>)">Cancelar Reserva</button>
+												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" disabled style="display: none">Seguro?</button>
+												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" style="display: none" onclick="cancelarReserva(<%= reserva.getId() %>)">No</button>
 											</div>
 										</form>
 									<% } %>
