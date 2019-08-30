@@ -32,6 +32,7 @@ public class MisReservasServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Object usuarioActual = request.getSession().getAttribute("usuarioActual");
 		if (usuarioActual == null) {
@@ -58,8 +59,19 @@ public class MisReservasServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Cancelando la reserva: " + request.getParameter("id_reserva"));
+		ReservaLogic reservaLogic = new ReservaLogic();
+		try {
+			reservaLogic.cancelarReservar(Integer.parseInt(request.getParameter("id_reserva")));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		response.sendRedirect("misreservas");
 	}
 
