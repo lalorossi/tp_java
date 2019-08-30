@@ -9,13 +9,13 @@
 document.title = "Arroz Tower - Mis Reservas";
 
 
-function cancelarReserva(){
+function cancelarReserva(idReserva){
 	// Muestra los botones de confirmación
-	$('.btn-cancelar').toggle();
+	$('.btn-cancelar-' + idReserva).toggle();
 }
 
-function detalleHabitaciones(idReseva){
-	$("#detalleReserva-" + idReseva).toggle();
+function detalleHabitaciones(idReserva){
+	$("#detalleReserva-" + idReserva).toggle();
 	$(".iconoDetalle").toggle();
 }
  </script>
@@ -47,12 +47,22 @@ function detalleHabitaciones(idReseva){
 							cantidadHabitaciones += reserva.getHabitacionesReservadas().get(h).getCantidadReservada();
 							camasReservadas += reserva.getHabitacionesReservadas().get(h).getCapacidad() * reserva.getHabitacionesReservadas().get(h).getCantidadReservada();
 						}
-						boolean reservaVieja = false;
-						if(reserva.getFechaInicio().before(new Date())){
-							reservaVieja = true;
+						String estado = reserva.getEstadoActual().toString();
+						String clase = "";
+						if(estado.equals("activa")){
+							clase = "table-primary";
+						}
+						if(estado.equals("cancelada")){
+							clase = "table-danger";
+						}
+						if(estado.equals("espera")){
+							clase = "";
+						}
+						if(estado.equals("terminada")){
+							clase = "table-success";
 						}
 						%>
-							<tr <% if(reservaVieja) { %>class="bg-dark text-light" <% } %>>
+							<tr class="<%= clase %>">
 								<td><%= reserva.getFechaInicio() %></td>
 								<td><%= reserva.getFechaFin() %></td>
 								<td><%= camasReservadas %></td>
@@ -67,20 +77,30 @@ function detalleHabitaciones(idReseva){
 								</td>
 								<td>ARS <%= precioReserva %></td>
 								<td>
-									<% if(!reservaVieja) { %>
+									<% if(estado.equals("espera")) { %>
 										<form id="cancelar_reserva-form" name="cancelar_reserva-form" action="misreservas" method="POST">
 											<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-cancelar btn btn-outline-danger" style="display: none">Sí</button>
-												<button type="button" class="btn-cancelar btn btn-danger rounded" onclick="cancelarReserva()">Cancelar Reserva</button>
-												<button type="button" class="btn-cancelar btn btn-outline-danger" disabled style="display: none">Seguro?</button>
-												<button type="button" class="btn-cancelar btn btn-outline-danger" style="display: none" onclick="cancelarReserva()">No</button>
+												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" style="display: none">Sí</button>
+												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-danger rounded" onclick="cancelarReserva(<%= reserva.getId() %>)">Cancelar Reserva</button>
+												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" disabled style="display: none">Seguro?</button>
+												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" style="display: none" onclick="cancelarReserva(<%= reserva.getId() %>)">No</button>
 											</div>
 										</form>
+									<% }
+									if(estado.equals("cancelada")) { %>
+										<p class="text-danger"><strong>Reserva Cancelada</strong></p>
+									<% }
+									if(estado.equals("terminada")) { %>
+									<p class="text-success"><strong>Reserva Terminada</strong></p>
+									<% }
+									if(estado.equals("activa")) { %>
+									<p class="text-primary"><strong>Reserva En Curso</strong></p>
 									<% } %>
 								</td>
 							</tr>
-							<tr id="detalleReserva-<%= reserva.getId() %>" style="display: none">
-								<% for(int h = 0; h < cantidadTipoHabitacion; h++){
+							<tr id="detalleReserva-<%= reserva.getId() %>"  class="<%= clase %>" style="display: none">
+								<%
+									for(int h = 0; h < cantidadTipoHabitacion; h++){
 										String tipoHab = "";
 										int cantidadReservada = reserva.getHabitacionesReservadas().get(h).getCantidadReservada();
 										// El switch no funciona
@@ -91,7 +111,7 @@ function detalleHabitaciones(idReseva){
 											tipoHab = "Deluxe Plus";
 										}
 										if(reserva.getHabitacionesReservadas().get(h).getId()==  3){
-											tipoHab = "Junio Suite";
+											tipoHab = "Junior Suite";
 										}
 										if(reserva.getHabitacionesReservadas().get(h).getId()==  4){
 											tipoHab = "Executive Suite";
@@ -108,13 +128,16 @@ function detalleHabitaciones(idReseva){
 											</div>
 										</td>
 										<%
-									 }
+									}
+									for(int h = 0; h < 6-cantidadTipoHabitacion; h++){
+										%><td></td><%
+									}
 								%>
 							</tr>
 						<%
 					}
 				}
-				 %>
+				%>
 			</tbody>
 		</table>
 	</div>
