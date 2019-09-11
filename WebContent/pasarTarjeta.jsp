@@ -12,7 +12,6 @@
 	<button type="submit" name="id_tarjeta" value=1>Tarjeta 1</button>
 	<button type="submit" name="id_tarjeta" value=2>Tarjeta 2</button>
 	<button type="submit" name="id_tarjeta" value=3>Tarjeta 3</button>
-	<button type="submit" name="id_usuario" value=1>Falso Usuario</button>
 </form>
 
 </body>

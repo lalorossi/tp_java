@@ -21,6 +21,21 @@ function detalleHabitaciones(idReserva){
  </script>
 <div class="row mt-3">
 	<div class="col-md-10 offset-md-1">
+	<%
+		ArrayList<Reserva> reservas = (ArrayList<Reserva>)request.getAttribute("reservasDeUsuario");
+			if(reservas.isEmpty()){
+	%>
+		<h2 class="h1-responsive font-weight-bold text-center my-4">No hay ninguna reserva para mostrar</h2>
+		<div class="d-flex justify-content-around my-3">
+			<form action="home" method="post" role="form">
+				<button type="submit" name="submit" value="submit-reserva" class="btn btn-warning" style="float: right">
+					<a href="" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Hacer reserva</a>
+				</button>
+			</form>
+		</div>
+	<%
+			} else{
+	%>
 		<table class="table">
 			<thead>
 				<tr>
@@ -34,8 +49,6 @@ function detalleHabitaciones(idReserva){
 			</thead>
 			<tbody>
 				<%
-				ArrayList<Reserva> reservas = (ArrayList<Reserva>)request.getAttribute("reservasDeUsuario");
-				if(reservas != null){
 					for(int i = 0; i < reservas.size(); i++){
 						Reserva reserva = reservas.get(i);
 						int precioReserva = 0;

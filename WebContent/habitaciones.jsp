@@ -67,7 +67,7 @@ $(document).ready(function(){
 						</div>
 						<form action="home" method="post" role="form">
 							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
-								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+								<a href="" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
 							</button>
 						</form>
 					</div>
@@ -95,7 +95,7 @@ $(document).ready(function(){
 						</div>
 						<form action="home" method="post" role="form">
 							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
-								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+								<a href="" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
 							</button>
 						</form>
 					</div>
@@ -124,7 +124,7 @@ $(document).ready(function(){
 						</div>
 						<form action="home" method="post" role="form">
 							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
-								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+								<a href="" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
 							</button>
 						</form>
 					</div>
@@ -156,7 +156,7 @@ $(document).ready(function(){
 						</div>
 						<form action="home" method="post" role="form">
 							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
-								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+								<a href="" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
 							</button>
 						</form>
 					</div>
@@ -188,7 +188,7 @@ $(document).ready(function(){
 						</div>
 						<form action="home" method="post" role="form">
 							<button type="submit" name="submit" value="submit-reserva" class="btn btn-sm btn-warning" style="float: right">
-								<a href="reserva" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
+								<a href="" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Reservar</a>
 							</button>
 						</form>
 					</div>

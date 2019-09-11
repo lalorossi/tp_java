@@ -1,15 +1,13 @@
-CREATE DATABASE  IF NOT EXISTS `arroz_tower` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `arroz_tower`;
--- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.17, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: arroz_tower
 -- ------------------------------------------------------
--- Server version	8.0.16
+-- Server version	8.0.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,7 +21,7 @@ USE `arroz_tower`;
 
 DROP TABLE IF EXISTS `eventos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `eventos` (
   `id_evento` int(11) NOT NULL AUTO_INCREMENT,
   `hora_evento` datetime NOT NULL,
@@ -31,7 +29,7 @@ CREATE TABLE `eventos` (
   `tipo_evento` enum('tarjeta','usuario') DEFAULT NULL,
   PRIMARY KEY (`id_evento`),
   UNIQUE KEY `id_evento_UNIQUE` (`id_evento`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +38,7 @@ CREATE TABLE `eventos` (
 
 LOCK TABLES `eventos` WRITE;
 /*!40000 ALTER TABLE `eventos` DISABLE KEYS */;
-INSERT INTO `eventos` VALUES (1,'2019-06-19 18:03:35',34,'usuario'),(2,'2019-06-19 18:05:29',34,'usuario'),(3,'2019-06-19 18:05:37',34,'usuario');
+INSERT INTO `eventos` VALUES (1,'2019-06-19 18:03:35',34,'usuario'),(2,'2019-06-19 18:05:29',34,'usuario'),(3,'2019-06-19 18:05:37',34,'usuario'),(4,'2019-09-10 21:39:18',34,'usuario'),(5,'2019-09-10 21:41:00',34,'usuario'),(6,'2019-09-10 21:41:55',34,'usuario'),(7,'2019-09-10 21:42:11',34,'usuario'),(8,'2019-09-10 21:42:34',34,'usuario'),(9,'2019-09-10 21:43:05',34,'usuario'),(10,'2019-09-10 21:43:15',1,'tarjeta'),(11,'2019-09-10 21:43:19',2,'tarjeta'),(12,'2019-09-10 21:43:24',3,'tarjeta'),(13,'2019-09-10 21:43:30',2,'tarjeta'),(14,'2019-09-10 21:43:30',3,'tarjeta'),(15,'2019-09-10 21:43:36',1,'tarjeta'),(16,'2019-09-10 21:43:37',2,'tarjeta'),(17,'2019-09-10 21:43:37',3,'tarjeta'),(18,'2019-09-10 21:45:38',34,'usuario');
 /*!40000 ALTER TABLE `eventos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,7 +48,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `extra_tipo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `extra_tipo` (
   `id_extra_habitacion` int(11) NOT NULL,
   `id_tipo_habitacion` int(11) NOT NULL,
@@ -77,7 +75,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `extras_habitacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `extras_habitacion` (
   `id_extra_habitacion` int(11) NOT NULL,
   `descripcion` varchar(60) NOT NULL,
@@ -103,7 +101,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `habitaciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `habitaciones` (
   `id_habitacion` int(11) NOT NULL AUTO_INCREMENT,
   `id_tipo_habitacion` int(11) DEFAULT NULL,
@@ -131,7 +129,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `reserva_tipo_habitacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reserva_tipo_habitacion` (
   `id_reserva` int(11) NOT NULL,
   `id_tipo_habitacion` int(11) NOT NULL,
@@ -149,6 +147,7 @@ CREATE TABLE `reserva_tipo_habitacion` (
 
 LOCK TABLES `reserva_tipo_habitacion` WRITE;
 /*!40000 ALTER TABLE `reserva_tipo_habitacion` DISABLE KEYS */;
+INSERT INTO `reserva_tipo_habitacion` VALUES (23,5,1),(24,5,1),(26,1,2),(26,2,2),(26,3,2),(26,4,2),(26,5,1),(27,1,2),(28,4,1),(29,5,1),(30,3,1),(31,4,2);
 /*!40000 ALTER TABLE `reserva_tipo_habitacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +157,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `reservas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservas` (
   `id_reserva` int(11) NOT NULL AUTO_INCREMENT,
   `id_cliente` int(11) NOT NULL,
@@ -170,7 +169,7 @@ CREATE TABLE `reservas` (
   UNIQUE KEY `id_reserva_UNIQUE` (`id_reserva`),
   KEY `fk_clientes_idx` (`id_cliente`),
   CONSTRAINT `fk_reserva_clientes` FOREIGN KEY (`id_cliente`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,7 +178,7 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-INSERT INTO `reservas` VALUES (3,1,'2000-07-01','2000-07-05','activa',NULL),(10,1,'2000-07-01','2000-07-05','cancelada',NULL),(11,1,'2000-07-01','2000-07-05','activa',NULL),(12,1,'2000-07-01','2000-07-05','cancelada',NULL),(13,1,'2000-07-01','2000-07-05','activa',NULL),(14,1,'2000-07-01','2000-07-05','cancelada',NULL),(15,1,'2007-07-03','2007-12-12','activa',NULL);
+INSERT INTO `reservas` VALUES (23,1,'2019-08-02','2019-08-08','terminada','2019-08-21'),(24,1,'2019-09-02','2019-09-08','cancelada','2019-08-21'),(26,1,'2019-09-02','2019-09-08','espera','2019-08-21'),(27,1,'2019-09-09','2019-09-15','activa','2019-08-21'),(28,1,'2019-08-11','2019-08-26','cancelada','2019-08-27'),(29,1,'2019-09-28','2019-09-29','espera','2019-08-27'),(30,34,'2019-09-11','2019-09-13','cancelada','2019-09-10'),(31,34,'2019-09-11','2019-09-13','cancelada','2019-09-10');
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +188,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tarjetas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tarjetas` (
   `id_tarjeta` int(11) NOT NULL AUTO_INCREMENT,
   `estado` enum('activa','anulada') NOT NULL,
@@ -213,7 +212,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tipo_habitacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipo_habitacion` (
   `id_tipo_habitacion` int(11) NOT NULL,
   `capacidad` int(2) NOT NULL,
@@ -242,7 +241,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
@@ -257,9 +256,10 @@ CREATE TABLE `usuarios` (
   `codigo_postal` int(10) DEFAULT NULL,
   `direccion` varchar(50) DEFAULT NULL,
   `verificado` bit(1) DEFAULT b'0',
-  `hash` varchar(32) DEFAULT NULL,
+  `friendly_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `dni_UNIQUE` (`dni`)
+  UNIQUE KEY `dni_UNIQUE` (`dni`),
+  UNIQUE KEY `friendly_id_UNIQUE` (`friendly_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -269,7 +269,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL,NULL,NULL,NULL,NULL,_binary '',NULL),(11,'d10s@gmail.com','25d55ad283aa400af464c76d713c07ad','10 ','juan ','roman','10',NULL,'AR','Buenos Aires ',1,'bombonera',NULL,NULL),(12,'jhonny@gmail.com','25d55ad283aa400af464c76d713c07ad','asd ','prueba hash 1','hashin','123',NULL,'AR','vgg',0,'en la esquina',_binary '\0','31ffad21b34e66ee7937d2cf593defc6'),(33,'ariasramirox@gmail.com','b643f311b21f660a5f8e6c5987207e3b','123123','3123123','123123','123123',NULL,'AR','123123',123123,'12312312',_binary '','aeb40acae433f86e045d7331b773e393'),(34,'seba.a.rossi@gmail.com','e0bbd224aa782e5396a7941694b2018f','39951271|','SebastiÃ¡n','Rossi','3416572511',NULL,'AR','Rosario',2000,'San MartÃ­n 1466',_binary '','d5400fdf1e2775116754943d2ccbe355');
+INSERT INTO `usuarios` VALUES (1,'admin@admin.com','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,'1'),(4,'imbatman@batman.com','d1ebaaac13d8a73b0cbf1b8e99c329dd','10','Bruce Wayne','Bruce Wayne','10',NULL,NULL,NULL,NULL,NULL,NULL,'2'),(7,'vderivi@gmail.com','85a3a55fa5d68b30a9fd4c4a0289da77','39950434','Victor','De Rivi','3416725222',NULL,NULL,NULL,NULL,NULL,_binary '','3'),(11,'d10s@gmail.com','25d55ad283aa400af464c76d713c07ad','10 ','juan ','roman','10',NULL,'AR','Buenos Aires ',1,'bombonera',NULL,'4'),(12,'jhonny@gmail.com','25d55ad283aa400af464c76d713c07ad','asd ','prueba hash 1','hashin','123',NULL,'AR','vgg',0,'en la esquina',_binary '\0','5'),(33,'ariasramirox@gmail.com','b643f311b21f660a5f8e6c5987207e3b','123123','3123123','123123','123123',NULL,'AR','123123',123123,'12312312',_binary '','6'),(34,'seba.a.rossi@gmail.com','e0bbd224aa782e5396a7941694b2018f','39951271','SebastiÃ¡n','Rossi','3416572511',NULL,'AR','Rosario',2000,'San MartÃ­n 1466',_binary '','GM2QQ9');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -282,7 +282,7 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `verified_user_evt_update` AFTER UPDATE ON `usuarios` FOR EACH ROW BEGIN
-	IF (NEW.verificado != OLD.verificado)
+	IF (NEW.verificado != OLD.verificado AND NEW.verificado = 1)
 	THEN
 		INSERT INTO `arroz_tower`.`eventos`
         (id_relacionado, hora_evento, tipo_evento)
@@ -313,4 +313,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-01 14:01:38
+-- Dump completed on 2019-09-10 21:48:55

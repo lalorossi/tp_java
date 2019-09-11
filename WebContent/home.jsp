@@ -12,14 +12,6 @@ document.title = "Arroz Tower";
 </script>
 
 <!--  CAROUSEL  -->
-<h1><%
-	if(usuarioActual != null){
-		String email = usuarioActual.getEmail();
-		if(usuarioActual.isAdmin())
-			email += " (Admin)";
-		out.println(email);
-	}
-%></h1>
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 		<ol class="carousel-indicators">
 		<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
