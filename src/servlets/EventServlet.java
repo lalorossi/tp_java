@@ -55,7 +55,7 @@ public class EventServlet extends HttpServlet {
 		try {
 			// Busca eventos nuevos en la DB
 			ArrayList<Evento> nuevosEventos = (new EventosLogic()).getFromDate(fromDate);
-			System.out.println("Se encontraron: " + nuevosEventos.size() + " eventos");
+			// System.out.println("Se encontraron: " + nuevosEventos.size() + " eventos");
 
 			if(nuevosEventos.size()>0){
 				// Si hay eventos, mapea los objetos a una lista JSON

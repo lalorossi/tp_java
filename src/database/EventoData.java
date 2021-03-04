@@ -21,7 +21,7 @@ public class EventoData {
 
 		ArrayList<Evento> evts = new ArrayList<Evento>();
 
-		System.out.println("Se buscan eventos a partir de: " + fromDate);
+		// System.out.println("Se buscan eventos a partir de: " + fromDate);
 
 		try{
 			stmt = FactoryConection.getInstancia()

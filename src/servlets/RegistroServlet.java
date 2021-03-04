@@ -44,7 +44,7 @@ public class RegistroServlet extends HttpServlet {
 
 		RequestDispatcher requestDispatcher;
 
-		// Si en la URL le mandaste el mail de un usurio, le reenvía el mail de verificación
+		// Si en la URL le mandaste el mail de un usurio, le reenvï¿½a el mail de verificaciï¿½n
 		String emailAccount = request.getParameter("acc");
 
 		if(emailAccount == null) {
@@ -55,13 +55,13 @@ public class RegistroServlet extends HttpServlet {
 
 		}
 		else if(emailAccount.equals("")) {
-			// Si el mail viene vacío, también te mando al home
-			System.out.println("URL con email vacío para reenviar");
+			// Si el mail viene vacï¿½o, tambiï¿½n te mando al home
+			System.out.println("URL con email vacï¿½o para reenviar");
 			requestDispatcher = request.getRequestDispatcher("login.jsp");
 			requestDispatcher.forward(request, response);
 		}
 		else {
-			// Se fija que efectivamente no esté registrado
+			// Se fija que efectivamente no estï¿½ registrado
 			UsuarioLogic usrLogic = new UsuarioLogic();
 			try {
 
@@ -71,17 +71,17 @@ public class RegistroServlet extends HttpServlet {
 					// El usuario existe
 
 					if( !((Cliente)usuarioReenvio).getVerificado() ) {
-						// El usuario no está verificado
+						// El usuario no estï¿½ verificado
 
-						System.out.println("Reenviando mail de verifiación a: " + emailAccount);
+						System.out.println("Reenviando mail de verifiaciï¿½n a: " + emailAccount);
 
 						String friendlyID = ((Cliente)usuarioReenvio).getFriendlyID();
 						this.sendEmail(emailAccount, friendlyID);
 
-						String alert = "Revisa tu correo para acceder al link de verificación";
+						String alert = "Revisa tu correo para acceder al link de verificaciï¿½n";
 						request.setAttribute("alert", alert);
 						request.setAttribute("alert_mode", "success");
-						request.setAttribute("alert_title", "Reenvío confirmado");
+						request.setAttribute("alert_title", "Reenvï¿½o confirmado");
 
 						System.out.println("Reenvio completo. Volviendo a home");
 
@@ -90,13 +90,13 @@ public class RegistroServlet extends HttpServlet {
 
 					}
 					else {
-						// El usuario ya está verificado
-						System.out.println("La cuenta ya está verificada: " + emailAccount);
+						// El usuario ya estï¿½ verificado
+						System.out.println("La cuenta ya estï¿½ verificada: " + emailAccount);
 
-						String alert = "El usuario que intenta verificar ya puede iniciar sesión en la página.";
+						String alert = "El usuario que intenta verificar ya puede iniciar sesiï¿½n en la pï¿½gina.";
 						request.setAttribute("alert", alert);
 						request.setAttribute("alert_mode", "warning");
-						request.setAttribute("alert_title", "El usuario ya está verificado");
+						request.setAttribute("alert_title", "El usuario ya estï¿½ verificado");
 
 						requestDispatcher = request.getRequestDispatcher("home.jsp");
 				        requestDispatcher.forward(request, response);
@@ -107,10 +107,10 @@ public class RegistroServlet extends HttpServlet {
 					// No existe el usuario.
 					System.out.println("No existe un usuario con el email: " + emailAccount);
 
-					String alert = "Intentá nuevamente más tarde o comunicate con nosotros.";
+					String alert = "Intentï¿½ nuevamente mï¿½s tarde o comunicate con nosotros.";
 					request.setAttribute("alert", alert);
 					request.setAttribute("alert_mode", "danger");
-					request.setAttribute("alert_title", "No se pudo enviar el correo de verificación");
+					request.setAttribute("alert_title", "No se pudo enviar el correo de verificaciï¿½n");
 
 					requestDispatcher = request.getRequestDispatcher("home.jsp");
 			        requestDispatcher.forward(request, response);
@@ -120,10 +120,10 @@ public class RegistroServlet extends HttpServlet {
 				System.out.println("No se pudo reenviar el mail de verificacion a : " + emailAccount);
 				e.printStackTrace();
 
-				String alert = "Intentá nuevamente más tarde o comunicate con nosotros.";
+				String alert = "Intentï¿½ nuevamente mï¿½s tarde o comunicate con nosotros.";
 				request.setAttribute("alert", alert);
 				request.setAttribute("alert_mode", "danger");
-				request.setAttribute("alert_title", "No se puede reenviar el correo de verificación");
+				request.setAttribute("alert_title", "No se puede reenviar el correo de verificaciï¿½n");
 
 				requestDispatcher = request.getRequestDispatcher("home.jsp");
 		        requestDispatcher.forward(request, response);
@@ -177,7 +177,7 @@ public class RegistroServlet extends HttpServlet {
 				// Si ya existe un usuario con ese dni
 				System.out.println("Ya existe ese DNI de usuario");
 
-				String alert = "El número de documento '" + dni +"' ya pertenece a un usuario registrado";
+				String alert = "El nï¿½mero de documento '" + dni +"' ya pertenece a un usuario registrado";
 				request.setAttribute("alert", alert);
 				request.setAttribute("alert_mode", "warning");
 				request.setAttribute("alert_title", "No se puede registrar el usuario");
@@ -213,7 +213,7 @@ public class RegistroServlet extends HttpServlet {
 			usrLogic.Create(nuevoCliente);
 			System.out.println("Usuario creado exitosamente");
 			try {
-				// Si esta función no activa el catch, sale del servlet por sí misma
+				// Si esta funciï¿½n no activa el catch, sale del servlet por sï¿½ misma
 				this.sendEmail(username, friendlyID);
 
 
@@ -222,7 +222,7 @@ public class RegistroServlet extends HttpServlet {
 				String alert = "Enviamos un correo a '" + username + "' para verificar tu usuario";
 				request.setAttribute("alert", alert);
 				request.setAttribute("alert_mode", "success");
-				request.setAttribute("alert_title", "Se creó tu cuenta de usaurio en ArrozTower!");
+				request.setAttribute("alert_title", "Se creï¿½ tu cuenta de usaurio en ArrozTower!");
 
 
 		        requestDispatcher = request.getRequestDispatcher("home.jsp");
@@ -235,14 +235,14 @@ public class RegistroServlet extends HttpServlet {
 				System.out.println("Error al enviar el mail");
 
 				// Muestra el error en el login
-				String alert = "Hubo un error tratando de crear tu usuario. Intenta más tarde";
+				String alert = "Hubo un error tratando de crear tu usuario. Intenta mï¿½s tarde";
 				request.setAttribute("alert", alert);
 				request.setAttribute("alert_mode", "danger");
 				request.setAttribute("alert_title", "Ups...");
 
 				session.setAttribute("usuarioActual", null);
 
-				// Borra el usuario recién creado de la DB
+				// Borra el usuario reciï¿½n creado de la DB
 				nuevoCliente = (Cliente) usrLogic.getOne(username);
 				usrLogic.Delete(nuevoCliente);
 
@@ -257,7 +257,7 @@ public class RegistroServlet extends HttpServlet {
 			e.printStackTrace();
 
 			// Muestra el error en el login
-			String alert = "Hubo un error tratando de crear tu usuario. Intenta más tarde";
+			String alert = "Hubo un error tratando de crear tu usuario. Intenta mï¿½s tarde";
 			request.setAttribute("alert", alert);
 			request.setAttribute("alert_mode", "danger");
 			request.setAttribute("alert_title", "Ups...");

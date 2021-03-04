@@ -39,6 +39,7 @@ function detalleHabitaciones(idReserva){
 		<table class="table">
 			<thead>
 				<tr>
+					<th scope="col">Cliente</th>
 					<th scope="col">Entrada</th>
 					<th scope="col">Salida</th>
 					<th scope="col">Camas</th>
@@ -61,6 +62,7 @@ function detalleHabitaciones(idReserva){
 							camasReservadas += reserva.getHabitacionesReservadas().get(h).getCapacidad() * reserva.getHabitacionesReservadas().get(h).getCantidadReservada();
 						}
 						String estado = reserva.getEstadoActual().toString();
+						int userId = reserva.getIdCliente();
 						String clase = "";
 						if(estado.equals("activa")){
 							clase = "table-primary";
@@ -76,6 +78,14 @@ function detalleHabitaciones(idReserva){
 						}
 						%>
 							<tr class="<%= clase %>">
+								<td>
+									<form id="cliente_form_<%= reserva.getId() %>" name="cliente_form_<%= reserva.getId() %>" action="usuario" method="POST">
+										<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+											<input type="hidden" name="user_id" value="<%= userId %>" />
+											<button type="submit" class="btn-usuario-<%= reserva.getId() %> btn btn-info rounded"><i class="fas fa-lg fa-user-alt"></i></button>
+										</div>
+									</form>
+								</td>
 								<td><%= reserva.getFechaInicio() %></td>
 								<td><%= reserva.getFechaFin() %></td>
 								<td><%= camasReservadas %></td>

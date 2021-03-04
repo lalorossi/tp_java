@@ -159,8 +159,21 @@
 				%>
 			</button>
 			<div class="dropdown-menu dropdown-menu-right">
-				<a class="dropdown-item" href="#">Mi usuario</a>
-				<a class="dropdown-item" href="misreservas">Mis reservas</a>
+			<%
+				if(usuarioActual != null){
+					if(!usuarioActual.isAdmin()){
+						%>
+							<a class="dropdown-item" href="usuario">Mi usuario</a>
+							<a class="dropdown-item" href="misreservas">Mis reservas</a>
+						<%
+					}
+					else{
+						%>
+						<a class="dropdown-item" href="misreservas">Reservas</a>
+					<%
+					}
+				}
+				%>
 				<!-- <a class="dropdown-item" href="#">Something else here</a> -->
 				<div class="dropdown-divider"></div>
 				<form action="/tp_java/home" method="post" role="form" id="log_out-form">
