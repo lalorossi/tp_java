@@ -169,7 +169,7 @@
 					}
 					else{
 						%>
-						<a class="dropdown-item" href="misreservas">Reservas</a>
+						<a class="dropdown-item" href="adminreservas">Reservas</a>
 					<%
 					}
 				}

@@ -68,6 +68,10 @@ public class ReservaLogic {
 		return rsvData.getAllxUsr(idUsuario);
 	}
 
+	public ArrayList<Reserva> getAll() throws Exception {
+		return rsvData.getAll();
+	}
+
 	public void cancelarReservar(int idReserva) throws Exception {
 		rsvData.cancelarReservar(idReserva);
 	}

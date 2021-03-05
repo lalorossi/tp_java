@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import database.UsuarioData;
 import entities.Usuario;
@@ -10,6 +11,10 @@ public class UsuarioLogic {
 
 	public ArrayList<Usuario> getAll() throws Exception {
 		return usrData.getAll();
+	};
+
+	public ArrayList<Usuario> getAllInSet(Set<String> ids) throws Exception {
+		return usrData.getAllInSet(ids);
 	};
 
 	public void Create(Usuario usr) throws Exception {

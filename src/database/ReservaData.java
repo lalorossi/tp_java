@@ -195,6 +195,51 @@ public class ReservaData {
 		return reservas;
 	}
 
+	public ArrayList<Reserva> getAll() throws Exception {
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+		Statement stmt = null;
+		ResultSet rs = null;
+		ResultSet rsTH = null;
+
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			rs = stmt.executeQuery("select * from reservas");
+
+			if (rs != null) {
+				while (rs.next()) {
+					Reserva rsv = new Reserva();
+					ArrayList<TipoHabitacion> tipoHabitaciones = new ArrayList<TipoHabitacion>();
+
+					rsv.setId(rs.getInt("id_reserva"));
+					rsv.setIdCliente(rs.getInt("id_cliente"));
+					rsv.setFechaInicio(rs.getDate("fecha_inicio"));
+					rsv.setFechaFin(rs.getDate("fecha_fin"));
+					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
+					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
+
+
+					reservas.add(this.getCantidadesReservadas(rsv));
+
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Error al buscar todas las reservas");
+			throw e;
+		}
+
+		try {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			FactoryConection.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return reservas;
+	}
+
 public Reserva getCantidadesReservadas(Reserva reserva) throws Exception {
 	Statement stmt = null;
 	ResultSet rs = null;

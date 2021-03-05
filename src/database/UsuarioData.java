@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import entities.Admin;
 import entities.Cliente;
@@ -19,6 +21,75 @@ public class UsuarioData {
 			stmt = FactoryConection.getInstancia()
 					.getConn().createStatement();
 			rs = stmt.executeQuery("select * from usuarios");
+			if(rs!=null){
+				while(rs.next()){
+					if(rs.getInt("id_admin")==0) {
+						Cliente clt = new Cliente();
+						clt.setId(rs.getInt("id_usuario"));
+						clt.setEmail(rs.getString("email"));
+						clt.setContrasena(rs.getString("password"));
+
+						clt.setApellido(rs.getString("apellido"));
+						clt.setNombre(rs.getString("nombre"));
+						clt.setDireccion(rs.getString("direccion"));
+						clt.setCiudad(rs.getString("ciudad"));
+						clt.setPais(rs.getString("pais"));
+						clt.setCodigo_postal(rs.getInt("codigo_postal"));
+						clt.setDni(rs.getString("dni"));
+						clt.setTelefono(rs.getString("telefono"));
+						clt.setFriendlyID(rs.getString("friendly_id"));
+						clt.setVerificado(rs.getBoolean("verificado"));
+
+						usuarios.add(clt);
+					}
+					else {
+						Admin adm = new Admin();
+						adm.setId(rs.getInt("id_usuario"));
+						adm.setEmail(rs.getString("email"));
+						adm.setContrasena(rs.getString("password"));
+
+						adm.setIdAdmin(rs.getInt("id_admin"));
+
+						usuarios.add(adm);
+					}
+
+					// System.out.println(usr.getId());
+					// System.out.println(usr.getEmail());
+				}
+			}
+		} catch (Exception e){
+			throw e;
+		}
+
+		try {
+			if(rs!=null) rs.close();
+			if(stmt!=null) stmt.close();
+			FactoryConection.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return usuarios;
+	}
+
+	public ArrayList<Usuario> getAllInSet(Set<String> ids) throws Exception{
+		Statement stmt=null;
+		ResultSet rs=null;
+		ArrayList<Usuario> usuarios= new ArrayList<Usuario>();
+
+		try{
+			String query = "select * from usuarios where id_usuario in (";
+			Iterator<String> itr = ids.iterator();
+			while(itr.hasNext()){
+				String id = itr.next();
+				query += id + ",";
+			}
+			int queryLength = query.length();
+			query = query.substring(0, queryLength-1);
+			query += ")";
+			stmt = FactoryConection.getInstancia()
+					.getConn().createStatement();
+			rs = stmt.executeQuery(query);
 			if(rs!=null){
 				while(rs.next()){
 					if(rs.getInt("id_admin")==0) {
