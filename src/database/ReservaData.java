@@ -142,13 +142,59 @@ public class ReservaData {
 		try {
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
 
-			stmt.executeUpdate("UPDATE reservas SET estado = '2' WHERE (id_reserva = '" + idReserva + "');");
+			stmt.executeUpdate("UPDATE reservas SET estado = '" + Reserva.estado.cancelada + "' WHERE (id_reserva = '" + idReserva + "');");
 
 		} catch (Exception e) {
 			System.out.println("Error al cancelar la resrva" + idReserva);
 			throw e;
 		}
 	}
+
+	public void retener(int idReserva) throws Exception {
+		Statement stmt = null;
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+
+			stmt.executeUpdate("UPDATE reservas SET retenida = 1 WHERE (id_reserva = '" + idReserva + "');");
+
+		} catch (Exception e) {
+			System.out.println("Error al cancelar la resrva" + idReserva);
+			throw e;
+		}
+	}
+
+	public void checkIn(int idReserva, boolean retenida) throws Exception {
+		Statement stmt = null;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String fechaIngreso = formatter.format(new Date(System.currentTimeMillis()));
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			String query = "UPDATE reservas SET estado = '" + Reserva.estado.activa + "'";
+			if(retenida) {
+				query+= ", fecha_ingreso_real = '" + fechaIngreso + "'";
+			}
+			query += " WHERE (id_reserva = '" + idReserva + "')";
+
+			stmt.executeUpdate(query);
+
+		} catch (Exception e) {
+			System.out.println("Error al cancelar la resrva" + idReserva);
+			throw e;
+		}
+	}
+
+	// public void checkOut(int idReserva) throws Exception {
+	// 	Statement stmt = null;
+	// 	try {
+	// 		stmt = FactoryConection.getInstancia().getConn().createStatement();
+
+	// 		stmt.executeUpdate("UPDATE reservas SET estado = '2' WHERE (id_reserva = '" + idReserva + "');");
+
+	// 	} catch (Exception e) {
+	// 		System.out.println("Error al cancelar la resrva" + idReserva);
+	// 		throw e;
+	// 	}
+	// }
 
 	public ArrayList<Reserva> getAllxUsr(int idUsuario) throws Exception {
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
@@ -171,6 +217,11 @@ public class ReservaData {
 					rsv.setFechaFin(rs.getDate("fecha_fin"));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
 					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
+					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real");
+					if(fechaIngresoReal != null) {
+						rsv.setFechaIngresoReal(rs.getDate("fecha_ingreso_real"));
+					}
+					rsv.setRetenida(rs.getBoolean("retenida"));
 
 
 					reservas.add(this.getCantidadesReservadas(rsv));
@@ -216,6 +267,11 @@ public class ReservaData {
 					rsv.setFechaFin(rs.getDate("fecha_fin"));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
 					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
+					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real");
+					if(fechaIngresoReal != null) {
+						rsv.setFechaIngresoReal(rs.getDate("fecha_ingreso_real"));
+					}
+					rsv.setRetenida(rs.getBoolean("retenida"));
 
 
 					reservas.add(this.getCantidadesReservadas(rsv));
@@ -240,25 +296,65 @@ public class ReservaData {
 		return reservas;
 	}
 
-public Reserva getCantidadesReservadas(Reserva reserva) throws Exception {
-	Statement stmt = null;
-	ResultSet rs = null;
-		stmt = FactoryConection.getInstancia().getConn().createStatement();
-		rs = stmt.executeQuery("select * from reserva_tipo_habitacion rsvTH inner join tipo_habitacion th on th.id_tipo_habitacion = rsvTH.id_tipo_habitacion where id_reserva = '"
-				+ reserva.getId() + "';");
+	public Reserva getCantidadesReservadas(Reserva reserva) throws Exception {
+		Statement stmt = null;
+		ResultSet rs = null;
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			rs = stmt.executeQuery("select * from reserva_tipo_habitacion rsvTH inner join tipo_habitacion th on th.id_tipo_habitacion = rsvTH.id_tipo_habitacion where id_reserva = '"
+					+ reserva.getId() + "';");
 
-		if (rs != null) {
-			while (rs.next()) {
-				TipoHabitacion th = new TipoHabitacionLogic().getOne(rs.getInt("id_tipo_habitacion"));
+			if (rs != null) {
+				while (rs.next()) {
+					TipoHabitacion th = new TipoHabitacionLogic().getOne(rs.getInt("id_tipo_habitacion"));
 
-				th.setCantidadReservada(rs.getInt("cantidad"));
-				reserva.getHabitacionesReservadas().add(th);
+					th.setCantidadReservada(rs.getInt("cantidad"));
+					reserva.getHabitacionesReservadas().add(th);
 
+				}
 			}
+
+
+		return reserva;
+	}
+
+	public Reserva getOne(int idReserva) throws Exception{
+
+		Statement stmt = null;
+		ResultSet rs = null;
+		Reserva rsv = new Reserva();
+
+		try{
+			stmt = FactoryConection.getInstancia()
+					.getConn().createStatement();
+			rs = stmt.executeQuery("select * from reservas where id_reserva = '" + idReserva + "'");
+			if(rs!=null){
+				while(rs.next()){
+					rsv.setId(rs.getInt("id_reserva"));
+					rsv.setIdCliente(rs.getInt("id_cliente"));
+					rsv.setFechaInicio(rs.getDate("fecha_inicio"));
+					rsv.setFechaFin(rs.getDate("fecha_fin"));
+					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
+					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
+					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real");
+					if(fechaIngresoReal != null) {
+						rsv.setFechaIngresoReal(rs.getDate("fecha_ingreso_real"));
+					}
+					rsv.setRetenida(rs.getBoolean("retenida"));
+				}
+			}
+		} catch (Exception e){
+			throw e;
 		}
 
+		try {
+			if(rs!=null) rs.close();
+			if(stmt!=null) stmt.close();
+			FactoryConection.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	return reserva;
-}
+		return rsv;
+	}
 
 }

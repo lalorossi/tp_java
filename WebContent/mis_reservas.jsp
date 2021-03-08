@@ -16,7 +16,7 @@ function cancelarReserva(idReserva){
 
 function detalleHabitaciones(idReserva){
 	$("#detalleReserva-" + idReserva).toggle();
-	$(".iconoDetalle").toggle();
+	$(".iconoDetalle-" + idReserva).toggle();
 }
  </script>
 <div class="row mt-3">
@@ -44,6 +44,7 @@ function detalleHabitaciones(idReserva){
 					<th scope="col">Camas</th>
 					<th scope="col">Habitaciones</th>
 					<th scope="col">Precio</th>
+					<th scope="col">Estado</th>
 					<th scope="col">Acciones</th>
 				</tr>
 			</thead>
@@ -55,6 +56,7 @@ function detalleHabitaciones(idReserva){
 						int camasReservadas = 0;
 						int cantidadHabitaciones = 0;
 						int cantidadTipoHabitacion = reserva.getHabitacionesReservadas().size();
+						boolean retenida = reserva.getRetenida();
 						for(int h = 0; h < cantidadTipoHabitacion; h++){
 							precioReserva += reserva.getHabitacionesReservadas().get(h).getPrecio();
 							cantidadHabitaciones += reserva.getHabitacionesReservadas().get(h).getCantidadReservada();
@@ -69,45 +71,68 @@ function detalleHabitaciones(idReserva){
 							clase = "table-danger";
 						}
 						if(estado.equals("espera")){
-							clase = "";
+							clase = "table-info";
+							if(retenida)
+								clase = "table-warning";
 						}
 						if(estado.equals("terminada")){
 							clase = "table-success";
 						}
 						%>
 							<tr class="<%= clase %>">
-								<td><%= reserva.getFechaInicio() %></td>
-								<td><%= reserva.getFechaFin() %></td>
-								<td><%= camasReservadas %></td>
-								<td>
+								<td class="cell-entrada"><%= reserva.getFechaInicio() %></td>
+								<td class="cell-salida"><%= reserva.getFechaFin() %></td>
+								<td class="cell-camas"><%= camasReservadas %></td>
+								<td class="cell-habitaciones">
 									<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
 										<button type="button" class="btn btn-info" disabled><%= cantidadHabitaciones  %></button>
 										<button type="button" class="btn btn-info" onclick="detalleHabitaciones(<%= reserva.getId() %>)">
-											<i class="fas fa-plus iconoDetalle"></i>
-											<i class="fas fa-minus iconoDetalle" style="display: none"></i>
+											<i class="fas fa-plus iconoDetalle-<%= reserva.getId() %>"></i>
+											<i class="fas fa-minus iconoDetalle-<%= reserva.getId() %>" style="display: none"></i>
 										</button>
 									</div>
 								</td>
-								<td>ARS <%= precioReserva %></td>
-								<td>
+								<td class="cell-precio">ARS <%= precioReserva %></td>
+								<td class="cell-estado">
+									<% if(estado.equals("espera") && retenida) { %>
+										<p class="text-warning"><strong>Retenida</strong></p>
+									<% }
+									if(estado.equals("espera") && !retenida) { %>
+										<p class="text-info"><strong>En espera</strong></p>
+									<% }
+									if(estado.equals("cancelada")) { %>
+										<p class="text-danger"><strong>Cancelada</strong></p>
+									<% }
+									if(estado.equals("terminada")) { %>
+									<p class="text-success"><strong>Terminada</strong></p>
+									<% }
+									if(estado.equals("activa")) { %>
+									<p class="text-primary"><strong>En Curso</strong></p>
+									<% } %>
+								</td>
+								<td class="cell-acciones">
 									<% if(estado.equals("espera")) { %>
 										<form id="cancelar_reserva-form" name="cancelar_reserva-form" action="misreservas" method="POST">
-											<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+											<div class="btn-group btn-group-sm" role="group">
 												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" style="display: none">Sí</button>
-												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-danger rounded" onclick="cancelarReserva(<%= reserva.getId() %>)">Cancelar Reserva</button>
+												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-danger rounded" onclick="cancelarReserva(<%= reserva.getId() %>)">Cancelar</button>
 												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" disabled style="display: none">Seguro?</button>
 												<button type="button" class="btn-cancelar-<%= reserva.getId() %> btn btn-outline-danger" style="display: none" onclick="cancelarReserva(<%= reserva.getId() %>)">No</button>
 											</div>
 										</form>
 									<% }
 									if(estado.equals("cancelada")) { %>
-										<p class="text-danger"><strong>Reserva Cancelada</strong></p>
+										<p class="text-danger"><strong>-</strong></p>
 									<% }
 									if(estado.equals("terminada")) { %>
-									<p class="text-success"><strong>Reserva Terminada</strong></p>
+											<form id="detalles_reserva-form" name="detalles_reserva-form" action="detalles" method="GET">
+												<button type="button" name="id_reserva" value="<%= reserva.getId() %>" class="btn-detalles-<%= reserva.getId() %> btn btn-outline-success">Ver detalles</button>
+											</form>
 									<% }
 									if(estado.equals("activa")) { %>
-									<p class="text-primary"><strong>Reserva En Curso</strong></p>
+										<form id="asignar_servicios-form" name="asignar_servicios-form" action="miserervas" method="POST">
+											<button type="button" name="id_reserva" value="<%= reserva.getId() %>" class="btn-asginar-<%= reserva.getId() %> btn btn-outline-info">Pedir servicio</button>
+										</form>
 									<% } %>
 								</td>
 							</tr>
@@ -142,7 +167,7 @@ function detalleHabitaciones(idReserva){
 										</td>
 										<%
 									}
-									for(int h = 0; h < 6-cantidadTipoHabitacion; h++){
+									for(int h = 0; h < 7-cantidadTipoHabitacion; h++){
 										%><td></td><%
 									}
 								%>

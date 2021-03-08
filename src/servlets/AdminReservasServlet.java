@@ -96,18 +96,82 @@ public class AdminReservasServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Cancelando la reserva: " + request.getParameter("id_reserva"));
-		ReservaLogic reservaLogic = new ReservaLogic();
-		try {
-			reservaLogic.cancelarReservar(Integer.parseInt(request.getParameter("id_reserva")));
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		RequestDispatcher requestDispatcher;
+		String action = request.getParameter("action");
+		String idReserva = request.getParameter("id_reserva");
+
+		if(action == null || idReserva == null) {
+			System.out.println("No se especifica una acci�n o id de reserva");
+			String alert = "No se puede procesar la acci�n";
+			request.setAttribute("alert", alert);
+			request.setAttribute("alert_mode", "danger");
+			request.setAttribute("alert_title", "Error accediendo a la reserva");
+
+
+			requestDispatcher = request.getRequestDispatcher("home.jsp");
+			requestDispatcher.forward(request, response);
+			return;
 		}
-		response.sendRedirect("adminreservas");
+
+		ReservaLogic reservaLogic = new ReservaLogic();
+
+		switch(action) {
+			case "check_in":
+				System.out.println("Check in de la reserva: " + idReserva);
+				try {
+					boolean hold = reservaLogic.retenida(Integer.parseInt(idReserva));
+					// Si se tiene que holdear la reserva, porque otra reserva est� reteniendo las habitaciones
+					if(hold) {
+						reservaLogic.retener(Integer.parseInt(idReserva));
+						System.out.println("No hay habitacinoes disponibles para hacer el check in");
+						String alert = "Hay otra reserva en curso que no permite ocupar las habitaciones";
+						request.setAttribute("alert", alert);
+						request.setAttribute("alert_mode", "danger");
+						request.setAttribute("alert_title", "La reserva debe ser retenida");
+					}
+					else {
+						reservaLogic.checkIn(Integer.parseInt(idReserva));
+						System.out.println("Check in completo");
+						request.setAttribute("alert", "");
+						request.setAttribute("alert_mode", "success");
+						request.setAttribute("alert_title", "Check in completado");
+					}
+				}catch (Exception e) {
+					e.printStackTrace();
+					String alert = "Hubo un error interno durante el proceso";
+					request.setAttribute("alert", alert);
+					request.setAttribute("alert_mode", "danger");
+					request.setAttribute("alert_title", "No se pudo completar el check in");
+				}
+				break;
+			// case "check_out":
+			// 	System.out.println("Check out de la reserva: " + idReserva);
+			// 	try {
+			// 		reservaLogic.checkOut(Integer.parseInt(idReserva));
+			// 	} catch (NumberFormatException e) {
+			// 		e.printStackTrace();
+			// 	} catch (Exception e) {
+			// 		e.printStackTrace();
+			// 	}
+			// 	response.sendRedirect("adminreservas");
+			// 	break;
+			case "cancelar":
+				System.out.println("Cancelando la reserva: " + request.getParameter("id_reserva"));
+				try {
+					reservaLogic.cancelarReservar(Integer.parseInt(request.getParameter("id_reserva")));
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				response.sendRedirect("adminreservas");
+				break;
+		}
+		requestDispatcher = request.getRequestDispatcher("home.jsp");
+		requestDispatcher.forward(request, response);
+		return;
 	}
 
 }

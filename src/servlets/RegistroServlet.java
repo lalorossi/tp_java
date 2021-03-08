@@ -1,9 +1,6 @@
 package servlets;
 
-import java.io.Console;
 import java.io.IOException;
-import java.net.http.HttpRequest;
-import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;

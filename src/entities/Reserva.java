@@ -15,6 +15,8 @@ public class Reserva extends Entidad  {
 	estado estadoActual;
 	Date fechaCreacion;
 	ArrayList<TipoHabitacion> _habitacionesReservadas = new ArrayList<TipoHabitacion>();
+	boolean retenida;
+	Date fechaIngresoReal;
 	/* -- Atributos -- */
 
 
@@ -63,6 +65,20 @@ public class Reserva extends Entidad  {
 	}
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
+	}
+
+	public boolean getRetenida() {
+		return retenida;
+	}
+	public void setRetenida(boolean retenida) {
+		this.retenida = retenida;
+	}
+
+	public Date getFechaIngresoReal() {
+		return fechaIngresoReal;
+	}
+	public void setFechaIngresoReal(Date fechaIngresoReal) {
+		this.fechaIngresoReal= fechaIngresoReal;
 	}
 
 	/* -- Getters y Setters -- */

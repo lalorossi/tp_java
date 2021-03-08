@@ -76,4 +76,38 @@ public class ReservaLogic {
 		rsvData.cancelarReservar(idReserva);
 	}
 
+	public boolean retenida(int idReserva) throws Exception {
+		Reserva reserva = rsvData.getOne(idReserva);
+		Reserva reservaConCantidades = rsvData.getCantidadesReservadas(reserva);
+		HabitacionLogic habitacionLogic = new HabitacionLogic();
+		for(int i = 0; i < reservaConCantidades.getHabitacionesReservadas().size(); i++) {
+			TipoHabitacion tipoHab = reservaConCantidades.getHabitacionesReservadas().get(i);
+			int cantidadNecesaria = tipoHab.getCantidadReservada();
+			ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+			reservas.add(reservaConCantidades);
+			int cantOcupadas = this.getHabitacionesOcupadasPorTipo(reservas, tipoHab.getId());
+			int cantTotal = habitacionLogic.getCantidadPorTipo(tipoHab.getId());
+			System.out.println("cantidad reservada: " + String.valueOf(cantidadNecesaria));
+			System.out.println("cantidad ocupadas: " + String.valueOf(cantOcupadas));
+			System.out.println("cantidad total: " + String.valueOf(cantTotal));
+			int cantDisponible = cantTotal-cantOcupadas;
+			if(cantDisponible < cantidadNecesaria)
+				return true;
+		}
+		return false;
+	}
+
+	public void checkIn(int idReserva) throws Exception {
+		Reserva reserva = rsvData.getOne(idReserva);
+		rsvData.checkIn(idReserva, reserva.getRetenida());
+	}
+
+	// public void checkOut(int idReserva) throws Exception {
+	// 	// rsvData.checkOut(idReserva);
+	// }
+
+	public void retener(int idReserva) throws Exception {
+		rsvData.retener(idReserva);
+	}
+
 }

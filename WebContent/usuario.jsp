@@ -36,7 +36,7 @@
 						<div id="register-form" class="cool-form">
 
 							<!-- Datos Personales -->
-							<label>Datos personales</label>
+							<h4>Datos personales</h4>
 
 							<!-- Nombre -->
 							<div class="form-label-group">
@@ -73,7 +73,7 @@
 							<hr class="my-4">
 
 							<!-- Datos de residencia -->
-							<label>Datos de residencia</label>
+							<h4>Datos de residencia</h4>
 
 							<!-- Pa�s -->
 							<div class="form-label-group">
