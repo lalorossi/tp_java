@@ -136,6 +136,8 @@ public class RegistroServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
 
+		boolean verificarUsuarios = true;
+
 		RequestDispatcher requestDispatcher;
 		HttpSession session = request.getSession();
 
@@ -199,6 +201,7 @@ public class RegistroServlet extends HttpServlet {
 			nuevoCliente.setCiudad( request.getParameter("reg-ciudad") );
 			nuevoCliente.setCodigo_postal( Integer.parseInt(request.getParameter("reg-cp")) );
 			nuevoCliente.setDireccion( request.getParameter("reg-direccion") );
+			nuevoCliente.setVerificado(!verificarUsuarios);
 
 			// Genera una friendly ID codificando el DNI con el email como "seed"
 			String friendlyID = Encode.friendlyID(nuevoCliente.getDni(), nuevoCliente.getEmail());
@@ -211,13 +214,14 @@ public class RegistroServlet extends HttpServlet {
 			System.out.println("Usuario creado exitosamente");
 			try {
 				// Si esta funci�n no activa el catch, sale del servlet por s� misma
-				this.sendEmail(username, friendlyID);
+				if(verificarUsuarios) {
+					this.sendEmail(username, friendlyID);
 
+					System.out.println("Se ejecuto el envio de mail " + username);
 
-				System.out.println("Se ejecuto el envio de mail " + username);
-
-				String alert = "Enviamos un correo a '" + username + "' para verificar tu usuario";
-				request.setAttribute("alert", alert);
+					String alert = "Enviamos un correo a '" + username + "' para verificar tu usuario";
+					request.setAttribute("alert", alert);
+				}
 				request.setAttribute("alert_mode", "success");
 				request.setAttribute("alert_title", "Se cre� tu cuenta de usaurio en ArrozTower!");
 
@@ -230,18 +234,7 @@ public class RegistroServlet extends HttpServlet {
 			catch (Exception ex) {
 				// No se pudo mandar el mail
 				System.out.println("Error al enviar el mail");
-
-				// Muestra el error en el login
-				String alert = "Hubo un error tratando de crear tu usuario. Intenta m�s tarde";
-				request.setAttribute("alert", alert);
-				request.setAttribute("alert_mode", "danger");
-				request.setAttribute("alert_title", "Ups...");
-
-				session.setAttribute("usuarioActual", null);
-
-				// Borra el usuario reci�n creado de la DB
-				nuevoCliente = (Cliente) usrLogic.getOne(username);
-				usrLogic.Delete(nuevoCliente);
+				System.out.println(ex.getMessage());
 
 				requestDispatcher = request.getRequestDispatcher("login.jsp");
 		        requestDispatcher.forward(request, response);
@@ -266,7 +259,7 @@ public class RegistroServlet extends HttpServlet {
 		}
 	}
 
-	private void sendEmail(String username, String friendlyID) throws AddressException, MessagingException{
+	private void sendEmail(String username, String friendlyID) throws Exception{
 
 
 		EmailDelivery enviarmail = new EmailDelivery(username, friendlyID);
