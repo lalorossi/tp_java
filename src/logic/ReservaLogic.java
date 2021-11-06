@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import database.ReservaData;
+import entities.Habitacion;
 import entities.Reserva;
 import entities.TipoHabitacion;
+import entities.Usuario;
 import logic.TipoHabitacionLogic;
 import logic.HabitacionLogic;
 
 public class ReservaLogic {
 	ReservaData rsvData = new ReservaData();
+
+	public Reserva getOne(int id_reserva) throws Exception {
+		return rsvData.getOne(id_reserva);
+	}
 
 	public ArrayList<Reserva> ocupadosEntre(Date desde, Date hasta) throws Exception {
 		return rsvData.ocupadosEntre(desde, hasta);
@@ -99,15 +105,36 @@ public class ReservaLogic {
 
 	public void checkIn(int idReserva) throws Exception {
 		Reserva reserva = rsvData.getOne(idReserva);
-		rsvData.checkIn(idReserva, reserva.getRetenida());
+		// rsvData.checkIn(idReserva, reserva.getRetenida());
+		Reserva reservaConCantidades = rsvData.getCantidadesReservadas(reserva);
+		HabitacionLogic habitacionLogic = new HabitacionLogic();
+		for (int i = 0; i < reservaConCantidades.getHabitacionesReservadas().size(); i++) {
+			TipoHabitacion tipoHab = reservaConCantidades.getHabitacionesReservadas().get(i);
+			int cantidadNecesaria = tipoHab.getCantidadReservada();
+			ArrayList<Habitacion> habitacionesDisponibles = habitacionLogic.getDisponiblesPorTipo(tipoHab.getId());
+			ArrayList idHabitacionesParaReserva = new ArrayList();
+			int cantTotal = habitacionLogic.getCantidadPorTipo(tipoHab.getId());
+			String idString = "";
+			for(int c = 0; c < cantidadNecesaria; c++) {
+				int idHabitacionParaReserva = habitacionesDisponibles.get(c).getId();
+				idString += idHabitacionParaReserva;
+				idString += ",";
+			}
+			idString = idString.substring(0, idString.length() - 1);
+			habitacionLogic.reservar(idString, idReserva);
+		}
 	}
 
-	// public void checkOut(int idReserva) throws Exception {
-	// 	// rsvData.checkOut(idReserva);
-	// }
+	public void checkOut(int idReserva) throws Exception {
+		rsvData.checkOut(idReserva);
+	}
 
 	public void retener(int idReserva) throws Exception {
 		rsvData.retener(idReserva);
 	}
 
+	public ArrayList<Habitacion> getHabitaciones(Reserva reserva) throws Exception {
+		HabitacionLogic habLogic = new HabitacionLogic();
+		return habLogic.getFromReserva(reserva.getId());
+	}
 }

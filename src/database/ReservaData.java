@@ -37,10 +37,10 @@ public class ReservaData {
 
 					rsv.setId(rs.getInt("id_reserva"));
 					rsv.setIdCliente(rs.getInt("id_cliente"));
-					rsv.setFechaInicio(rs.getDate("fecha_inicio"));
-					rsv.setFechaFin(rs.getDate("fecha_fin"));
+					rsv.setFechaInicio((java.util.Date) rs.getDate("fecha_inicio"));
+					rsv.setFechaFin((java.util.Date) rs.getDate("fecha_fin"));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
-					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
+					rsv.setFechaCreacion((java.util.Date) rs.getDate("fecha_creacion"));
 
 					ocupados.add(rsv);
 				}
@@ -178,38 +178,39 @@ public class ReservaData {
 			stmt.executeUpdate(query);
 
 		} catch (Exception e) {
-			System.out.println("Error al cancelar la resrva" + idReserva);
+			System.out.println("Error al iniciar la resrva" + idReserva);
 			throw e;
 		}
 	}
 
-	// public void checkOut(int idReserva) throws Exception {
-	// 	Statement stmt = null;
-	// 	try {
-	// 		stmt = FactoryConection.getInstancia().getConn().createStatement();
+	public void checkOut(int idReserva) throws Exception {
+		Statement stmt = null;
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			String query = "UPDATE reservas SET estado = '" + Reserva.estado.terminada + "'";
+			query += " WHERE (id_reserva = '" + idReserva + "')";
 
-	// 		stmt.executeUpdate("UPDATE reservas SET estado = '2' WHERE (id_reserva = '" + idReserva + "');");
+			stmt.executeUpdate(query);
 
-	// 	} catch (Exception e) {
-	// 		System.out.println("Error al cancelar la resrva" + idReserva);
-	// 		throw e;
-	// 	}
-	// }
+		} catch (Exception e) {
+			System.out.println("Error al terminar la resrva" + idReserva);
+			throw e;
+		}
+	}
 
 	public ArrayList<Reserva> getAllxUsr(int idUsuario) throws Exception {
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 		Statement stmt = null;
 		ResultSet rs = null;
-		ResultSet rsTH = null;
 
 		try {
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
 			rs = stmt.executeQuery("select * from reservas where id_cliente = '" + idUsuario + "';");
+			System.out.println("select * from reservas where id_cliente = '" + idUsuario + "';");
 
 			if (rs != null) {
 				while (rs.next()) {
 					Reserva rsv = new Reserva();
-					ArrayList<TipoHabitacion> tipoHabitaciones = new ArrayList<TipoHabitacion>();
 
 					rsv.setId(rs.getInt("id_reserva"));
 					rsv.setIdCliente(rs.getInt("id_cliente"));
