@@ -105,7 +105,7 @@ public class ReservaLogic {
 
 	public void checkIn(int idReserva) throws Exception {
 		Reserva reserva = rsvData.getOne(idReserva);
-		// rsvData.checkIn(idReserva, reserva.getRetenida());
+		rsvData.checkIn(idReserva, reserva.getRetenida());
 		Reserva reservaConCantidades = rsvData.getCantidadesReservadas(reserva);
 		HabitacionLogic habitacionLogic = new HabitacionLogic();
 		for (int i = 0; i < reservaConCantidades.getHabitacionesReservadas().size(); i++) {
@@ -126,7 +126,18 @@ public class ReservaLogic {
 	}
 
 	public void checkOut(int idReserva) throws Exception {
+		Reserva reserva = rsvData.getOne(idReserva);
+		HabitacionLogic habitacionLogic = new HabitacionLogic();
 		rsvData.checkOut(idReserva);
+		ArrayList<Habitacion> habitacionesDeReserva = this.getHabitaciones(reserva);
+		String idString = "";
+		for (int i = 0; i < habitacionesDeReserva.size(); i++) {
+			int idHabitacionParaLibrear = habitacionesDeReserva.get(i).getId();
+			idString += idHabitacionParaLibrear ;
+			idString += ",";
+		}
+		idString = idString.substring(0, idString.length() - 1);
+		habitacionLogic.liberar(idString);
 	}
 
 	public void retener(int idReserva) throws Exception {

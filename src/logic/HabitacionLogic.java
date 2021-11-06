@@ -24,4 +24,8 @@ public class HabitacionLogic {
 		hData.reservar(idString, idReserva);
 	}
 
+	public void liberar(String idString) throws Exception{
+		hData.liberar(idString);
+	}
+
 }

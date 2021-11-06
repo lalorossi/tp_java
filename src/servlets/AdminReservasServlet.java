@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -144,17 +146,25 @@ public class AdminReservasServlet extends HttpServlet {
 					request.setAttribute("alert_title", "No se pudo completar el check in");
 				}
 				break;
-			// case "check_out":
-			// 	System.out.println("Check out de la reserva: " + idReserva);
-			// 	try {
-			// 		reservaLogic.checkOut(Integer.parseInt(idReserva));
-			// 	} catch (NumberFormatException e) {
-			// 		e.printStackTrace();
-			// 	} catch (Exception e) {
-			// 		e.printStackTrace();
-			// 	}
-			// 	response.sendRedirect("adminreservas");
-			// 	break;
+			case "check_out":
+				System.out.println("Check out de la reserva: " + idReserva);
+				try {
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					String fechaActual = formatter.format(new Date(System.currentTimeMillis()));
+					reservaLogic.checkOut(Integer.parseInt(idReserva));
+					// Si la fecha de salida es mayor a la fecha_fin, calcular recargo
+					// Si la fecha_ingreso_real es mayor a fecha_inicio, calcular descuentoSystem.out.println("Check in completo");
+					request.setAttribute("alert", "");
+					request.setAttribute("alert_mode", "success");
+					request.setAttribute("alert_title", "Check out completado");
+				}catch (Exception e) {
+					e.printStackTrace();
+					String alert = "Hubo un error interno durante el proceso";
+					request.setAttribute("alert", alert);
+					request.setAttribute("alert_mode", "danger");
+					request.setAttribute("alert_title", "No se pudo completar el check out");
+				}
+				break;
 			case "cancelar":
 				System.out.println("Cancelando la reserva: " + request.getParameter("id_reserva"));
 				try {

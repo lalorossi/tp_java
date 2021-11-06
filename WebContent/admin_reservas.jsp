@@ -162,8 +162,8 @@ function detalleHabitaciones(idReserva){
 										<% }
 										if(estado.equals("activa")) { %>
 											<form id="checkout-form" name="checkout-form" action="adminreservas" method="POST">
-												<input type="hidden" name="action" value="check_in" />
-												<button type="button" name="id_reserva" value="<%= reserva.getId() %>" class="btn-terminar-<%= reserva.getId() %> btn btn-outline-info">Checkout</button>
+												<input type="hidden" name="action" value="check_out" />
+												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-terminar-<%= reserva.getId() %> btn btn-outline-info">Checkout</button>
 											</form>
 										<% } %>			
 									</td>

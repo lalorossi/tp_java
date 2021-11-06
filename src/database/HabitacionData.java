@@ -140,7 +140,22 @@ public class HabitacionData {
 			stmt.executeUpdate(query);
 
 		} catch (Exception e) {
-			System.out.println("Error al iniciar la resrva" + idReserva);
+			System.out.println("Error al reservar habitaciones" + idString);
+			throw e;
+		}
+	}
+
+	public void liberar(String idString) throws Exception {
+		Statement stmt = null;
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			String query = "UPDATE habitaciones SET id_reserva = NULL";
+			query += " WHERE (id_habitacion IN (" + idString + "))";
+
+			stmt.executeUpdate(query);
+
+		} catch (Exception e) {
+			System.out.println("Error al liberar habitaciones" + idString);
 			throw e;
 		}
 	}
