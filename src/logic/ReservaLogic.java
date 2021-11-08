@@ -22,6 +22,10 @@ public class ReservaLogic {
 		return rsvData.ocupadosEntre(desde, hasta);
 	}
 
+	public ArrayList<Reserva> activasEntre(Date desde, Date hasta) throws Exception {
+		return rsvData.ocupadosEntre(desde, hasta);
+	}
+
 	public int getHabitacionesOcupadasPorTipo(ArrayList<Reserva> reservas, int idTH) {
 		return rsvData.habitacionesOcupadasPorTipo(reservas, idTH);
 	}
@@ -82,16 +86,24 @@ public class ReservaLogic {
 		rsvData.cancelarReservar(idReserva);
 	}
 
+	public ArrayList<Reserva> excluirReserva(int idExcluida, ArrayList<Reserva> reservas) {
+		ArrayList<Reserva> nuevasReservas = new ArrayList<Reserva>();
+		for(int i =0; i < reservas.size(); i++) {
+			if(reservas.get(i).getId() != idExcluida) reservas.add(reservas.get(i));
+		}
+		return nuevasReservas;
+	}
+
 	public boolean retenida(int idReserva) throws Exception {
 		Reserva reserva = rsvData.getOne(idReserva);
 		Reserva reservaConCantidades = rsvData.getCantidadesReservadas(reserva);
 		HabitacionLogic habitacionLogic = new HabitacionLogic();
+		ArrayList<Reserva> reservasActivas = this.activasEntre(reserva.getFechaInicio(), reserva.getFechaFin());
+		reservasActivas = this.excluirReserva(idReserva, reservasActivas);
 		for(int i = 0; i < reservaConCantidades.getHabitacionesReservadas().size(); i++) {
 			TipoHabitacion tipoHab = reservaConCantidades.getHabitacionesReservadas().get(i);
 			int cantidadNecesaria = tipoHab.getCantidadReservada();
-			ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-			reservas.add(reservaConCantidades);
-			int cantOcupadas = this.getHabitacionesOcupadasPorTipo(reservas, tipoHab.getId());
+			int cantOcupadas = this.getHabitacionesOcupadasPorTipo(reservasActivas, tipoHab.getId());
 			int cantTotal = habitacionLogic.getCantidadPorTipo(tipoHab.getId());
 			System.out.println("cantidad reservada: " + String.valueOf(cantidadNecesaria));
 			System.out.println("cantidad ocupadas: " + String.valueOf(cantOcupadas));
@@ -147,5 +159,16 @@ public class ReservaLogic {
 	public ArrayList<Habitacion> getHabitaciones(Reserva reserva) throws Exception {
 		HabitacionLogic habLogic = new HabitacionLogic();
 		return habLogic.getFromReserva(reserva.getId());
+	}
+
+	public void pedirServicio(String idReserva, String idHabitacion, String idTipoServicio, int cantidad) throws Exception {
+		// Si no existe el servicio, crearlo
+		int cantidadYaPedida = rsvData.getServicios(idReserva, idHabitacion, idTipoServicio);
+		if(cantidadYaPedida== 0) {
+			rsvData.pedirServicio(idReserva, idHabitacion, idTipoServicio, cantidad);
+		}
+		else {
+			rsvData.agregarServicio(idReserva, idHabitacion, idTipoServicio, cantidadYaPedida + cantidad);
+		}
 	}
 }

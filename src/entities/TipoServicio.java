@@ -1,10 +1,11 @@
 package entities;
 
-public class Servicio extends Entidad  {
+public class TipoServicio extends Entidad  {
 
 	/* Atributos */
+	String idServicio;
 	String nombre;
-	String descripcion;
+	float precio;
 	/* -- Atributos -- */
 
 
@@ -17,11 +18,11 @@ public class Servicio extends Entidad  {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public float getPrecio() {
+		return precio;
 	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setPrecio(float precio) {
+		this.precio = precio;
 	}
 
 	/* -- Getters y Setters -- */

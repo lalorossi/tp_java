@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import entities.Admin;
+import entities.Cliente;
 import entities.Reserva;
 import entities.TipoHabitacion;
 import logic.Reserva_TipoHabitacionLogic;
@@ -30,6 +32,54 @@ public class ReservaData {
 							+ fechaHasta + "' between fecha_inicio and  fecha_fin) or ( (fecha_inicio between '"
 							+ fechaDesde + "' and '" + fechaHasta + "') and (fecha_fin between '" + fechaDesde
 							+ "' and '" + fechaHasta + "') ) ) and ( estado = 1 or  estado = 3);");
+
+			if (rs != null) {
+				while (rs.next()) {
+					Reserva rsv = new Reserva();
+
+					rsv.setId(rs.getInt("id_reserva"));
+					rsv.setIdCliente(rs.getInt("id_cliente"));
+					rsv.setFechaInicio((java.util.Date) rs.getDate("fecha_inicio"));
+					rsv.setFechaFin((java.util.Date) rs.getDate("fecha_fin"));
+					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
+					rsv.setFechaCreacion((java.util.Date) rs.getDate("fecha_creacion"));
+
+					ocupados.add(rsv);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Error ocupadosEntre Reserva");
+			throw e;
+		}
+
+		try {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			FactoryConection.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ocupados;
+	}
+
+	public ArrayList<Reserva> activasEntre(Date desde, Date hasta) throws Exception {
+		ArrayList<Reserva> ocupados = new ArrayList<Reserva>();
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String fechaDesde = formatter.format(desde);
+			String fechaHasta = formatter.format(hasta);
+			rs = stmt.executeQuery(
+					"select * from reservas where (('" + fechaDesde + "' between fecha_inicio and  fecha_fin) or ('"
+							+ fechaHasta + "' between fecha_inicio and  fecha_fin) or ( (fecha_inicio between '"
+							+ fechaDesde + "' and '" + fechaHasta + "') and (fecha_fin between '" + fechaDesde
+							+ "' and '" + fechaHasta + "') ) ) and ( estado = 1);");
 
 			if (rs != null) {
 				while (rs.next()) {
@@ -356,6 +406,63 @@ public class ReservaData {
 		}
 
 		return rsv;
+	}
+
+	public int getServicios(String idReserva, String idHabitacion, String idTipoServicio) throws Exception {
+		Statement stmt = null;
+		ResultSet rs=null;
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			String query = "SELECT SUM(cantidad) as cnt FROM servicios WHERE";
+			query += " id_reserva = " + idReserva + " AND id_habitacion = " + idHabitacion + " AND id_tipo_servicio = " + idTipoServicio + ";";
+
+			rs = stmt.executeQuery(query);
+			System.out.println("1111");
+			if(rs!=null){
+				System.out.println("222");
+				while(rs.next()){
+					System.out.println("333");
+					System.out.println(rs.getInt("cnt"));
+					return rs.getInt("cnt");
+				}
+			}
+			System.out.println("444");
+			return 0;
+
+		} catch (Exception e) {
+			System.out.println("Error al buscar servicio");
+			throw e;
+		}
+	}
+
+	public void pedirServicio(String idReserva, String idHabitacion, String idTipoServicio, int cantidad) throws Exception {
+		Statement stmt = null;
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			String query = "INSERT INTO servicios (id_reserva, id_habitacion, id_tipo_servicio, cantidad)";
+			query += " VALUES (" + idReserva + ", " + idHabitacion + ", " + idTipoServicio + "," + cantidad + ")";
+
+			stmt.executeUpdate(query);
+
+		} catch (Exception e) {
+			System.out.println("Error al pedir servicio");
+			throw e;
+		}
+	}
+
+	public void agregarServicio(String idReserva, String idHabitacion, String idTipoServicio, int cantidad) throws Exception {
+		Statement stmt = null;
+		try {
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			String query = "UPDATE servicios SET cantidad = " + cantidad + " WHERE";
+			query += " id_reserva = " + idReserva + " AND id_habitacion = " + idHabitacion + " AND id_tipo_servicio = " + idTipoServicio + ";";
+
+			stmt.executeUpdate(query);
+
+		} catch (Exception e) {
+			System.out.println("Error al añadir servicio");
+			throw e;
+		}
 	}
 
 }

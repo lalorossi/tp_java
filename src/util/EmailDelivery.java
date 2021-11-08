@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 public class EmailDelivery {
 	private String userEmail;
 	private String friendlyID;
@@ -27,8 +28,6 @@ public class EmailDelivery {
 
 	public void sendEmail() throws Exception {
 		URL url = new URL("https://api.sendinblue.com/v3/smtp/email");
-
-		System.out.println("aaaaaaaaaaaaa");
 
 		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 

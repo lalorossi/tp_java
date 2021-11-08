@@ -130,9 +130,7 @@ function detalleHabitaciones(idReserva){
 											</form>
 									<% }
 									if(estado.equals("activa")) { %>
-										<form id="asignar_servicios-form" name="asignar_servicios-form" action="miserervas" method="POST">
-											<button type="button" name="id_reserva" value="<%= reserva.getId() %>" class="btn-asginar-<%= reserva.getId() %> btn btn-outline-info">Pedir servicio</button>
-										</form>
+										<a class="btn-asginar-<%= reserva.getId() %> btn btn-outline-info" href="/tp_java/servicios?resId=<%= reserva.getId() %>">Pedir servicio</button>
 									<% } %>
 								</td>
 							</tr>
