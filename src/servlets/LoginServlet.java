@@ -98,7 +98,9 @@ public class LoginServlet extends HttpServlet {
 					        return;
 						}
 					}
-					System.out.println("El usuario es admin");
+					else {
+						System.out.println("El usuario es admin");
+					}
 
 					// Si estás bien loggeado, te manda al home y guarda la session con el usuario
 					session.setAttribute("usuarioActual", usuarioEncontrado);
