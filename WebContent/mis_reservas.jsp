@@ -124,7 +124,7 @@ function detalleHabitaciones(idReserva){
 									if(estado.equals("cancelada")) { %>
 										<p class="text-danger"><strong>-</strong></p>
 									<% }
-									if(estado.equals("terminada") || estado.equals("activa")) { %>
+									if(estado.equals("terminada") || estado.equals("activa") || estado.equals("terminada")) { %>
 											<form id="detalles_reserva-form" name="detalles_reserva-form" action="detalles" method="GET">
 												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-detalles-<%= reserva.getId() %> btn btn-outline-success">Ver detalles</button>
 											</form>

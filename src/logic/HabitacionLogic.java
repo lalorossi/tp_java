@@ -3,7 +3,8 @@ package logic;
 import java.util.ArrayList;
 
 import database.HabitacionData;
-import entities.Habitacion;;
+import entities.Habitacion;
+import entities.Servicio;;
 
 public class HabitacionLogic {
 	HabitacionData hData = new HabitacionData();
@@ -14,6 +15,10 @@ public class HabitacionLogic {
 
 	public ArrayList<Habitacion> getFromReserva(int idReserva) throws Exception {
 		return hData.getFromReserva(idReserva);
+	}
+
+	public ArrayList<Habitacion> getFromServicios(ArrayList<Servicio> servicios) throws Exception {
+		return hData.getFromServicios(servicios);
 	}
 
 	public ArrayList<Habitacion> getDisponiblesPorTipo(int idTipoHabitacion) throws Exception{

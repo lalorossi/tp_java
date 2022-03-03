@@ -60,9 +60,12 @@ public class DetallesServlet extends HttpServlet {
 		TipoServicioLogic tsLogic = new TipoServicioLogic();
 		ServicioLogic servLogic = new ServicioLogic();
 		try {
-			ArrayList<Habitacion> habitaciones = habLogic.getFromReserva(resId);
 			ArrayList<TipoServicio> tipoServicios = tsLogic.getAll();
 			ArrayList<Servicio> serviciosPedidos = servLogic.getFromReserva(resId);
+			ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
+			if(serviciosPedidos.size() > 0) {
+				habitaciones = habLogic.getFromServicios(serviciosPedidos);
+			}
 			request.setAttribute("resId", resId);
 			request.setAttribute("habitaciones", habitaciones);
 			request.setAttribute("servicios_pedidos", serviciosPedidos);

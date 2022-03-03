@@ -9,6 +9,7 @@ import java.util.Date;
 
 import entities.Habitacion;
 import entities.Reserva;
+import entities.Servicio;
 import entities.TipoHabitacion;
 
 
@@ -54,6 +55,57 @@ public class HabitacionData {
 		try {
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
 			rs = stmt.executeQuery("select * from habitaciones where id_reserva = '" + idReserva+ "';");
+
+			if (rs != null) {
+				while (rs.next()) {
+					Habitacion th = new Habitacion();
+
+					th.setId(rs.getInt("id_habitacion"));
+					th.setIdTipoHabitacion(rs.getInt("id_tipo_habitacion"));
+					if(rs.getString("id_reserva") != "") {
+						th.setIdReserva(rs.getInt("id_reserva"));
+					}
+					th.setNumero(rs.getInt("numero"));
+
+					habitaciones.add(th);
+
+				}
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+
+		try {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			FactoryConection.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return habitaciones;
+	}
+	
+	public ArrayList<Habitacion> getFromServicios(ArrayList<Servicio> servicios) throws Exception {
+
+		Statement stmt = null;
+		ResultSet rs = null;
+		ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
+
+		try {
+			
+			String idsHabitacionesString = "(";
+			for(int i = 0; i < servicios.size(); i++) {
+				idsHabitacionesString += String.valueOf(servicios.get(i).getIdHabitacion());
+				if(i != servicios.size()-1)
+					idsHabitacionesString += ", ";
+			}
+			idsHabitacionesString += ")";
+
+			stmt = FactoryConection.getInstancia().getConn().createStatement();
+			rs = stmt.executeQuery("select * from habitaciones where id_habitacion IN " + idsHabitacionesString + ";");
 
 			if (rs != null) {
 				while (rs.next()) {
