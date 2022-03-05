@@ -19,16 +19,12 @@
 	ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getAttribute("servicios_pedidos");
 	if (habitaciones == null || habitaciones.isEmpty()) {
 %>
-<h2 class="h1-responsive font-weight-bold text-center my-4">No hay
-	ninguna reserva para mostrar</h2>
+<h2 class="h1-responsive font-weight-bold text-center my-4">La reserva no tiene servicios adicionales</h2>
 <div class="d-flex justify-content-around my-3">
-	<form action="home" method="post" role="form">
-		<button type="submit" name="submit" value="submit-reserva"
-			class="btn btn-warning" style="float: right">
+		<button type="button" class="btn btn-warning" style="float: right" onclick="history.back();">
 			<a href="" style="text-decoration: none; color: #000000b3;"><i
-				class="fas fa-concierge-bell"></i> Hacer reserva</a>
+				class="fas fa-concierge-bell"></i> Volver</a>
 		</button>
-	</form>
 </div>
 <%
 	} else if(servicios == null || servicios.isEmpty()){
@@ -44,7 +40,8 @@
 			<thead>
 				<tr>
 					<th scope="col">Num. hab.</th>
-					<th scope="col">Cant. Servicios</th>
+					<th scope="col">Servicio</th>
+					<th scope="col">Cantidad</th>
 					<th scope="col">Total</th>
 				</tr>
 			</thead>
@@ -56,28 +53,31 @@
 					for (int servCounter = 0; servCounter < servicios.size(); servCounter ++) {
 						Servicio servicio = servicios.get(servCounter);
 						if(servicio.getIdHabitacion() == habitacion.getId()) {
-							cantServicios ++;
 							for (int tipoServCounter = 0; tipoServCounter < tipoServicios.size(); tipoServCounter ++) {
 								TipoServicio tipoServ = tipoServicios.get(tipoServCounter);
 								if(tipoServ.getId() == servicio.getIdTipoServicio()) {
-									precioTotal += tipoServ.getPrecio();
+									%>
+										<tr>
+											<td colspan>
+												<%= habitacion.getNumero() %>
+											</td>
+											<td colspan>
+												<%= tipoServ.getNombre() %>
+											</td>
+											<td colspan>
+												<%= servicio.getCantidad() %>
+											</td>
+											<td colspan>
+												<%= servicio.getCantidad() * tipoServ.getPrecio() %>
+											</td>
+										</tr>
+									<%
+									break;
 								}
 							}
 						}
 					}
-						%>
-						<tr>
-							<td colspan>
-								<%= habitacion.getNumero() %>
-							</td>
-							<td colspan>
-								<%= cantServicios %>
-							</td>
-							<td colspan>
-								<%= precioTotal %>
-							</td>
-						</tr>
-				<% } %>
+				 } %>
 			</tbody>
 		</table>
 	</div>
