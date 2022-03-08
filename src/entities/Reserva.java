@@ -16,7 +16,8 @@ public class Reserva extends Entidad  {
 	Date fechaCreacion;
 	ArrayList<TipoHabitacion> _habitacionesReservadas = new ArrayList<TipoHabitacion>();
 	boolean retenida;
-	Date fechaIngresoReal;
+	Date fechaIngresoReal, fechaSalidaReal;
+	float precioBase, precioFinal;
 	/* -- Atributos -- */
 
 
@@ -79,6 +80,27 @@ public class Reserva extends Entidad  {
 	}
 	public void setFechaIngresoReal(Date fechaIngresoReal) {
 		this.fechaIngresoReal= fechaIngresoReal;
+	}
+
+	public Date getFechaSalidaReal() {
+		return fechaSalidaReal;
+	}
+	public void setFechaSalidaReal(Date fechaSalidaReal) {
+		this.fechaSalidaReal= fechaSalidaReal;
+	}
+
+	public float getPrecioBase() {
+		return precioBase;
+	}
+	public void setPrecioBase(float precioBase) {
+		this.precioBase= precioBase;
+	}
+
+	public float getPrecioFinal() {
+		return precioFinal;
+	}
+	public void setPrecioFinal(float precioFinal) {
+		this.precioFinal= precioFinal;
 	}
 
 	/* -- Getters y Setters -- */

@@ -101,6 +101,7 @@ function stepperNext(event){
 
 				data: {
 					paso: 3,
+					precio_total: $('#indicador-precio_total').text()
 				},
 
 				success: function(resp){
@@ -350,6 +351,9 @@ function success2(resp){
 			precioTotal += strCantidadJuniorSuite * precioJuniorSuite;
 			precioTotal += strCantidadExecutiveSuite * precioExecutiveSuite;
 			precioTotal += strCantidadSuitePresidencial * precioSuitePresidencial;
+
+			precioTotal *= respuesta.cantidadDias;
+			console.log(respuesta.cantidadDias);
 
 			$('#indicador-precio_total').text(precioTotal);
 

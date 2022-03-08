@@ -46,13 +46,13 @@ function detalleHabitaciones(idReserva){
 					<th scope="col">Salida</th>
 					<th scope="col">Camas</th>
 					<th scope="col">Habitaciones</th>
-					<th scope="col">Precio</th>
 					<th scope="col">Estado</th>
 					<th scope="col">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
 				<%
+				 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				 for (Map.Entry<Usuario,ArrayList<Reserva>> entry : reservasPorUsuario.entrySet()) {
 					 	Usuario user = entry.getKey();
 						ArrayList<Reserva> reservas = entry.getValue();
@@ -63,13 +63,11 @@ function detalleHabitaciones(idReserva){
 					<%
 						for(int i = 0; i < reservas.size(); i++){
 							Reserva reserva = reservas.get(i);
-							int precioReserva = 0;
 							int camasReservadas = 0;
 							int cantidadHabitaciones = 0;
 							int cantidadTipoHabitacion = reserva.getHabitacionesReservadas().size();
 							boolean retenida = reserva.getRetenida();
 							for(int h = 0; h < cantidadTipoHabitacion; h++){
-								precioReserva += reserva.getHabitacionesReservadas().get(h).getPrecio();
 								cantidadHabitaciones += reserva.getHabitacionesReservadas().get(h).getCantidadReservada();
 								camasReservadas += reserva.getHabitacionesReservadas().get(h).getCapacidad() * reserva.getHabitacionesReservadas().get(h).getCantidadReservada();
 							}
@@ -100,8 +98,8 @@ function detalleHabitaciones(idReserva){
 											</div>
 										</form>
 									</td>
-									<td class="cell-entrada"><%= reserva.getFechaInicio() %></td>
-									<td class="cell-salida"><%= reserva.getFechaFin() %></td>
+									<td class="cell-entrada"><%= formatter.format(reserva.getFechaInicio()) %></td>
+									<td class="cell-salida"><%= formatter.format(reserva.getFechaFin()) %></td>
 									<td class="cell-camas"><%= camasReservadas %></td>
 									<td class="cell-habitaciones">
 										<div class="btn-group btn-group-sm" role="group">
@@ -112,7 +110,6 @@ function detalleHabitaciones(idReserva){
 											</button>
 										</div>
 									</td>
-									<td class="cell-precio">ARS <%= precioReserva %></td>
 									<td class="cell-estado">
 										<% if(estado.equals("espera") && retenida) { %>
 											<p class="text-warning"><strong>Retenida</strong></p>

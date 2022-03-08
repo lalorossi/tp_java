@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -64,7 +65,7 @@ public class ReservaServlet extends HttpServlet {
 			request.getSession().removeAttribute("camasSolicitadas");
 			request.getSession().removeAttribute("reservaActual");
 
-			request.setAttribute("alert", "Se canceló el proceso de reserva exitosamente");
+			request.setAttribute("alert", "Se cancelï¿½ el proceso de reserva exitosamente");
 			request.setAttribute("alert_mode", "success");
 			request.setAttribute("alert_title", "Reserva candelada");
 
@@ -86,13 +87,13 @@ public class ReservaServlet extends HttpServlet {
 
 				ArrayList<TipoHabitacion> thDisponibles = new ArrayList<TipoHabitacion>();
 
-				// Esto debería ir en tipo habitación
+				// Esto deberï¿½a ir en tipo habitaciï¿½n
 				thDisponibles = reservaLogic.getTiposDisponible(desde, hasta);
 
 				if (thDisponibles.size() == 0) {
 					JSONObject objetoJSON = new JSONObject();
 					objetoJSON.put("alert", true);
-					objetoJSON.put("mensaje", "No contamos con habitaciones disponibles en el período seleccionado");
+					objetoJSON.put("mensaje", "No contamos con habitaciones disponibles en el perï¿½odo seleccionado");
 					objetoJSON.put("titulo", "No hay habitaciones disponibles");
 
 					StringWriter output = new StringWriter();
@@ -187,12 +188,12 @@ public class ReservaServlet extends HttpServlet {
 						cantidadCamas = cantidadCamas + (Integer.parseInt(request.getParameter(parametro)) * th.getCapacidad());
 
 						} catch (Exception e) {
-							System.out.println("Error buscando los tipos de habitación de la request");
+							System.out.println("Error buscando los tipos de habitaciï¿½n de la request");
 							e.printStackTrace();
 
 							JSONObject objetoJSON = new JSONObject();
 							objetoJSON.put("alert", true);
-							objetoJSON.put("mensaje", "Ocurrió un error interno al intentar crear la reserva. Intantá más tarde o comunicate con nostros");
+							objetoJSON.put("mensaje", "Ocurriï¿½ un error interno al intentar crear la reserva. Intantï¿½ mï¿½s tarde o comunicate con nostros");
 							objetoJSON.put("titulo", "Error interno al crear la reserva");
 
 							JSONArray arrayJSON = new JSONArray();
@@ -263,13 +264,13 @@ public class ReservaServlet extends HttpServlet {
 
 			if (reservaActual.getHabitacionesReservadas().size() == 0) {
 				objetoJSON.put("alert", true);
-				objetoJSON.put("mensaje", "Por favor, seleccione una habitación para continuar");
+				objetoJSON.put("mensaje", "Por favor, seleccione una habitaciï¿½n para continuar");
 				objetoJSON.put("titulo", "No hay habitaciones seleccionadas");
 
 			} else {
 				if (cantidadCamas < (int) request.getSession().getAttribute("camasSolicitadas")) {
 					objetoJSON.put("alert", true);
-					objetoJSON.put("mensaje", "Seleccione más habitaciones, o habitaciones con mayor capacidad");
+					objetoJSON.put("mensaje", "Seleccione mï¿½s habitaciones, o habitaciones con mayor capacidad");
 					objetoJSON.put("titulo", "Camas insuficientes en las habitaciones seleccionadas");
 				} else {
 					request.getSession().setAttribute("reservaActual", reservaActual);
@@ -278,6 +279,10 @@ public class ReservaServlet extends HttpServlet {
 
 			}
 
+			long diffInMillies = Math.abs(reservaActual.getFechaFin().getTime() - reservaActual.getFechaInicio().getTime());
+			long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+			objetoJSON.put("cantidadDias", diff);
 			StringWriter output = new StringWriter();
 			objetoJSON.writeJSONString(output);
 			String textoJSON = output.toString();
@@ -288,13 +293,16 @@ public class ReservaServlet extends HttpServlet {
 
 		if (paso == 3) {
 			try {
-				reservaLogic.Create((Reserva) request.getSession().getAttribute("reservaActual"));
+				Reserva nuevaReseva = (Reserva) request.getSession().getAttribute("reservaActual");
+				float precioBase = Float.parseFloat(request.getParameter("precio_total"));
+				nuevaReseva.setPrecioBase(precioBase);
+				reservaLogic.Create(nuevaReseva);
 				return;
 			} catch (Exception e) {
 
 				JSONObject objetoJSON = new JSONObject();
 				objetoJSON.put("alert", true);
-				objetoJSON.put("mensaje", "Por alguna razón, no pudimos crear la reserva. Intenta nuevamente o contactate con nosotros");
+				objetoJSON.put("mensaje", "Por alguna razï¿½n, no pudimos crear la reserva. Intenta nuevamente o contactate con nosotros");
 				objetoJSON.put("titulo", "Error interno al crear la reserva");
 
 				JSONArray arrayJSON = new JSONArray();

@@ -14,6 +14,7 @@
 
 <%
 	int resId = (int) request.getAttribute("resId");
+	Reserva reserva = (Reserva) request.getAttribute("reserva");
 	ArrayList<Habitacion> habitaciones = (ArrayList<Habitacion>) request.getAttribute("habitaciones");
 	ArrayList<TipoServicio> tipoServicios = (ArrayList<TipoServicio>) request.getAttribute("tipoServicios");
 	ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getAttribute("servicios_pedidos");
@@ -34,6 +35,32 @@
 <%
 	} else{
 %>
+<div class="row mt-3">
+	<div class="col-md-4 offset-md-4 text-center">
+		<span>Estado de la reserva: </span>
+		<span class="cell-estado">
+			<% 
+				String estado = reserva.getEstadoActual().toString();
+				boolean retenida = reserva.getRetenida();
+			%>
+			<% if(estado.equals("espera") && retenida) { %>
+				<p class="text-warning"><strong>Retenida</strong></p>
+			<% }
+			if(estado.equals("espera") && !retenida) { %>
+				<p class="text-info"><strong>En espera</strong></p>
+			<% }
+			if(estado.equals("cancelada")) { %>
+				<p class="text-danger"><strong>Cancelada</strong></p>
+			<% }
+			if(estado.equals("terminada")) { %>
+			<p class="text-success"><strong>Terminada</strong></p>
+			<% }
+			if(estado.equals("activa")) { %>
+			<p class="text-primary"><strong>En Curso</strong></p>
+			<% } %>										
+		</span>
+	</div>
+</div>
 <div class="row mt-3">
 	<div class="col-md-10 offset-md-1">
 		<table class="table">
@@ -78,6 +105,30 @@
 						}
 					}
 				 } %>
+				 <tr>
+					<th scope="col"></th>
+					<th scope="col">Extra</th>
+					<th scope="col">Cantidad</th>
+					<th scope="col">Total</th>
+				</tr>
+				 <tr>
+					<td scope="col"></th>
+					<td scope="col">Dias extra</th>
+					<td scope="col">3</th>
+					<td scope="col">100</th>
+				</tr>
+				 <tr>
+					<td scope="col"></th>
+					<td scope="col">Checkin tardio</th>
+					<td scope="col">1</th>
+					<td scope="col">100</th>
+				</tr>
+				 <tr>
+					<td scope="col"></th>
+					<td scope="col"></th>
+					<th scope="col">Monto total</th>
+					<th scope="col">100</th>
+				</tr>
 			</tbody>
 		</table>
 	</div>

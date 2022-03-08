@@ -157,6 +157,8 @@ public class AdminReservasServlet extends HttpServlet {
 					request.setAttribute("alert", "");
 					request.setAttribute("alert_mode", "success");
 					request.setAttribute("alert_title", "Check out completado");
+					response.sendRedirect("detalles?id_reserva=" + idReserva);
+					return;
 				}catch (Exception e) {
 					e.printStackTrace();
 					String alert = "Hubo un error interno durante el proceso";

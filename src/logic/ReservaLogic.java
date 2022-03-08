@@ -148,8 +148,10 @@ public class ReservaLogic {
 			idString += idHabitacionParaLibrear ;
 			idString += ",";
 		}
-		idString = idString.substring(0, idString.length() - 1);
-		habitacionLogic.liberar(idString);
+		if(!idString.equals("") ) {
+			idString = idString.substring(0, idString.length() - 1);
+			habitacionLogic.liberar(idString);
+		}
 	}
 
 	public void retener(int idReserva) throws Exception {

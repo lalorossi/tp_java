@@ -39,10 +39,10 @@ public class ReservaData {
 
 					rsv.setId(rs.getInt("id_reserva"));
 					rsv.setIdCliente(rs.getInt("id_cliente"));
-					rsv.setFechaInicio((java.util.Date) rs.getDate("fecha_inicio"));
-					rsv.setFechaFin((java.util.Date) rs.getDate("fecha_fin"));
+					rsv.setFechaInicio(formatter.parse(rs.getString("fecha_inicio")));
+					rsv.setFechaFin(formatter.parse(rs.getString("fecha_fin")));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
-					rsv.setFechaCreacion((java.util.Date) rs.getDate("fecha_creacion"));
+					rsv.setFechaCreacion(formatter.parse(rs.getString("fecha_creacion")));
 
 					ocupados.add(rsv);
 				}
@@ -87,10 +87,10 @@ public class ReservaData {
 
 					rsv.setId(rs.getInt("id_reserva"));
 					rsv.setIdCliente(rs.getInt("id_cliente"));
-					rsv.setFechaInicio((java.util.Date) rs.getDate("fecha_inicio"));
-					rsv.setFechaFin((java.util.Date) rs.getDate("fecha_fin"));
+					rsv.setFechaInicio(formatter.parse(rs.getString("fecha_inicio")));
+					rsv.setFechaFin(formatter.parse(rs.getString("fecha_fin")));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
-					rsv.setFechaCreacion((java.util.Date) rs.getDate("fecha_creacion"));
+					rsv.setFechaCreacion(formatter.parse(rs.getString("fecha_creacion")));
 
 					ocupados.add(rsv);
 				}
@@ -159,10 +159,11 @@ public class ReservaData {
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 
 			stmt.executeUpdate(
-					"insert into reservas (id_cliente, fecha_inicio, fecha_fin, estado, fecha_creacion) values ('"
+					"insert into reservas (id_cliente, fecha_inicio, fecha_fin, estado, fecha_creacion, precio_base) values ('"
 							+ reserva.getIdCliente() + "','" + formatter1.format(reserva.getFechaInicio()) + "','"
 							+ formatter1.format(reserva.getFechaFin()) + "','" + Reserva.estado.valueOf("espera") + "','"
-							+ formatter1.format(reserva.getFechaCreacion()) + "');",
+							+ formatter1.format(reserva.getFechaCreacion()) + "', "
+							+ String.valueOf(reserva.getPrecioBase()) + ");",
 					Statement.RETURN_GENERATED_KEYS);
 
 			rs = stmt.getGeneratedKeys();
@@ -236,8 +237,10 @@ public class ReservaData {
 	public void checkOut(int idReserva) throws Exception {
 		Statement stmt = null;
 		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String fechaSalidaReal = formatter.format(new Date(System.currentTimeMillis()));
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
-			String query = "UPDATE reservas SET estado = '" + Reserva.estado.terminada + "'";
+			String query = "UPDATE reservas SET estado = '" + Reserva.estado.terminada + "', fecha_salida_real = '" + fechaSalidaReal + "'";
 			query += " WHERE (id_reserva = '" + idReserva + "')";
 
 			stmt.executeUpdate(query);
@@ -253,6 +256,7 @@ public class ReservaData {
 		Statement stmt = null;
 		ResultSet rs = null;
 
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
 			rs = stmt.executeQuery("select * from reservas where id_cliente = '" + idUsuario + "';");
@@ -264,15 +268,21 @@ public class ReservaData {
 
 					rsv.setId(rs.getInt("id_reserva"));
 					rsv.setIdCliente(rs.getInt("id_cliente"));
-					rsv.setFechaInicio(rs.getDate("fecha_inicio"));
-					rsv.setFechaFin(rs.getDate("fecha_fin"));
+					rsv.setFechaInicio(formatter.parse(rs.getString("fecha_inicio")));
+					rsv.setFechaFin(formatter.parse(rs.getString("fecha_fin")));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
-					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
+					rsv.setFechaCreacion(formatter.parse(rs.getString("fecha_creacion")));
 					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real");
+					Date fechaSalidaReal = rs.getDate("fecha_salida_real");
 					if(fechaIngresoReal != null) {
-						rsv.setFechaIngresoReal(rs.getDate("fecha_ingreso_real"));
+						rsv.setFechaIngresoReal(formatter.parse(rs.getString("fecha_ingreso_real")));
+					}
+					if(fechaSalidaReal != null) {
+						rsv.setFechaSalidaReal(formatter.parse(rs.getString("fecha_salida_real")));
 					}
 					rsv.setRetenida(rs.getBoolean("retenida"));
+					rsv.setPrecioBase(rs.getFloat("precio_base"));
+					rsv.setPrecioFinal(rs.getFloat("precio_final"));
 
 
 					reservas.add(this.getCantidadesReservadas(rsv));
@@ -302,6 +312,7 @@ public class ReservaData {
 		Statement stmt = null;
 		ResultSet rs = null;
 		ResultSet rsTH = null;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
@@ -312,17 +323,29 @@ public class ReservaData {
 					Reserva rsv = new Reserva();
 					ArrayList<TipoHabitacion> tipoHabitaciones = new ArrayList<TipoHabitacion>();
 
+
+					System.out.println(rs.getInt("id_reserva"));
+					System.out.println(formatter.parse(rs.getString("fecha_inicio")));
+					System.out.println(rs.getString("fecha_inicio"));
+					System.out.println(formatter.parse(rs.getString("fecha_inicio")));
+					System.out.println("-----------");
 					rsv.setId(rs.getInt("id_reserva"));
 					rsv.setIdCliente(rs.getInt("id_cliente"));
-					rsv.setFechaInicio(rs.getDate("fecha_inicio"));
-					rsv.setFechaFin(rs.getDate("fecha_fin"));
+					rsv.setFechaInicio(formatter.parse(rs.getString("fecha_inicio")));
+					rsv.setFechaFin(formatter.parse(rs.getString("fecha_fin")));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
-					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
+					rsv.setFechaCreacion(formatter.parse(rs.getString("fecha_creacion")));
 					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real");
+					Date fechaSalidaReal = rs.getDate("fecha_salida_real");
 					if(fechaIngresoReal != null) {
-						rsv.setFechaIngresoReal(rs.getDate("fecha_ingreso_real"));
+						rsv.setFechaIngresoReal(formatter.parse(rs.getString("fecha_ingreso_real")));
+					}
+					if(fechaSalidaReal != null) {
+						rsv.setFechaSalidaReal(formatter.parse(rs.getString("fecha_salida_real")));
 					}
 					rsv.setRetenida(rs.getBoolean("retenida"));
+					rsv.setPrecioBase(rs.getFloat("precio_base"));
+					rsv.setPrecioFinal(rs.getFloat("precio_final"));
 
 
 					reservas.add(this.getCantidadesReservadas(rsv));
@@ -373,6 +396,7 @@ public class ReservaData {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Reserva rsv = new Reserva();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 		try{
 			stmt = FactoryConection.getInstancia()
@@ -382,15 +406,21 @@ public class ReservaData {
 				while(rs.next()){
 					rsv.setId(rs.getInt("id_reserva"));
 					rsv.setIdCliente(rs.getInt("id_cliente"));
-					rsv.setFechaInicio(rs.getDate("fecha_inicio"));
-					rsv.setFechaFin(rs.getDate("fecha_fin"));
+					rsv.setFechaInicio(formatter.parse(rs.getString("fecha_inicio")));
+					rsv.setFechaFin(formatter.parse(rs.getString("fecha_fin")));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
-					rsv.setFechaCreacion(rs.getDate("fecha_creacion"));
-					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real");
+					rsv.setFechaCreacion(formatter.parse(rs.getString("fecha_creacion")));
+					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real"));
+					Date fechaSalidaReal = rs.getDate("fecha_salida_real"));
 					if(fechaIngresoReal != null) {
-						rsv.setFechaIngresoReal(rs.getDate("fecha_ingreso_real"));
+						rsv.setFechaIngresoReal(formatter.parse(rs.getString("fecha_ingreso_real")));
+					}
+					if(fechaSalidaReal != null) {
+						rsv.setFechaSalidaReal(formatter.parse(rs.getString("fecha_salida_real")));
 					}
 					rsv.setRetenida(rs.getBoolean("retenida"));
+					rsv.setPrecioBase(rs.getFloat("precio_base"));
+					rsv.setPrecioFinal(rs.getFloat("precio_final"));
 				}
 			}
 		} catch (Exception e){
@@ -460,7 +490,7 @@ public class ReservaData {
 			stmt.executeUpdate(query);
 
 		} catch (Exception e) {
-			System.out.println("Error al añadir servicio");
+			System.out.println("Error al aï¿½adir servicio");
 			throw e;
 		}
 	}
