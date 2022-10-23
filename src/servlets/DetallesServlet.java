@@ -72,6 +72,7 @@ public class DetallesServlet extends HttpServlet {
 			request.setAttribute("habitaciones", habitaciones);
 			request.setAttribute("servicios_pedidos", serviciosPedidos);
 			request.setAttribute("tipoServicios", tipoServicios);
+			request.setAttribute("costo_dia_extra", 100.0);
 			RequestDispatcher requestDispatcher;
 			requestDispatcher = request.getRequestDispatcher("detalles_reserva.jsp");
 			requestDispatcher.forward(request, response);

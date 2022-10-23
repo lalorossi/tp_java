@@ -8,6 +8,7 @@
 <%@ page import="entities.Habitacion"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 
+
 <script>
 	document.title = "Arroz Tower - Detalles de reserva";	
 </script>
@@ -18,6 +19,11 @@
 	ArrayList<Habitacion> habitaciones = (ArrayList<Habitacion>) request.getAttribute("habitaciones");
 	ArrayList<TipoServicio> tipoServicios = (ArrayList<TipoServicio>) request.getAttribute("tipoServicios");
 	ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getAttribute("servicios_pedidos");
+	Date fechaSalidaReal = reserva.getFechaSalidaReal();
+	if(fechaSalidaReal == null) fechaSalidaReal = new Date();
+	long diasExtra = (fechaSalidaReal.getTime() - reserva.getFechaFin().getTime()) / (1000*3600*24);
+	boolean checkoutTardio = diasExtra > 0;
+	double costoDiaExtra = (double) request.getAttribute("costo_dia_extra");;
 	if (habitaciones == null || habitaciones.isEmpty()) {
 %>
 <h2 class="h1-responsive font-weight-bold text-center my-4">La reserva no tiene servicios adicionales</h2>
@@ -69,10 +75,12 @@
 					<th scope="col">Num. hab.</th>
 					<th scope="col">Servicio</th>
 					<th scope="col">Cantidad</th>
-					<th scope="col">Total</th>
+					<th scope="col">Precio unitario</th>
+					<th scope="col">Precio</th>
 				</tr>
 			</thead>
 			<tbody>
+				<% double montoTotal = 0; %>
 				<% for (int habCounter = 0; habCounter < habitaciones.size(); habCounter ++) {
 					Habitacion habitacion = habitaciones.get(habCounter);
 					int cantServicios = 0;
@@ -95,39 +103,44 @@
 												<%= servicio.getCantidad() %>
 											</td>
 											<td colspan>
+												<%= tipoServ.getPrecio() %>
+											</td>
+											<td colspan>
 												<%= servicio.getCantidad() * tipoServ.getPrecio() %>
 											</td>
 										</tr>
 									<%
+									montoTotal += servicio.getCantidad() * tipoServ.getPrecio();
 									break;
 								}
 							}
 						}
 					}
 				 } %>
-				 <tr>
-					<th scope="col"></th>
-					<th scope="col">Extra</th>
-					<th scope="col">Cantidad</th>
-					<th scope="col">Total</th>
-				</tr>
+				 <% if(checkoutTardio) { %>
+				 	<tr>
+						<th scope="col"></th>
+						<th scope="col">Extra</th>
+						<th scope="col">Cantidad</th>
+						<th scope="col">Precio unitario</th>
+						<th scope="col">Precio</th>
+					</tr>
+					<tr>
+						<td scope="col"></th>
+						<td scope="col">Dias extra</th>
+						<td scope="col"><%= diasExtra %></th>
+						<td scope="col"><%= costoDiaExtra %></th>
+						<td scope="col"><%= diasExtra * costoDiaExtra %></th>
+					</tr>
+				 <% 
+				 montoTotal += diasExtra * costoDiaExtra;
+				 } %>
 				 <tr>
 					<td scope="col"></th>
-					<td scope="col">Dias extra</th>
-					<td scope="col">3</th>
-					<td scope="col">100</th>
-				</tr>
-				 <tr>
-					<td scope="col"></th>
-					<td scope="col">Checkin tardio</th>
-					<td scope="col">1</th>
-					<td scope="col">100</th>
-				</tr>
-				 <tr>
 					<td scope="col"></th>
 					<td scope="col"></th>
 					<th scope="col">Monto total</th>
-					<th scope="col">100</th>
+					<th scope="col"><%= montoTotal %></th>
 				</tr>
 			</tbody>
 		</table>

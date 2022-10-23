@@ -410,8 +410,8 @@ public class ReservaData {
 					rsv.setFechaFin(formatter.parse(rs.getString("fecha_fin")));
 					rsv.setEstadoActual(Reserva.estado.valueOf(rs.getString("estado")));
 					rsv.setFechaCreacion(formatter.parse(rs.getString("fecha_creacion")));
-					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real"));
-					Date fechaSalidaReal = rs.getDate("fecha_salida_real"));
+					Date fechaIngresoReal = rs.getDate("fecha_ingreso_real");
+					Date fechaSalidaReal = rs.getDate("fecha_salida_real");
 					if(fechaIngresoReal != null) {
 						rsv.setFechaIngresoReal(formatter.parse(rs.getString("fecha_ingreso_real")));
 					}
