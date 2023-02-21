@@ -56,22 +56,17 @@ public class DetallesServlet extends HttpServlet {
 		}
 		// Obtener reserva actual
 		int resId = Integer.parseInt(request.getParameter("id_reserva"));
-		HabitacionLogic habLogic = new HabitacionLogic();
 		TipoServicioLogic tsLogic = new TipoServicioLogic();
 		ServicioLogic servLogic = new ServicioLogic();
 		ReservaLogic resLogic = new ReservaLogic();
 		try {
 			ArrayList<TipoServicio> tipoServicios = tsLogic.getAll();
 			ArrayList<Servicio> serviciosPedidos = servLogic.getFromReserva(resId);
-			ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
-			if(serviciosPedidos.size() > 0) {
-				habitaciones = habLogic.getFromServicios(serviciosPedidos);
-			}
 			request.setAttribute("resId", resId);
 			request.setAttribute("reserva", resLogic.getOne(resId));
-			request.setAttribute("habitaciones", habitaciones);
 			request.setAttribute("servicios_pedidos", serviciosPedidos);
 			request.setAttribute("tipoServicios", tipoServicios);
+			request.setAttribute("costo_dia_extra", 100.0);
 			RequestDispatcher requestDispatcher;
 			requestDispatcher = request.getRequestDispatcher("detalles_reserva.jsp");
 			requestDispatcher.forward(request, response);

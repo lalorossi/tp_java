@@ -27,9 +27,9 @@ function detalleHabitaciones(idReserva){
 	%>
 		<h2 class="h1-responsive font-weight-bold text-center my-4">No hay ninguna reserva para mostrar</h2>
 		<div class="d-flex justify-content-around my-3">
-			<form action="home" method="post" role="form">
+			<form action="/tp_java/home" method="post" role="form">
 				<button type="submit" name="submit" value="submit-reserva" class="btn btn-warning" style="float: right">
-					<a href="" style="text-decoration: none; color: #000000b3; "><i class="fas fa-concierge-bell"></i> Hacer reserva</a>
+					<i class="fas fa-concierge-bell"></i> Hacer reserva
 				</button>
 			</form>
 		</div>

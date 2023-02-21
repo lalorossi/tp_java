@@ -89,7 +89,7 @@ function detalleHabitaciones(idReserva){
 								clase = "table-success";
 							}
 							%>
-								<tr class="<%= clase %>">
+								<tr id="row-reserva-<%= reserva.getId() %>" class="<%= clase %>">
 									<td class="cell-cliente">
 										<form id="cliente_form_<%= reserva.getId() %>" name="cliente_form_<%= reserva.getId() %>" action="usuario" method="POST">
 											<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">

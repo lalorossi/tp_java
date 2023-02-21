@@ -89,7 +89,7 @@ public class ReservaLogic {
 	public ArrayList<Reserva> excluirReserva(int idExcluida, ArrayList<Reserva> reservas) {
 		ArrayList<Reserva> nuevasReservas = new ArrayList<Reserva>();
 		for(int i =0; i < reservas.size(); i++) {
-			if(reservas.get(i).getId() != idExcluida) reservas.add(reservas.get(i));
+			if(reservas.get(i).getId() != idExcluida) nuevasReservas.add(reservas.get(i));
 		}
 		return nuevasReservas;
 	}
