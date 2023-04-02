@@ -6,7 +6,9 @@ import java.util.Date;
 import database.ReservaData;
 import entities.Habitacion;
 import entities.Reserva;
+import entities.Servicio;
 import entities.TipoHabitacion;
+import entities.TipoServicio;
 import entities.Usuario;
 import logic.TipoHabitacionLogic;
 import logic.HabitacionLogic;
@@ -140,9 +142,44 @@ public class ReservaLogic {
 	public void checkOut(int idReserva) throws Exception {
 		Reserva reserva = rsvData.getOne(idReserva);
 		HabitacionLogic habitacionLogic = new HabitacionLogic();
-		rsvData.checkOut(idReserva);
+		TipoServicioLogic tsLogic = new TipoServicioLogic();
+		ServicioLogic servLogic = new ServicioLogic();
+		ArrayList<TipoServicio> tipoServicios = tsLogic.getAll();
+		ArrayList<Servicio> serviciosPedidos = servLogic.getFromReserva(idReserva);
+
+		float precioBase = reserva.getPrecioBase();
+		float precioFinal = precioBase;
+		long diasDuracion = (reserva.getFechaFin().getTime() - reserva.getFechaInicio().getTime()) / (1000*3600*24);
+		float costoPorDia = precioBase/diasDuracion;
+		Date fechaSalidaReal = new Date(System.currentTimeMillis());
+
+		// Si la fecha_ingreso_real es mayor a fecha_inicio, calcular descuento
+		if(reserva.getFechaIngresoReal() != null && reserva.getFechaIngresoReal().compareTo(reserva.getFechaInicio()) > 0 && reserva.getRetenida()) {
+			long diasDescuento = (reserva.getFechaIngresoReal().getTime() - reserva.getFechaInicio().getTime()) / (1000*3600*24);
+			precioFinal -= (diasDescuento * costoPorDia);
+		}
+		// Si la fecha de salida es mayor a la fecha_fin, calcular recargo
+		if(fechaSalidaReal.compareTo(reserva.getFechaFin()) > 0) {
+			long diasRecargo = (fechaSalidaReal.getTime() - reserva.getFechaFin().getTime()) / (1000*3600*24);
+			precioFinal += (diasRecargo * costoPorDia);
+		}
+		precioFinal = precioFinal < 0 ? 0 : precioFinal;
+		// Calcular precios de servicios
+		for (int servCounter = 0; servCounter < serviciosPedidos.size(); servCounter ++) {
+			Servicio servicio = serviciosPedidos.get(servCounter);
+			for (int tipoServCounter = 0; tipoServCounter < tipoServicios.size(); tipoServCounter ++) {
+				TipoServicio tipoServ = tipoServicios.get(tipoServCounter);
+				if(tipoServ.getId() == servicio.getIdTipoServicio()) {
+					precioFinal += (servicio.getCantidad() * tipoServ.getPrecio());
+					break;
+				}
+			}
+		}
+		
+		rsvData.checkOut(idReserva, precioFinal);
 		ArrayList<Habitacion> habitacionesDeReserva = this.getHabitaciones(reserva);
 		String idString = "";
+		// Liberar habitaciones
 		for (int i = 0; i < habitacionesDeReserva.size(); i++) {
 			int idHabitacionParaLibrear = habitacionesDeReserva.get(i).getId();
 			idString += idHabitacionParaLibrear ;

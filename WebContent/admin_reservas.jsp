@@ -20,7 +20,14 @@ function detalleHabitaciones(idReserva){
 	$("#detalleReserva-" + idReserva).toggle();
 	$(".iconoDetalle-" + idReserva).toggle();
 }
+
+function confirmCheckout(idReserva) {
+	if(confirm("Está seguro que desea realizar el checkout de esta reserva?"))
+	$("#checkout-form-" + idReserva).submit();
+}
+
  </script>
+
 <div class="row mt-3">
 	<div class="col-md-10 offset-md-1">
 	<%
@@ -158,9 +165,10 @@ function detalleHabitaciones(idReserva){
 											</form>
 										<% }
 										if(estado.equals("activa")) { %>
-											<form id="checkout-form" name="checkout-form" action="adminreservas" method="POST">
+											<form id="checkout-form-<%= reserva.getId() %>" name="checkout-form" action="adminreservas" method="POST">
 												<input type="hidden" name="action" value="check_out" />
-												<button type="submit" name="id_reserva" value="<%= reserva.getId() %>" class="btn-terminar-<%= reserva.getId() %> btn btn-outline-info">Checkout</button>
+												<input type="hidden" name="id_reserva" value="<%= reserva.getId() %>" />
+												<button type="button" class="btn-terminar-<%= reserva.getId() %> btn btn-outline-info" onclick="confirmCheckout('<%= reserva.getId() %>')">Checkout</button>
 											</form>
 										<% } %>			
 									</td>

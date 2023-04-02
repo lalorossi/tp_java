@@ -62,11 +62,16 @@ public class DetallesServlet extends HttpServlet {
 		try {
 			ArrayList<TipoServicio> tipoServicios = tsLogic.getAll();
 			ArrayList<Servicio> serviciosPedidos = servLogic.getFromReserva(resId);
+			Reserva reserva = resLogic.getOne(resId);
+			float precioBase = reserva.getPrecioBase();
+			long diasDuracion = (reserva.getFechaFin().getTime() - reserva.getFechaInicio().getTime()) / (1000*3600*24);
+			float costoPorDia = precioBase/diasDuracion;
+
 			request.setAttribute("resId", resId);
-			request.setAttribute("reserva", resLogic.getOne(resId));
+			request.setAttribute("reserva", reserva);
 			request.setAttribute("servicios_pedidos", serviciosPedidos);
 			request.setAttribute("tipoServicios", tipoServicios);
-			request.setAttribute("costo_dia_extra", 100.0);
+			request.setAttribute("costo_dia", costoPorDia);
 			RequestDispatcher requestDispatcher;
 			requestDispatcher = request.getRequestDispatcher("detalles_reserva.jsp");
 			requestDispatcher.forward(request, response);

@@ -220,10 +220,7 @@ public class ReservaData {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			String fechaIngreso = formatter.format(new Date(System.currentTimeMillis()));
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
-			String query = "UPDATE reservas SET estado = '" + Reserva.estado.activa + "'";
-			if(retenida) {
-				query+= ", fecha_ingreso_real = '" + fechaIngreso + "'";
-			}
+			String query = "UPDATE reservas SET estado = '" + Reserva.estado.activa + "', fecha_ingreso_real = '" + fechaIngreso + "'";
 			query += " WHERE (id_reserva = '" + idReserva + "')";
 
 			stmt.executeUpdate(query);
@@ -234,13 +231,13 @@ public class ReservaData {
 		}
 	}
 
-	public void checkOut(int idReserva) throws Exception {
+	public void checkOut(int idReserva, float precioFinal) throws Exception {
 		Statement stmt = null;
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			String fechaSalidaReal = formatter.format(new Date(System.currentTimeMillis()));
 			stmt = FactoryConection.getInstancia().getConn().createStatement();
-			String query = "UPDATE reservas SET estado = '" + Reserva.estado.terminada + "', fecha_salida_real = '" + fechaSalidaReal + "'";
+			String query = "UPDATE reservas SET estado = '" + Reserva.estado.terminada + "', fecha_salida_real = '" + fechaSalidaReal + "', precio_final = '" + String.valueOf(precioFinal) +  "'";
 			query += " WHERE (id_reserva = '" + idReserva + "')";
 
 			stmt.executeUpdate(query);
@@ -447,20 +444,14 @@ public class ReservaData {
 			query += " id_reserva = " + idReserva + " AND id_habitacion = " + idHabitacion + " AND id_tipo_servicio = " + idTipoServicio + ";";
 
 			rs = stmt.executeQuery(query);
-			System.out.println("1111");
 			if(rs!=null){
-				System.out.println("222");
 				while(rs.next()){
-					System.out.println("333");
-					System.out.println(rs.getInt("cnt"));
 					return rs.getInt("cnt");
 				}
 			}
-			System.out.println("444");
 			return 0;
 
 		} catch (Exception e) {
-			System.out.println("Error al buscar servicio");
 			throw e;
 		}
 	}

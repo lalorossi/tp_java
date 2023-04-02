@@ -19,10 +19,18 @@
 	ArrayList<TipoServicio> tipoServicios = (ArrayList<TipoServicio>) request.getAttribute("tipoServicios");
 	ArrayList<Servicio> servicios = (ArrayList<Servicio>) request.getAttribute("servicios_pedidos");
 	Date fechaSalidaReal = reserva.getFechaSalidaReal();
+	Date fechaIngresoReal = reserva.getFechaIngresoReal();
 	if(fechaSalidaReal == null) fechaSalidaReal = new Date();
+	long diasBase = (reserva.getFechaFin().getTime() - reserva.getFechaInicio().getTime()) / (1000*3600*24);
 	long diasExtra = (fechaSalidaReal.getTime() - reserva.getFechaFin().getTime()) / (1000*3600*24);
+	long diasDescuento = (fechaIngresoReal.getTime() - reserva.getFechaInicio().getTime()) / (1000*3600*24);
 	boolean checkoutTardio = diasExtra > 0;
-	double costoDiaExtra = (double) request.getAttribute("costo_dia_extra");
+	boolean ingresoRetenido = diasDescuento > 0;
+	float costoDia = (float) request.getAttribute("costo_dia");
+	SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+	float costoRetenido = costoDia * diasDescuento;
+	costoRetenido = costoRetenido < 0 ? 0 : costoRetenido;
+	float costoExtra = costoDia * diasExtra;
 %>
 
 <div class="row mt-3">
@@ -52,6 +60,29 @@
 	</div>
 </div>
 
+<div class="row mt-3">
+	<div class="col-md-4 offset-md-4 text-center">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Fecha de inicio</th>
+					<th scope="col">Fecha de fin</th>
+					<th scope="col">Fecha de ingreso real</th>
+					<th scope="col">Fecha de salida real</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><%= dateFormatter.format(reserva.getFechaInicio()) %></td>
+					<td><%= dateFormatter.format(reserva.getFechaFin()) %></td>
+					<td><% if(reserva.getFechaIngresoReal() != null) { %> <%= dateFormatter.format(reserva.getFechaIngresoReal()) %> <% } else { %> - <% } %></td>
+					<td><% if(reserva.getFechaSalidaReal() != null) { %> <%= dateFormatter.format(reserva.getFechaSalidaReal()) %> <% } else { %> - <% } %></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
 <%
 	if(servicios == null || servicios.isEmpty()){
 %>
@@ -74,7 +105,7 @@
 			</thead>
 			<tbody>
 				<% 
-					double montoTotal = 0;
+					double montoTotal = reserva.getPrecioBase();
 					int cantServicios = 0;
 					float precioTotal = 0;
 					for (int servCounter = 0; servCounter < servicios.size(); servCounter ++) {
@@ -106,23 +137,40 @@
 							}
 						}
 				 } %>
-				 <% if(checkoutTardio) { %>
 				 	<tr>
 						<th scope="col"></th>
-						<th scope="col">Extra</th>
+						<th scope="col">Días</th>
 						<th scope="col">Cantidad</th>
 						<th scope="col">Precio unitario</th>
 						<th scope="col">Precio</th>
 					</tr>
 					<tr>
 						<td scope="col"></th>
+						<td scope="col">Dias reservados</th>
+						<td scope="col"><%= diasBase %></th>
+						<td scope="col"><%= costoDia %></th>
+						<td scope="col"><%= reserva.getPrecioBase() %></th>
+					</tr>
+				 <%if(checkoutTardio) { %>
+					<tr>
+						<td scope="col"></th>
 						<td scope="col">Dias extra</th>
 						<td scope="col"><%= diasExtra %></th>
-						<td scope="col"><%= costoDiaExtra %></th>
-						<td scope="col"><%= diasExtra * costoDiaExtra %></th>
+						<td scope="col"><%= costoDia %></th>
+						<td scope="col"><%= costoExtra %></th>
 					</tr>
 				 <% 
-				 montoTotal += diasExtra * costoDiaExtra;
+				 montoTotal += costoExtra;
+				 } if(ingresoRetenido) { %>
+					<tr>
+						<td scope="col"></th>
+						<td scope="col">Ingreso retenido</th>
+						<td scope="col"><%= diasDescuento %></th>
+						<td scope="col">-<%= costoDia %></th>
+						<td scope="col">-<%= costoRetenido %></th>
+					</tr>
+				 <% 
+				 montoTotal -= costoRetenido;
 				 } %>
 				 <tr>
 					<td scope="col"></th>
@@ -136,6 +184,13 @@
 	</div>
 </div>
 
+<div class="row mt-3">
+	<div class="col-md-4 offset-md-4 text-center">
+			<% if(estado.equals("activa")) { %>
+			<p class="text-primary"><strong>Checkout</strong></p>
+			<% } %>										
+	</div>
+</div>
 
 <%
 	}

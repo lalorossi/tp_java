@@ -152,8 +152,7 @@ public class AdminReservasServlet extends HttpServlet {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 					String fechaActual = formatter.format(new Date(System.currentTimeMillis()));
 					reservaLogic.checkOut(Integer.parseInt(idReserva));
-					// Si la fecha de salida es mayor a la fecha_fin, calcular recargo
-					// Si la fecha_ingreso_real es mayor a fecha_inicio, calcular descuentoSystem.out.println("Check in completo");
+					System.out.println("Check in completo");
 					request.setAttribute("alert", "");
 					request.setAttribute("alert_mode", "success");
 					request.setAttribute("alert_title", "Check out completado");
