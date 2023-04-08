@@ -25,7 +25,7 @@
 	long diasExtra = (fechaSalidaReal.getTime() - reserva.getFechaFin().getTime()) / (1000*3600*24);
 	long diasDescuento = (fechaIngresoReal.getTime() - reserva.getFechaInicio().getTime()) / (1000*3600*24);
 	boolean checkoutTardio = diasExtra > 0;
-	boolean ingresoRetenido = diasDescuento > 0;
+	boolean ingresoRetenido = diasDescuento > 0 && reserva.getRetenida();
 	float costoDia = (float) request.getAttribute("costo_dia");
 	SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 	float costoRetenido = costoDia * diasDescuento;
@@ -84,6 +84,7 @@
 </div>
 
 <%
+	double montoTotal = reserva.getPrecioBase();
 	if(servicios == null || servicios.isEmpty()){
 %>
 <h2 class="h1-responsive font-weight-bold text-center my-4">No hay
@@ -105,7 +106,6 @@
 			</thead>
 			<tbody>
 				<% 
-					double montoTotal = reserva.getPrecioBase();
 					int cantServicios = 0;
 					float precioTotal = 0;
 					for (int servCounter = 0; servCounter < servicios.size(); servCounter ++) {
@@ -137,6 +137,10 @@
 							}
 						}
 				 } %>
+				 </table>
+
+				
+				<table class="table">
 				 	<tr>
 						<th scope="col"></th>
 						<th scope="col">Días</th>
@@ -151,6 +155,9 @@
 						<td scope="col"><%= costoDia %></th>
 						<td scope="col"><%= reserva.getPrecioBase() %></th>
 					</tr>
+<%
+	} if(diasExtra > 0 || diasDescuento > 0) {
+%>
 				 <%if(checkoutTardio) { %>
 					<tr>
 						<td scope="col"></th>
@@ -172,6 +179,12 @@
 				 <% 
 				 montoTotal -= costoRetenido;
 				 } %>
+			</tbody>
+		</table>
+<%
+	}
+%>
+				<table class="table">
 				 <tr>
 					<td scope="col"></th>
 					<td scope="col"></th>
@@ -179,23 +192,9 @@
 					<th scope="col">Monto total</th>
 					<th scope="col"><%= montoTotal %></th>
 				</tr>
-			</tbody>
-		</table>
+				</table>
 	</div>
 </div>
-
-<div class="row mt-3">
-	<div class="col-md-4 offset-md-4 text-center">
-			<% if(estado.equals("activa")) { %>
-			<p class="text-primary"><strong>Checkout</strong></p>
-			<% } %>										
-	</div>
-</div>
-
-<%
-	}
-%>
-
 
 
 

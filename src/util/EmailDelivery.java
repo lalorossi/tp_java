@@ -17,7 +17,8 @@ import org.json.simple.parser.JSONParser;
 public class EmailDelivery {
 	private String userEmail;
 	private String friendlyID;
-	private static final String API_KEY = "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";
+	//private static final String API_KEY = "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";
+	private static final String API_KEY = "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";
 	private static final String SUBJECT = "Confirma tu cuenta en Arroz Tower";
 
 	public EmailDelivery(String userEmail, String friendlyID) {

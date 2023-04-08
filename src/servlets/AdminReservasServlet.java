@@ -120,10 +120,22 @@ public class AdminReservasServlet extends HttpServlet {
 		switch(action) {
 			case "check_in":
 				System.out.println("Check in de la reserva: " + idReserva);
+				
 				try {
+					// Validar que fecha inicio sea mayor a hoy
+					Reserva reserva = reservaLogic.getOne(Integer.parseInt(idReserva));
+					Date fechaInicio = reserva.getFechaInicio();
+					Date hoy = new Date(System.currentTimeMillis());
 					boolean hold = reservaLogic.retenida(Integer.parseInt(idReserva));
+					if(fechaInicio.getTime() > hoy.getTime()) {
+						System.out.println("No se puede hacer un check in antes de la fecha de inicio de la reserva");
+						String alert = "No se puede hacer un check in antes de la fecha de inicio de la reserva";
+						request.setAttribute("alert", alert);
+						request.setAttribute("alert_mode", "danger");
+						request.setAttribute("alert_title", "No se puede hacer check in");
+					}
 					// Si se tiene que holdear la reserva, porque otra reserva est� reteniendo las habitaciones
-					if(hold) {
+					else if(hold) {
 						reservaLogic.retener(Integer.parseInt(idReserva));
 						System.out.println("No hay habitacinoes disponibles para hacer el check in");
 						String alert = "Hay otra reserva en curso que no permite ocupar las habitaciones";
